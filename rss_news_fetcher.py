@@ -13,6 +13,15 @@ from bs4 import BeautifulSoup
 import time
 import concurrent.futures
 from threading import Lock
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service
+import re
+from collections import Counter
 
 class RSSNewsFetcher:
     def __init__(self):
@@ -97,6 +106,302 @@ class RSSNewsFetcher:
         
         return None
 
+    def extract_article_content(self, article_url, timeout=15):
+        """Extract full article content when description is too short"""
+        try:
+            response = self.session.get(article_url, timeout=timeout)
+            if response.status_code == 200:
+                soup = BeautifulSoup(response.text, 'html.parser')
+                
+                # Remove unwanted elements
+                for element in soup(['script', 'style', 'nav', 'header', 'footer', 'aside', 'advertisement']):
+                    element.decompose()
+                
+                # Try multiple content selectors (common article content containers)
+                content_selectors = [
+                    'article',
+                    '[data-component="text-block"]',
+                    '.article-content',
+                    '.post-content', 
+                    '.entry-content',
+                    '.content',
+                    '.story-body',
+                    '.article-body',
+                    '[data-module="ArticleBody"]',
+                    '.gel-body-copy',
+                    'main p',
+                    '.main-content p'
+                ]
+                
+                extracted_content = ""
+                
+                for selector in content_selectors:
+                    elements = soup.select(selector)
+                    if elements:
+                        # Get text from all matching elements
+                        for element in elements:
+                            # Get all paragraph text
+                            paragraphs = element.find_all('p') if element.name != 'p' else [element]
+                            for p in paragraphs:
+                                text = p.get_text(strip=True)
+                                if text and len(text) > 50:  # Only meaningful paragraphs
+                                    extracted_content += text + " "
+                                    
+                        if len(extracted_content.strip()) > 200:  # If we got good content, break
+                            break
+                
+                # Fallback: get all paragraphs from the page
+                if len(extracted_content.strip()) < 200:
+                    paragraphs = soup.find_all('p')
+                    for p in paragraphs:
+                        text = p.get_text(strip=True)
+                        if text and len(text) > 50:
+                            extracted_content += text + " "
+                            if len(extracted_content) > 500:  # Limit content length
+                                break
+                
+                # Clean up the content
+                if extracted_content:
+                    # Remove extra whitespace and limit to first few sentences
+                    content = ' '.join(extracted_content.split())
+                    
+                    # Split into sentences and take first 3-4 sentences
+                    sentences = content.split('. ')
+                    if len(sentences) > 4:
+                        content = '. '.join(sentences[:4]) + '.'
+                    
+                    # Limit total length
+                    if len(content) > 800:
+                        content = content[:800] + '...'
+                    
+                    return content.strip()
+                            
+        except Exception as e:
+            print(f"Error extracting content from {article_url}: {e}")
+        
+        return None
+
+    def extract_content_with_selenium(self, article_url, timeout=20):
+        """Extract content using Selenium for JavaScript-heavy sites"""
+        driver = None
+        try:
+            # Set up Chrome options for headless browsing
+            chrome_options = Options()
+            chrome_options.add_argument('--headless')  # Run in background
+            chrome_options.add_argument('--no-sandbox')
+            chrome_options.add_argument('--disable-dev-shm-usage')
+            chrome_options.add_argument('--disable-gpu')
+            chrome_options.add_argument('--window-size=1920,1080')
+            chrome_options.add_argument('--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36')
+            
+            # Initialize driver
+            service = Service(ChromeDriverManager().install())
+            driver = webdriver.Chrome(service=service, options=chrome_options)
+            driver.set_page_load_timeout(timeout)
+            
+            # Load the page
+            driver.get(article_url)
+            
+            # Wait for content to load
+            WebDriverWait(driver, 10).until(
+                EC.presence_of_element_located((By.TAG_NAME, "body"))
+            )
+            
+            # Try multiple content selectors
+            content_selectors = [
+                'article',
+                '[data-component="text-block"]',
+                '.article-content',
+                '.post-content', 
+                '.entry-content',
+                '.content',
+                '.story-body',
+                '.article-body',
+                '[data-module="ArticleBody"]',
+                '.gel-body-copy',
+                'main',
+                '.main-content'
+            ]
+            
+            extracted_content = ""
+            
+            for selector in content_selectors:
+                try:
+                    elements = driver.find_elements(By.CSS_SELECTOR, selector)
+                    if elements:
+                        for element in elements:
+                            # Get all paragraph elements within this container
+                            paragraphs = element.find_elements(By.TAG_NAME, "p")
+                            for p in paragraphs:
+                                text = p.text.strip()
+                                if text and len(text) > 50:  # Only meaningful paragraphs
+                                    extracted_content += text + " "
+                        
+                        if len(extracted_content.strip()) > 200:  # If we got good content, break
+                            break
+                except:
+                    continue
+            
+            # Fallback: get all paragraphs from the page
+            if len(extracted_content.strip()) < 200:
+                try:
+                    paragraphs = driver.find_elements(By.TAG_NAME, "p")
+                    for p in paragraphs:
+                        text = p.text.strip()
+                        if text and len(text) > 50:
+                            extracted_content += text + " "
+                            if len(extracted_content) > 800:  # Limit content length
+                                break
+                except:
+                    pass
+            
+            # Clean up the content
+            if extracted_content:
+                # Remove extra whitespace and limit to first few sentences
+                content = ' '.join(extracted_content.split())
+                
+                # Split into sentences and take first 4-5 sentences
+                sentences = content.split('. ')
+                if len(sentences) > 5:
+                    content = '. '.join(sentences[:5]) + '.'
+                
+                # Limit total length
+                if len(content) > 1000:
+                    content = content[:1000] + '...'
+                
+                return content.strip()
+                        
+        except Exception as e:
+            print(f"Selenium extraction error for {article_url}: {e}")
+        finally:
+            if driver:
+                driver.quit()
+        
+        return None
+
+    def extract_key_points(self, title, description, max_points=5):
+        """Extract key points from article title and description"""
+        if not description or len(description.strip()) < 100:
+            return []
+        
+        try:
+            # Combine title and description for analysis
+            full_text = f"{title}. {description}"
+            
+            # Clean and normalize text
+            text = re.sub(r'[^\w\s\.\,\;\:\!\?\-]', '', full_text)
+            text = re.sub(r'\s+', ' ', text).strip()
+            
+            # Split into sentences
+            sentences = re.split(r'[.!?]+', text)
+            sentences = [s.strip() for s in sentences if len(s.strip()) > 20]
+            
+            if len(sentences) < 2:
+                return []
+            
+            # Score sentences based on various factors
+            sentence_scores = {}
+            
+            # Extract important keywords (nouns, proper nouns, numbers)
+            important_words = set()
+            for sentence in sentences:
+                words = sentence.lower().split()
+                for word in words:
+                    # Add numbers, capitalized words, and longer words
+                    if (word.isdigit() or 
+                        any(char.isupper() for char in word) or 
+                        len(word) > 6):
+                        important_words.add(word.lower())
+            
+            # Score each sentence
+            for i, sentence in enumerate(sentences):
+                score = 0
+                words = sentence.lower().split()
+                
+                # Position bonus (first and last sentences often important)
+                if i == 0:
+                    score += 2
+                elif i == len(sentences) - 1:
+                    score += 1
+                
+                # Length bonus (not too short, not too long)
+                if 30 <= len(sentence) <= 150:
+                    score += 2
+                elif 20 <= len(sentence) <= 200:
+                    score += 1
+                
+                # Important words bonus
+                for word in words:
+                    if word in important_words:
+                        score += 1
+                
+                # Keywords that indicate importance
+                important_indicators = [
+                    'announced', 'revealed', 'confirmed', 'reported', 'said',
+                    'according', 'new', 'first', 'major', 'significant',
+                    'breaking', 'latest', 'update', 'million', 'billion',
+                    'percent', '%', 'year', 'month', 'week', 'today'
+                ]
+                
+                for indicator in important_indicators:
+                    if indicator in sentence.lower():
+                        score += 1
+                
+                # Numbers and dates bonus
+                if re.search(r'\d+', sentence):
+                    score += 1
+                
+                sentence_scores[sentence] = score
+            
+            # Sort sentences by score and select top ones
+            sorted_sentences = sorted(sentence_scores.items(), key=lambda x: x[1], reverse=True)
+            
+            # Select key points (avoid duplicates and maintain order)
+            key_points = []
+            used_words = set()
+            
+            for sentence, score in sorted_sentences:
+                if len(key_points) >= max_points:
+                    break
+                
+                # Check for significant overlap with existing points
+                sentence_words = set(sentence.lower().split())
+                overlap = len(sentence_words.intersection(used_words))
+                
+                # Add if not too similar to existing points
+                if overlap < len(sentence_words) * 0.6:  # Less than 60% overlap
+                    # Clean up the sentence
+                    clean_sentence = sentence.strip()
+                    if not clean_sentence.endswith('.'):
+                        clean_sentence += '.'
+                    
+                    key_points.append(clean_sentence)
+                    used_words.update(sentence_words)
+            
+            # Ensure we have at least 2 points if possible
+            if len(key_points) < 2 and len(sentences) >= 2:
+                # Add first and last sentence if not already included
+                first_sentence = sentences[0].strip()
+                last_sentence = sentences[-1].strip()
+                
+                if first_sentence not in [kp.rstrip('.') for kp in key_points]:
+                    if not first_sentence.endswith('.'):
+                        first_sentence += '.'
+                    key_points.insert(0, first_sentence)
+                
+                if (len(key_points) < max_points and 
+                    last_sentence not in [kp.rstrip('.') for kp in key_points] and
+                    len(sentences) > 1):
+                    if not last_sentence.endswith('.'):
+                        last_sentence += '.'
+                    key_points.append(last_sentence)
+            
+            return key_points[:max_points]
+            
+        except Exception as e:
+            print(f"Error extracting key points: {e}")
+            return []
+
     def extract_image_from_feed_entry(self, entry):
         """Extract image from RSS feed entry itself"""
         # Check for media content in feed
@@ -151,12 +456,39 @@ class RSSNewsFetcher:
                     'image_url': '',
                     'has_image': False,
                     'author': entry.get('author', ''),
-                    'tags': [tag.term for tag in entry.get('tags', [])]
+                    'tags': [tag.term for tag in entry.get('tags', [])],
+                    'content_extracted': False
                 }
                 
                 # Skip articles without title or link
                 if not article['title'] or not article['link']:
                     continue
+                
+                # Check if description is too short and extract full content if needed
+                current_description = article['description'] or article['summary']
+                MIN_DESCRIPTION_LENGTH = 100  # Minimum description length threshold
+                
+                if not current_description or len(current_description.strip()) < MIN_DESCRIPTION_LENGTH:
+                    print(f"    📄 Short description detected for '{article['title'][:50]}...', extracting full content...")
+                    
+                    # Try regular extraction first
+                    extracted_content = self.extract_article_content(article['link'])
+                    if extracted_content and len(extracted_content) > MIN_DESCRIPTION_LENGTH:
+                        article['description'] = extracted_content
+                        article['content_extracted'] = True
+                        article['extraction_method'] = 'requests'
+                        print(f"    ✅ Enhanced description: {len(extracted_content)} characters (requests)")
+                    else:
+                        # Fallback to Selenium for difficult sites
+                        print(f"    🔄 Regular extraction failed, trying Selenium...")
+                        selenium_content = self.extract_content_with_selenium(article['link'])
+                        if selenium_content and len(selenium_content) > MIN_DESCRIPTION_LENGTH:
+                            article['description'] = selenium_content
+                            article['content_extracted'] = True
+                            article['extraction_method'] = 'selenium'
+                            print(f"    ✅ Enhanced description: {len(selenium_content)} characters (Selenium)")
+                        else:
+                            print(f"    ⚠️  Both extraction methods failed, keeping original")
                 
                 # Try to extract image from feed entry first
                 image_url = self.extract_image_from_feed_entry(entry)
@@ -168,6 +500,21 @@ class RSSNewsFetcher:
                 if image_url:
                     article['image_url'] = image_url
                     article['has_image'] = True
+                
+                # Generate key points for articles with images
+                if article['has_image'] and article.get('description'):
+                    print(f"    🔑 Generating key points for '{article['title'][:50]}...'")
+                    key_points = self.extract_key_points(article['title'], article['description'])
+                    if key_points:
+                        article['key_points'] = key_points
+                        article['has_key_points'] = True
+                        print(f"    ✅ Generated {len(key_points)} key points")
+                    else:
+                        article['key_points'] = []
+                        article['has_key_points'] = False
+                else:
+                    article['key_points'] = []
+                    article['has_key_points'] = False
                 
                 articles.append(article)
                 

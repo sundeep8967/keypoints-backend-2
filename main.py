@@ -22,12 +22,12 @@ load_dotenv()
 
 # Import our custom news fetchers
 try:
-    from rss_news_fetcher import RSSNewsFetcher
-    from newsapi_fetcher import NewsAPIFetcher
-    from supabase_integration import SupabaseNewsDB
+    from fetchnews.rss_news_fetcher import RSSNewsFetcher
+    from fetchnews.newsapi_fetcher import NewsAPIFetcher
+    from db.supabase_integration import SupabaseNewsDB
 except ImportError as e:
     print(f"❌ Import Error: {e}")
-    print("Make sure all required modules are in the same directory")
+    print("Make sure all required modules are in the correct directories")
     print("Run: pip install supabase python-dotenv")
     exit(1)
 
@@ -66,7 +66,7 @@ class NewsAggregator:
         print("🔄 Starting RSS News Fetcher...")
         try:
             rss_data = self.rss_fetcher.fetch_all_news()
-            self.rss_fetcher.save_to_json(rss_data, 'rss_news_data.json')
+            self.rss_fetcher.save_to_json(rss_data)
             return rss_data
         except Exception as e:
             print(f"❌ RSS Fetcher Error: {e}")
@@ -77,7 +77,7 @@ class NewsAggregator:
         print("🔄 Starting NewsAPI Fetcher...")
         try:
             newsapi_data = self.newsapi_fetcher.fetch_all_news()
-            self.newsapi_fetcher.save_to_json(newsapi_data, 'newsapi_data.json')
+            self.newsapi_fetcher.save_to_json(newsapi_data)
             return newsapi_data
         except Exception as e:
             print(f"❌ NewsAPI Fetcher Error: {e}")
@@ -457,9 +457,10 @@ class NewsAggregator:
         
         return combined_data
     
-    def save_combined_data(self, combined_data, filename='combined_news_data.json'):
+    def save_combined_data(self, combined_data, filename='data/combined_news_data.json'):
         """Save combined data to JSON file and Supabase"""
         # Save to JSON file
+        os.makedirs('data', exist_ok=True)
         with open(filename, 'w', encoding='utf-8') as f:
             json.dump(combined_data, f, indent=2, ensure_ascii=False)
         print(f"💾 Combined data saved to {filename}")
@@ -561,10 +562,11 @@ class NewsAggregator:
         
         # File size information
         files_info = []
-        for filename in ['rss_news_data.json', 'newsapi_data.json', 'combined_news_data.json']:
+        for filename in ['data/rss_news_data.json', 'data/newsapi_data.json', 'data/combined_news_data.json']:
             if os.path.exists(filename):
                 size_kb = os.path.getsize(filename) / 1024
-                files_info.append(f"{filename}: {size_kb:.1f} KB")
+                display_name = os.path.basename(filename)
+                files_info.append(f"{display_name}: {size_kb:.1f} KB")
         
         if files_info:
             print(f"\n📁 Generated Files:")
@@ -604,7 +606,7 @@ def main():
     aggregator.print_summary(combined_data)
     
     print(f"\n🎉 News aggregation complete!")
-    print(f"📊 Check 'combined_news_data.json' for the complete dataset")
+    print(f"📊 Check 'data/combined_news_data.json' for the complete dataset")
     
     return combined_data
 

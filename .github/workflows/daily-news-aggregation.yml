@@ -19,6 +19,7 @@ on:
 jobs:
   aggregate-news:
     runs-on: ubuntu-latest
+    environment: supabase
     
     steps:
     - name: Checkout repository

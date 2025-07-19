@@ -1,6 +1,14 @@
 name: Daily News Aggregation
 
 on:
+  # Auto-trigger on push to main branch
+  push:
+    branches: [ main, master ]
+  
+  # Auto-trigger on pull requests
+  pull_request:
+    branches: [ main, master ]
+  
   # Run daily at 6:00 AM UTC (11:30 AM IST)
   schedule:
     - cron: '0 6 * * *'

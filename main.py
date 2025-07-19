@@ -24,16 +24,30 @@ load_dotenv()
 try:
     from rss_news_fetcher import RSSNewsFetcher
     from newsapi_fetcher import NewsAPIFetcher
+    from supabase_integration import SupabaseNewsDB
 except ImportError as e:
     print(f"❌ Import Error: {e}")
-    print("Make sure both rss_news_fetcher.py and newsapi_fetcher.py are in the same directory")
+    print("Make sure all required modules are in the same directory")
+    print("Run: pip install supabase python-dotenv")
     exit(1)
 
 class NewsAggregator:
-    def __init__(self, newsapi_key=None):
+    def __init__(self, newsapi_key=None, use_supabase=True):
         # Initialize fetchers - let NewsAPIFetcher handle its own triple key system
         self.rss_fetcher = RSSNewsFetcher()
         self.newsapi_fetcher = NewsAPIFetcher()  # No key passed - uses its own triple key system
+        
+        # Initialize Supabase connection
+        self.use_supabase = use_supabase
+        self.supabase_db = None
+        if use_supabase:
+            try:
+                self.supabase_db = SupabaseNewsDB()
+                print("🔗 Supabase integration enabled")
+            except Exception as e:
+                print(f"⚠️  Supabase connection failed: {e}")
+                print("📝 Continuing without database storage...")
+                self.use_supabase = False
         
         # Verify NewsAPI keys are available (for user feedback)
         if not (os.getenv('NEWSAPI_KEY_PRIMARY') or os.getenv('NEWSAPI_KEY')):
@@ -444,10 +458,63 @@ class NewsAggregator:
         return combined_data
     
     def save_combined_data(self, combined_data, filename='combined_news_data.json'):
-        """Save combined data to JSON file"""
+        """Save combined data to JSON file and Supabase"""
+        # Save to JSON file
         with open(filename, 'w', encoding='utf-8') as f:
             json.dump(combined_data, f, indent=2, ensure_ascii=False)
         print(f"💾 Combined data saved to {filename}")
+        
+        # Save to Supabase if enabled
+        if self.use_supabase and self.supabase_db:
+            self.save_to_supabase(combined_data)
+    
+    def save_to_supabase(self, combined_data):
+        """Save aggregated news data to Supabase database"""
+        try:
+            print("\n🔗 Saving data to Supabase...")
+            
+            # Collect all deduplicated articles
+            all_articles = []
+            for category, articles in combined_data.get('by_category_deduplicated', {}).items():
+                all_articles.extend(articles)
+            
+            if not all_articles:
+                print("⚠️  No articles to save to database")
+                return
+            
+            # Save articles to database
+            success = self.supabase_db.insert_articles(all_articles)
+            
+            if success:
+                # Save aggregation run metadata
+                self.supabase_db.insert_aggregation_run(combined_data)
+                
+                # Show database stats
+                stats = self.supabase_db.get_aggregation_stats()
+                if stats:
+                    print(f"\n📊 Database Updated (Images Only):")
+                    print(f"  📰 Total articles in DB: {stats.get('total_articles', 0)}")
+                    print(f"  🖼️  Articles with images: {stats.get('articles_with_images', 0)}")
+                    print(f"  🔑 Articles with key points: {stats.get('articles_with_keypoints', 0)}")
+                    print(f"  📈 Image success rate: {stats.get('image_success_rate', '0%')}")
+                    print(f"  💡 Note: Only articles with images are saved to database")
+            else:
+                print("❌ Failed to save articles to database")
+                
+        except Exception as e:
+            print(f"❌ Error saving to Supabase: {e}")
+    
+    def get_database_stats(self):
+        """Get statistics from Supabase database"""
+        if not self.use_supabase or not self.supabase_db:
+            print("⚠️  Supabase not available")
+            return None
+        
+        try:
+            return self.supabase_db.get_aggregation_stats()
+        except Exception as e:
+            print(f"❌ Error fetching database stats: {e}")
+            return None
     
     def print_summary(self, combined_data):
         """Print comprehensive summary of aggregated news data"""

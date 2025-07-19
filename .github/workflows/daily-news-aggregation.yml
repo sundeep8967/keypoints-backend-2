@@ -56,8 +56,7 @@ jobs:
         echo "NEWSAPI_KEY_SECONDARY=${{ secrets.NEWSAPI_KEY_SECONDARY }}" >> .env
         echo "NEWSAPI_KEY_TERTIARY=${{ secrets.NEWSAPI_KEY_TERTIARY }}" >> .env
         echo "SUPABASE_URL=${{ secrets.SUPABASE_URL }}" >> .env
-        echo "SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }}" >> .env
-        echo "SUPABASE_SERVICE_ROLE_KEY=${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}" >> .env
+        echo "SUPABASE_KEY=${{ secrets.SUPABASE_KEY }}" >> .env
         echo "TITLE_SIMILARITY_THRESHOLD=0.85" >> .env
         echo "URL_SIMILARITY_THRESHOLD=0.90" >> .env
         echo "CONTENT_SIMILARITY_THRESHOLD=0.75" >> .env

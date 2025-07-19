@@ -1,0 +1,154 @@
+name: Daily News Aggregation
+
+on:
+  # Run daily at 6:00 AM UTC (11:30 AM IST)
+  schedule:
+    - cron: '0 6 * * *'
+  
+  # Allow manual trigger
+  workflow_dispatch:
+
+jobs:
+  aggregate-news:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        
+    - name: Cache pip dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/pyproject.toml') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+          
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install poetry
+        poetry config virtualenvs.create false
+        poetry install --no-dev
+        
+    - name: Download spaCy model
+      run: |
+        python -m spacy download en_core_web_sm
+        
+    - name: Create .env file from secrets
+      run: |
+        echo "NEWSAPI_KEY_PRIMARY=${{ secrets.NEWSAPI_KEY_PRIMARY }}" >> .env
+        echo "NEWSAPI_KEY_SECONDARY=${{ secrets.NEWSAPI_KEY_SECONDARY }}" >> .env
+        echo "NEWSAPI_KEY_TERTIARY=${{ secrets.NEWSAPI_KEY_TERTIARY }}" >> .env
+        echo "SUPABASE_URL=${{ secrets.SUPABASE_URL }}" >> .env
+        echo "SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }}" >> .env
+        echo "SUPABASE_SERVICE_ROLE_KEY=${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}" >> .env
+        echo "TITLE_SIMILARITY_THRESHOLD=0.85" >> .env
+        echo "URL_SIMILARITY_THRESHOLD=0.90" >> .env
+        echo "CONTENT_SIMILARITY_THRESHOLD=0.75" >> .env
+        
+    - name: Create data directory
+      run: |
+        mkdir -p data
+        
+    - name: Run news aggregation
+      run: |
+        # Use sequential mode (1) - optimal for GitHub free tier
+        echo "1" | python main.py
+      env:
+        PYTHONPATH: ${{ github.workspace }}
+        
+    - name: Upload aggregated data as artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: news-data-${{ github.run_number }}
+        path: |
+          data/*.json
+        retention-days: 7
+        
+    - name: Generate summary report
+      run: |
+        echo "## Daily News Aggregation Report" >> $GITHUB_STEP_SUMMARY
+        echo "**Date:** $(date)" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        
+        if [ -f "data/combined_news_data.json" ]; then
+          TOTAL_ARTICLES=$(python -c "import json; data=json.load(open('data/combined_news_data.json')); print(data.get('total_articles', 0))")
+          ARTICLES_WITH_IMAGES=$(python -c "import json; data=json.load(open('data/combined_news_data.json')); print(data.get('total_articles_with_images', 0))")
+          IMAGE_SUCCESS_RATE=$(python -c "import json; data=json.load(open('data/combined_news_data.json')); print(data.get('overall_image_success_rate', '0%'))")
+          EXECUTION_TIME=$(python -c "import json; data=json.load(open('data/combined_news_data.json')); print(data.get('execution_time_seconds', 0))")
+          
+          echo "### Aggregation Successful" >> $GITHUB_STEP_SUMMARY
+          echo "- **Total Articles:** $TOTAL_ARTICLES" >> $GITHUB_STEP_SUMMARY
+          echo "- **Articles with Images:** $ARTICLES_WITH_IMAGES ($IMAGE_SUCCESS_RATE)" >> $GITHUB_STEP_SUMMARY
+          echo "- **Execution Time:** ${EXECUTION_TIME}s" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Deduplication info
+          URL_DUPLICATES=$(python -c "import json; data=json.load(open('data/combined_news_data.json')); print(data.get('deduplication_info', {}).get('url_duplicates', 0))")
+          TITLE_DUPLICATES=$(python -c "import json; data=json.load(open('data/combined_news_data.json')); print(data.get('deduplication_info', {}).get('title_duplicates', 0))")
+          CONTENT_DUPLICATES=$(python -c "import json; data=json.load(open('data/combined_news_data.json')); print(data.get('deduplication_info', {}).get('content_duplicates', 0))")
+          TOTAL_DUPLICATES=$(python -c "import json; data=json.load(open('data/combined_news_data.json')); print(data.get('deduplication_info', {}).get('total_duplicates_removed', 0))")
+          
+          echo "### Deduplication Results" >> $GITHUB_STEP_SUMMARY
+          echo "- **Total Duplicates Removed:** $TOTAL_DUPLICATES" >> $GITHUB_STEP_SUMMARY
+          echo "- **URL Duplicates:** $URL_DUPLICATES" >> $GITHUB_STEP_SUMMARY
+          echo "- **Title Duplicates:** $TITLE_DUPLICATES" >> $GITHUB_STEP_SUMMARY
+          echo "- **Content Duplicates:** $CONTENT_DUPLICATES" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # File sizes
+          echo "### Generated Files" >> $GITHUB_STEP_SUMMARY
+          for file in data/*.json; do
+            if [ -f "$file" ]; then
+              size=$(du -h "$file" | cut -f1)
+              filename=$(basename "$file")
+              echo "- **$filename:** $size" >> $GITHUB_STEP_SUMMARY
+            fi
+          done
+          
+        else
+          echo "### Aggregation Failed" >> $GITHUB_STEP_SUMMARY
+          echo "No combined data file was generated. Check the logs for errors." >> $GITHUB_STEP_SUMMARY
+        fi
+        
+    - name: Commit and push data (optional)
+      if: github.event_name == 'schedule'
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        
+        # Only commit if there are changes and files exist
+        if [ -f "data/combined_news_data.json" ]; then
+          git add data/*.json
+          
+          # Check if there are changes to commit
+          if ! git diff --staged --quiet; then
+            git commit -m "Daily news aggregation - $(date '+%Y-%m-%d %H:%M UTC')"
+            git push
+          else
+            echo "No changes to commit"
+          fi
+        else
+          echo "No data files to commit"
+        fi
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Notify on failure
+      if: failure()
+      run: |
+        echo "## News Aggregation Failed" >> $GITHUB_STEP_SUMMARY
+        echo "**Date:** $(date)" >> $GITHUB_STEP_SUMMARY
+        echo "**Error:** The daily news aggregation job failed. Check the workflow logs for details." >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### Troubleshooting Steps:" >> $GITHUB_STEP_SUMMARY
+        echo "1. Check if all required secrets are set" >> $GITHUB_STEP_SUMMARY
+        echo "2. Verify NewsAPI keys are valid and have quota" >> $GITHUB_STEP_SUMMARY
+        echo "3. Check Supabase connection and credentials" >> $GITHUB_STEP_SUMMARY
+        echo "4. Review the workflow logs for specific error messages" >> $GITHUB_STEP_SUMMARY

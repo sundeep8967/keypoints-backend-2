@@ -50,18 +50,43 @@ class RSSNewsFetcher:
                 'TechCrunch': 'https://techcrunch.com/feed/',
                 'The Verge': 'https://www.theverge.com/rss/index.xml',
                 'Ars Technica': 'https://feeds.arstechnica.com/arstechnica/index',
-                'Wired': 'https://www.wired.com/feed/rss'
+                'Wired': 'https://www.wired.com/feed/rss',
+                'NDTV Technology': 'http://feeds.feedburner.com/NDTV-Tech',
+                'The Hindu Science': 'https://www.thehindu.com/sci-tech/science/service=rss',
+                'Indian Express Tech': 'https://indianexpress.com/technology/feed/',
+                'Zee Science & Tech': 'http://zeenews.india.com/rss/science-technology-news.xml'
             },
             'business': {
                 'Financial Times': 'https://www.ft.com/rss/home',
                 'Wall Street Journal': 'https://feeds.a.dj.com/rss/RSSWorldNews.xml',
                 'Bloomberg': 'https://feeds.bloomberg.com/markets/news.rss',
-                'Forbes': 'https://www.forbes.com/real-time/feed2/'
+                'Forbes': 'https://www.forbes.com/real-time/feed2/',
+                'Economic Times': 'https://economictimes.indiatimes.com/rssfeedsdefault.cms',
+                'Business Standard': 'https://www.business-standard.com/rss/home_page_top_stories.rss',
+                'Livemint': 'http://www.livemint.com/rss/latestnews.xml',
+                'Moneycontrol': 'http://www.moneycontrol.com/rss/latestnews.xml',
+                'NDTV Profit': 'http://feeds.feedburner.com/NDTV-Business?format=xml',
+                'Reuters India Business': 'http://feeds.reuters.com/reuters/INbusinessNews'
             },
             'sports': {
                 'ESPN': 'https://www.espn.com/espn/rss/news',
                 'BBC Sport': 'http://feeds.bbci.co.uk/sport/rss.xml',
-                'Sky Sports': 'https://www.skysports.com/rss/12040'
+                'Sky Sports': 'https://www.skysports.com/rss/12040',
+                'NDTV Sports': 'http://feeds.feedburner.com/NDTV-Sports',
+                'ESPNCricinfo': 'http://www.espncricinfo.com/rss/content/story/feeds/6.xml',
+                'Times of India Sports': 'https://timesofindia.indiatimes.com/rssfeeds/4719148.cms',
+                'Cricbuzz': 'http://live-feeds.cricbuzz.com/CricbuzzFeed'
+            },
+            'indian_news': {
+                'NDTV': 'https://feeds.feedburner.com/ndtvnews-top-stories',
+                'Times of India': 'https://timesofindia.indiatimes.com/rssfeedstopstories.cms',
+                'The Hindu': 'https://www.thehindu.com/feeder/default.rss',
+                'Indian Express': 'http://indianexpress.com/print/front-page/feed/',
+                'India Today': 'https://www.indiatoday.in/rss/home',
+                'BBC News India': 'http://feeds.bbci.co.uk/news/world/asia/india/rss.xml',
+                'The Guardian India': 'https://www.theguardian.com/world/india/rss',
+                'Scroll.in': 'http://feeds.feedburner.com/ScrollinArticles.rss',
+                'Google News India': 'https://news.google.com/rss?hl=en-IN&gl=IN&ceid=IN:en'
             }
         }
 

@@ -13,13 +13,7 @@ from bs4 import BeautifulSoup
 import time
 import concurrent.futures
 from threading import Lock
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.chrome.service import Service
+from playwright.sync_api import sync_playwright
 import re
 from collections import Counter
 
@@ -31,62 +25,37 @@ class RSSNewsFetcher:
         })
         self.lock = Lock()
         
-        # RSS feeds organized by category - EXACTLY as you specified
+        # RSS feeds organized by category - OPTIMIZED: Most Important Sources Only
         self.rss_feeds = {
             'international': {
                 'BBC News': 'http://feeds.bbci.co.uk/news/rss.xml',
-                'CNN': 'http://rss.cnn.com/rss/edition.rss',
                 'Reuters': 'https://www.reuters.com/tools/rss',
-                'AP News': 'https://apnews.com/apf-topnews',
                 'The Guardian': 'https://www.theguardian.com/world/rss'
-            },
-            'us_news': {
-                'NPR': 'https://feeds.npr.org/1001/rss.xml',
-                'Fox News': 'https://moxie.foxnews.com/google-publisher/latest.xml',
-                'CBS News': 'https://www.cbsnews.com/latest/rss/main',
-                'ABC News': 'https://abcnews.go.com/abcnews/topstories'
             },
             'technology': {
                 'TechCrunch': 'https://techcrunch.com/feed/',
                 'The Verge': 'https://www.theverge.com/rss/index.xml',
-                'Ars Technica': 'https://feeds.arstechnica.com/arstechnica/index',
-                'Wired': 'https://www.wired.com/feed/rss',
-                'NDTV Technology': 'http://feeds.feedburner.com/NDTV-Tech',
-                'The Hindu Science': 'https://www.thehindu.com/sci-tech/science/service=rss',
-                'Indian Express Tech': 'https://indianexpress.com/technology/feed/',
-                'Zee Science & Tech': 'http://zeenews.india.com/rss/science-technology-news.xml'
+                'Wired': 'https://www.wired.com/feed/rss'
             },
             'business': {
-                'Financial Times': 'https://www.ft.com/rss/home',
-                'Wall Street Journal': 'https://feeds.a.dj.com/rss/RSSWorldNews.xml',
                 'Bloomberg': 'https://feeds.bloomberg.com/markets/news.rss',
-                'Forbes': 'https://www.forbes.com/real-time/feed2/',
                 'Economic Times': 'https://economictimes.indiatimes.com/rssfeedsdefault.cms',
-                'Business Standard': 'https://www.business-standard.com/rss/home_page_top_stories.rss',
-                'Livemint': 'http://www.livemint.com/rss/latestnews.xml',
-                'Moneycontrol': 'http://www.moneycontrol.com/rss/latestnews.xml',
-                'NDTV Profit': 'http://feeds.feedburner.com/NDTV-Business?format=xml',
-                'Reuters India Business': 'http://feeds.reuters.com/reuters/INbusinessNews'
+                'Livemint': 'http://www.livemint.com/rss/latestnews.xml'
             },
             'sports': {
                 'ESPN': 'https://www.espn.com/espn/rss/news',
                 'BBC Sport': 'http://feeds.bbci.co.uk/sport/rss.xml',
-                'Sky Sports': 'https://www.skysports.com/rss/12040',
-                'NDTV Sports': 'http://feeds.feedburner.com/NDTV-Sports',
-                'ESPNCricinfo': 'http://www.espncricinfo.com/rss/content/story/feeds/6.xml',
-                'Times of India Sports': 'https://timesofindia.indiatimes.com/rssfeeds/4719148.cms',
-                'Cricbuzz': 'http://live-feeds.cricbuzz.com/CricbuzzFeed'
+                'ESPNCricinfo': 'http://www.espncricinfo.com/rss/content/story/feeds/6.xml'
             },
             'indian_news': {
                 'NDTV': 'https://feeds.feedburner.com/ndtvnews-top-stories',
                 'Times of India': 'https://timesofindia.indiatimes.com/rssfeedstopstories.cms',
                 'The Hindu': 'https://www.thehindu.com/feeder/default.rss',
-                'Indian Express': 'http://indianexpress.com/print/front-page/feed/',
-                'India Today': 'https://www.indiatoday.in/rss/home',
-                'BBC News India': 'http://feeds.bbci.co.uk/news/world/asia/india/rss.xml',
-                'The Guardian India': 'https://www.theguardian.com/world/india/rss',
-                'Scroll.in': 'http://feeds.feedburner.com/ScrollinArticles.rss',
-                'Google News India': 'https://news.google.com/rss?hl=en-IN&gl=IN&ceid=IN:en'
+                'Indian Express': 'http://indianexpress.com/print/front-page/feed/'
+            },
+            'startups': {
+                'YourStory': 'https://yourstory.com/rss',
+                'Inc42': 'https://inc42.com/feed/'
             }
         }
 
@@ -206,101 +175,104 @@ class RSSNewsFetcher:
         
         return None
 
-    def extract_content_with_selenium(self, article_url, timeout=20):
-        """Extract content using Selenium for JavaScript-heavy sites"""
-        driver = None
+    def extract_content_with_playwright(self, article_url, timeout=20000):
+        """Extract content using Playwright for JavaScript-heavy sites"""
         try:
-            # Set up Chrome options for headless browsing
-            chrome_options = Options()
-            chrome_options.add_argument('--headless')  # Run in background
-            chrome_options.add_argument('--no-sandbox')
-            chrome_options.add_argument('--disable-dev-shm-usage')
-            chrome_options.add_argument('--disable-gpu')
-            chrome_options.add_argument('--window-size=1920,1080')
-            chrome_options.add_argument('--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36')
-            
-            # Initialize driver
-            service = Service(ChromeDriverManager().install())
-            driver = webdriver.Chrome(service=service, options=chrome_options)
-            driver.set_page_load_timeout(timeout)
-            
-            # Load the page
-            driver.get(article_url)
-            
-            # Wait for content to load
-            WebDriverWait(driver, 10).until(
-                EC.presence_of_element_located((By.TAG_NAME, "body"))
-            )
-            
-            # Try multiple content selectors
-            content_selectors = [
-                'article',
-                '[data-component="text-block"]',
-                '.article-content',
-                '.post-content', 
-                '.entry-content',
-                '.content',
-                '.story-body',
-                '.article-body',
-                '[data-module="ArticleBody"]',
-                '.gel-body-copy',
-                'main',
-                '.main-content'
-            ]
-            
-            extracted_content = ""
-            
-            for selector in content_selectors:
-                try:
-                    elements = driver.find_elements(By.CSS_SELECTOR, selector)
-                    if elements:
-                        for element in elements:
-                            # Get all paragraph elements within this container
-                            paragraphs = element.find_elements(By.TAG_NAME, "p")
-                            for p in paragraphs:
-                                text = p.text.strip()
-                                if text and len(text) > 50:  # Only meaningful paragraphs
-                                    extracted_content += text + " "
-                        
-                        if len(extracted_content.strip()) > 200:  # If we got good content, break
-                            break
-                except:
-                    continue
-            
-            # Fallback: get all paragraphs from the page
-            if len(extracted_content.strip()) < 200:
-                try:
-                    paragraphs = driver.find_elements(By.TAG_NAME, "p")
-                    for p in paragraphs:
-                        text = p.text.strip()
-                        if text and len(text) > 50:
-                            extracted_content += text + " "
-                            if len(extracted_content) > 800:  # Limit content length
+            with sync_playwright() as p:
+                # Launch browser in headless mode
+                browser = p.chromium.launch(
+                    headless=True,
+                    args=[
+                        '--no-sandbox',
+                        '--disable-dev-shm-usage',
+                        '--disable-gpu'
+                    ]
+                )
+                
+                # Create context with custom user agent
+                context = browser.new_context(
+                    user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+                    viewport={'width': 1920, 'height': 1080}
+                )
+                
+                page = context.new_page()
+                page.set_default_timeout(timeout)
+                
+                # Navigate to the page
+                page.goto(article_url, wait_until='domcontentloaded')
+                
+                # Wait for body to be present
+                page.wait_for_selector('body', timeout=10000)
+                
+                # Try multiple content selectors
+                content_selectors = [
+                    'article',
+                    '[data-component="text-block"]',
+                    '.article-content',
+                    '.post-content', 
+                    '.entry-content',
+                    '.content',
+                    '.story-body',
+                    '.article-body',
+                    '[data-module="ArticleBody"]',
+                    '.gel-body-copy',
+                    'main',
+                    '.main-content'
+                ]
+                
+                extracted_content = ""
+                
+                for selector in content_selectors:
+                    try:
+                        elements = page.query_selector_all(selector)
+                        if elements:
+                            for element in elements:
+                                # Get all paragraph elements within this container
+                                paragraphs = element.query_selector_all('p')
+                                for p in paragraphs:
+                                    text = p.inner_text().strip()
+                                    if text and len(text) > 50:  # Only meaningful paragraphs
+                                        extracted_content += text + " "
+                            
+                            if len(extracted_content.strip()) > 200:  # If we got good content, break
                                 break
-                except:
-                    pass
-            
-            # Clean up the content
-            if extracted_content:
-                # Remove extra whitespace and limit to first few sentences
-                content = ' '.join(extracted_content.split())
+                    except:
+                        continue
                 
-                # Split into sentences and take first 4-5 sentences
-                sentences = content.split('. ')
-                if len(sentences) > 5:
-                    content = '. '.join(sentences[:5]) + '.'
+                # Fallback: get all paragraphs from the page
+                if len(extracted_content.strip()) < 200:
+                    try:
+                        paragraphs = page.query_selector_all('p')
+                        for p in paragraphs:
+                            text = p.inner_text().strip()
+                            if text and len(text) > 50:
+                                extracted_content += text + " "
+                                if len(extracted_content) > 800:  # Limit content length
+                                    break
+                    except:
+                        pass
                 
-                # Limit total length
-                if len(content) > 1000:
-                    content = content[:1000] + '...'
+                # Clean up the content
+                if extracted_content:
+                    # Remove extra whitespace and limit to first few sentences
+                    content = ' '.join(extracted_content.split())
+                    
+                    # Split into sentences and take first 4-5 sentences
+                    sentences = content.split('. ')
+                    if len(sentences) > 5:
+                        content = '. '.join(sentences[:5]) + '.'
+                    
+                    # Limit total length
+                    if len(content) > 1000:
+                        content = content[:1000] + '...'
+                    
+                    browser.close()
+                    return content.strip()
                 
-                return content.strip()
+                browser.close()
                         
         except Exception as e:
-            print(f"Selenium extraction error for {article_url}: {e}")
-        finally:
-            if driver:
-                driver.quit()
+            print(f"Playwright extraction error for {article_url}: {e}")
         
         return None
 
@@ -467,26 +439,21 @@ class RSSNewsFetcher:
             if feed.bozo and feed.bozo_exception:
                 print(f"Warning: Feed parsing issue for {source_name}: {feed.bozo_exception}")
             
-            for entry in feed.entries[:20]:  # Limit to 20 articles per source
+            for entry in feed.entries[:8]:  # Limit to 8 articles per source for ~160 total
                 # Extract basic article info
                 article = {
                     'title': entry.get('title', '').strip(),
-                    'link': entry.get('link', ''),
+                    'url': entry.get('link', ''),  # Changed from 'link' to 'url'
                     'published': entry.get('published', ''),
                     'summary': entry.get('summary', '').strip(),
                     'description': entry.get('description', '').strip(),
-                    'source': source_name,
+                    'source': source_name,  # Use the RSS source name
                     'category': category,
-                    'rss_url': feed_url,
-                    'image_url': '',
-                    'has_image': False,
-                    'author': entry.get('author', ''),
-                    'tags': [tag.term for tag in entry.get('tags', [])],
-                    'content_extracted': False
+                    'image_url': ''
                 }
                 
-                # Skip articles without title or link
-                if not article['title'] or not article['link']:
+                # Skip articles without title or url
+                if not article['title'] or not article['url']:
                     continue
                 
                 # Check if description is too short and extract full content if needed
@@ -497,21 +464,17 @@ class RSSNewsFetcher:
                     print(f"    📄 Short description detected for '{article['title'][:50]}...', extracting full content...")
                     
                     # Try regular extraction first
-                    extracted_content = self.extract_article_content(article['link'])
+                    extracted_content = self.extract_article_content(article['url'])
                     if extracted_content and len(extracted_content) > MIN_DESCRIPTION_LENGTH:
                         article['description'] = extracted_content
-                        article['content_extracted'] = True
-                        article['extraction_method'] = 'requests'
                         print(f"    ✅ Enhanced description: {len(extracted_content)} characters (requests)")
                     else:
-                        # Fallback to Selenium for difficult sites
-                        print(f"    🔄 Regular extraction failed, trying Selenium...")
-                        selenium_content = self.extract_content_with_selenium(article['link'])
-                        if selenium_content and len(selenium_content) > MIN_DESCRIPTION_LENGTH:
-                            article['description'] = selenium_content
-                            article['content_extracted'] = True
-                            article['extraction_method'] = 'selenium'
-                            print(f"    ✅ Enhanced description: {len(selenium_content)} characters (Selenium)")
+                        # Fallback to Playwright for difficult sites
+                        print(f"    🔄 Regular extraction failed, trying Playwright...")
+                        playwright_content = self.extract_content_with_playwright(article['url'])
+                        if playwright_content and len(playwright_content) > MIN_DESCRIPTION_LENGTH:
+                            article['description'] = playwright_content
+                            print(f"    ✅ Enhanced description: {len(playwright_content)} characters (Playwright)")
                         else:
                             print(f"    ⚠️  Both extraction methods failed, keeping original")
                 
@@ -519,27 +482,23 @@ class RSSNewsFetcher:
                 image_url = self.extract_image_from_feed_entry(entry)
                 
                 # If no image in feed, try to extract from article page
-                if not image_url and article['link']:
-                    image_url = self.extract_image_from_article(article['link'])
+                if not image_url and article['url']:
+                    image_url = self.extract_image_from_article(article['url'])
                 
                 if image_url:
                     article['image_url'] = image_url
-                    article['has_image'] = True
                 
                 # Generate key points for articles with images
-                if article['has_image'] and article.get('description'):
+                if article.get('image_url') and article.get('description'):
                     print(f"    🔑 Generating key points for '{article['title'][:50]}...'")
                     key_points = self.extract_key_points(article['title'], article['description'])
                     if key_points:
                         article['key_points'] = key_points
-                        article['has_key_points'] = True
                         print(f"    ✅ Generated {len(key_points)} key points")
                     else:
                         article['key_points'] = []
-                        article['has_key_points'] = False
                 else:
                     article['key_points'] = []
-                    article['has_key_points'] = False
                 
                 articles.append(article)
                 
@@ -617,7 +576,7 @@ class RSSNewsFetcher:
             all_articles.extend(articles)
         
         news_data['total_articles'] = len(all_articles)
-        news_data['articles_with_images'] = sum(1 for article in all_articles if article['has_image'])
+        news_data['articles_with_images'] = sum(1 for article in all_articles if article.get('image_url'))
         news_data['sources_processed'] = len([status for status in news_data['feed_status'].values() if status['status'] == 'success'])
         
         if news_data['total_articles'] > 0:

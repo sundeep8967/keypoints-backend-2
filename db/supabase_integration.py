@@ -64,12 +64,12 @@ class SupabaseNewsDB:
             
             # Create indexes for better performance
             indexes = [
-                "CREATE INDEX IF NOT EXISTS idx_news_articles_link ON news_articles(link);",
+                "CREATE INDEX IF NOT EXISTS idx_news_articles_url ON news_articles(url);",
                 "CREATE INDEX IF NOT EXISTS idx_news_articles_source ON news_articles(source);",
                 "CREATE INDEX IF NOT EXISTS idx_news_articles_category ON news_articles(category);",
                 "CREATE INDEX IF NOT EXISTS idx_news_articles_published ON news_articles(published);",
                 "CREATE INDEX IF NOT EXISTS idx_news_articles_has_image ON news_articles(has_image);",
-                "CREATE INDEX IF NOT EXISTS idx_news_articles_data_source ON news_articles(data_source);",
+                "CREATE INDEX IF NOT EXISTS idx_news_articles_api_source ON news_articles(api_source);",
                 "CREATE INDEX IF NOT EXISTS idx_runs_timestamp ON aggregation_runs(run_timestamp);"
             ]
             
@@ -114,11 +114,12 @@ class SupabaseNewsDB:
             # Prepare articles for insertion - only essential fields
             processed_articles = []
             for article in articles_with_images:
-                # Generate article_id if not present (using hash of link)
+                # Generate article_id if not present (using hash of url/link)
                 article_id = article.get('article_id')
-                if not article_id and article.get('link'):
+                article_url = article.get('url') or article.get('link', '')
+                if not article_id and article_url:
                     import hashlib
-                    article_id = hashlib.md5(article['link'].encode()).hexdigest()
+                    article_id = hashlib.md5(article_url.encode()).hexdigest()
                 
                 # Determine category - use specific metadata if available, otherwise use main category
                 category = article.get('category', '')
@@ -137,12 +138,14 @@ class SupabaseNewsDB:
                 
                 processed_article = {
                     'title': article.get('title', ''),
-                    'link': article.get('link', ''),
+                    'url': article.get('url', '') or article.get('link', ''),  # Support both 'url' and 'link'
                     'published': self._parse_datetime(article.get('published')),
                     'source': article.get('source', ''),
                     'category': category,
                     'summary': article.get('summary', ''),
                     'image_url': article.get('image_url', ''),
+                    'has_image': bool(article.get('image_url', '').strip()),
+                    'api_source': article.get('api_source', 'unknown'),
                     'article_id': article_id
                 }
                 

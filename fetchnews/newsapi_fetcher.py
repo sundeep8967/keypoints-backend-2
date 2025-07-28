@@ -12,13 +12,7 @@ from urllib.parse import urlparse
 from bs4 import BeautifulSoup
 import time
 from dotenv import load_dotenv
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.chrome.service import Service
+from playwright.sync_api import sync_playwright
 import re
 from collections import Counter
 
@@ -291,101 +285,104 @@ class NewsAPIFetcher:
         
         return None
 
-    def extract_content_with_selenium(self, article_url, timeout=20):
-        """Extract content using Selenium for JavaScript-heavy sites"""
-        driver = None
+    def extract_content_with_playwright(self, article_url, timeout=20000):
+        """Extract content using Playwright for JavaScript-heavy sites"""
         try:
-            # Set up Chrome options for headless browsing
-            chrome_options = Options()
-            chrome_options.add_argument('--headless')  # Run in background
-            chrome_options.add_argument('--no-sandbox')
-            chrome_options.add_argument('--disable-dev-shm-usage')
-            chrome_options.add_argument('--disable-gpu')
-            chrome_options.add_argument('--window-size=1920,1080')
-            chrome_options.add_argument('--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36')
-            
-            # Initialize driver
-            service = Service(ChromeDriverManager().install())
-            driver = webdriver.Chrome(service=service, options=chrome_options)
-            driver.set_page_load_timeout(timeout)
-            
-            # Load the page
-            driver.get(article_url)
-            
-            # Wait for content to load
-            WebDriverWait(driver, 10).until(
-                EC.presence_of_element_located((By.TAG_NAME, "body"))
-            )
-            
-            # Try multiple content selectors
-            content_selectors = [
-                'article',
-                '[data-component="text-block"]',
-                '.article-content',
-                '.post-content', 
-                '.entry-content',
-                '.content',
-                '.story-body',
-                '.article-body',
-                '[data-module="ArticleBody"]',
-                '.gel-body-copy',
-                'main',
-                '.main-content'
-            ]
-            
-            extracted_content = ""
-            
-            for selector in content_selectors:
-                try:
-                    elements = driver.find_elements(By.CSS_SELECTOR, selector)
-                    if elements:
-                        for element in elements:
-                            # Get all paragraph elements within this container
-                            paragraphs = element.find_elements(By.TAG_NAME, "p")
-                            for p in paragraphs:
-                                text = p.text.strip()
-                                if text and len(text) > 50:  # Only meaningful paragraphs
-                                    extracted_content += text + " "
-                        
-                        if len(extracted_content.strip()) > 200:  # If we got good content, break
-                            break
-                except:
-                    continue
-            
-            # Fallback: get all paragraphs from the page
-            if len(extracted_content.strip()) < 200:
-                try:
-                    paragraphs = driver.find_elements(By.TAG_NAME, "p")
-                    for p in paragraphs:
-                        text = p.text.strip()
-                        if text and len(text) > 50:
-                            extracted_content += text + " "
-                            if len(extracted_content) > 800:  # Limit content length
+            with sync_playwright() as p:
+                # Launch browser in headless mode
+                browser = p.chromium.launch(
+                    headless=True,
+                    args=[
+                        '--no-sandbox',
+                        '--disable-dev-shm-usage',
+                        '--disable-gpu'
+                    ]
+                )
+                
+                # Create context with custom user agent
+                context = browser.new_context(
+                    user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+                    viewport={'width': 1920, 'height': 1080}
+                )
+                
+                page = context.new_page()
+                page.set_default_timeout(timeout)
+                
+                # Navigate to the page
+                page.goto(article_url, wait_until='domcontentloaded')
+                
+                # Wait for body to be present
+                page.wait_for_selector('body', timeout=10000)
+                
+                # Try multiple content selectors
+                content_selectors = [
+                    'article',
+                    '[data-component="text-block"]',
+                    '.article-content',
+                    '.post-content', 
+                    '.entry-content',
+                    '.content',
+                    '.story-body',
+                    '.article-body',
+                    '[data-module="ArticleBody"]',
+                    '.gel-body-copy',
+                    'main',
+                    '.main-content'
+                ]
+                
+                extracted_content = ""
+                
+                for selector in content_selectors:
+                    try:
+                        elements = page.query_selector_all(selector)
+                        if elements:
+                            for element in elements:
+                                # Get all paragraph elements within this container
+                                paragraphs = element.query_selector_all('p')
+                                for p in paragraphs:
+                                    text = p.inner_text().strip()
+                                    if text and len(text) > 50:  # Only meaningful paragraphs
+                                        extracted_content += text + " "
+                            
+                            if len(extracted_content.strip()) > 200:  # If we got good content, break
                                 break
-                except:
-                    pass
-            
-            # Clean up the content
-            if extracted_content:
-                # Remove extra whitespace and limit to first few sentences
-                content = ' '.join(extracted_content.split())
+                    except:
+                        continue
                 
-                # Split into sentences and take first 4-5 sentences
-                sentences = content.split('. ')
-                if len(sentences) > 5:
-                    content = '. '.join(sentences[:5]) + '.'
+                # Fallback: get all paragraphs from the page
+                if len(extracted_content.strip()) < 200:
+                    try:
+                        paragraphs = page.query_selector_all('p')
+                        for p in paragraphs:
+                            text = p.inner_text().strip()
+                            if text and len(text) > 50:
+                                extracted_content += text + " "
+                                if len(extracted_content) > 800:  # Limit content length
+                                    break
+                    except:
+                        pass
                 
-                # Limit total length
-                if len(content) > 1000:
-                    content = content[:1000] + '...'
+                # Clean up the content
+                if extracted_content:
+                    # Remove extra whitespace and limit to first few sentences
+                    content = ' '.join(extracted_content.split())
+                    
+                    # Split into sentences and take first 4-5 sentences
+                    sentences = content.split('. ')
+                    if len(sentences) > 5:
+                        content = '. '.join(sentences[:5]) + '.'
+                    
+                    # Limit total length
+                    if len(content) > 1000:
+                        content = content[:1000] + '...'
+                    
+                    browser.close()
+                    return content.strip()
                 
-                return content.strip()
+                browser.close()
                         
         except Exception as e:
-            print(f"Selenium extraction error for {article_url}: {e}")
-        finally:
-            if driver:
-                driver.quit()
+            print(f"Playwright extraction error for {article_url}: {e}")
         
         return None
 
@@ -790,20 +787,19 @@ class NewsAPIFetcher:
             if not article.get('title') or not article.get('url'):
                 continue
                 
+            # Extract proper source name from NewsAPI response
+            source_info = article.get('source', {})
+            source_name = source_info.get('name', source_name) if isinstance(source_info, dict) else source_name
+            
             processed_article = {
                 'title': (article.get('title') or '').strip(),
-                'link': article.get('url', ''),
+                'url': article.get('url', ''),  # Changed from 'link' to 'url'
                 'published': article.get('publishedAt', ''),
                 'summary': (article.get('description') or '').strip(),
                 'description': (article.get('content') or '').strip(),
-                'source': source_name or article.get('source', {}).get('name', 'Unknown'),
+                'source': source_name,  # Use extracted source name
                 'category': category,
-                'api_source': 'newsapi',
-                'image_url': article.get('urlToImage', '') or '',
-                'has_image': bool(article.get('urlToImage')),
-                'author': article.get('author', '') or '',
-                'tags': [],
-                'content_extracted': False
+                'image_url': article.get('urlToImage', '') or ''
             }
             
             # Check if description is too short and extract full content if needed
@@ -814,45 +810,37 @@ class NewsAPIFetcher:
                 print(f"    📄 Short description detected for '{processed_article['title'][:50]}...', extracting full content...")
                 
                 # Try regular extraction first
-                extracted_content = self.extract_article_content(processed_article['link'])
+                extracted_content = self.extract_article_content(processed_article['url'])
                 if extracted_content and len(extracted_content) > MIN_DESCRIPTION_LENGTH:
                     processed_article['description'] = extracted_content
-                    processed_article['content_extracted'] = True
-                    processed_article['extraction_method'] = 'requests'
                     print(f"    ✅ Enhanced description: {len(extracted_content)} characters (requests)")
                 else:
-                    # Fallback to Selenium for difficult sites
-                    print(f"    🔄 Regular extraction failed, trying Selenium...")
-                    selenium_content = self.extract_content_with_selenium(processed_article['link'])
-                    if selenium_content and len(selenium_content) > MIN_DESCRIPTION_LENGTH:
-                        processed_article['description'] = selenium_content
-                        processed_article['content_extracted'] = True
-                        processed_article['extraction_method'] = 'selenium'
-                        print(f"    ✅ Enhanced description: {len(selenium_content)} characters (Selenium)")
+                    # Fallback to Playwright for difficult sites
+                    print(f"    🔄 Regular extraction failed, trying Playwright...")
+                    playwright_content = self.extract_content_with_playwright(processed_article['url'])
+                    if playwright_content and len(playwright_content) > MIN_DESCRIPTION_LENGTH:
+                        processed_article['description'] = playwright_content
+                        print(f"    ✅ Enhanced description: {len(playwright_content)} characters (Playwright)")
                     else:
                         print(f"    ⚠️  Both extraction methods failed, keeping original")
             
             # Try to get better image if current one is low quality or missing
             if not processed_article['image_url'] or 'placeholder' in processed_article['image_url'].lower():
-                enhanced_image = self.extract_image_from_article(processed_article['link'])
+                enhanced_image = self.extract_image_from_article(processed_article['url'])
                 if enhanced_image:
                     processed_article['image_url'] = enhanced_image
-                    processed_article['has_image'] = True
             
             # Generate key points for articles with images
-            if processed_article['has_image'] and processed_article.get('description'):
+            if processed_article.get('image_url') and processed_article.get('description'):
                 print(f"    🔑 Generating key points for '{processed_article['title'][:50]}...'")
                 key_points = self.extract_key_points(processed_article['title'], processed_article['description'])
                 if key_points:
                     processed_article['key_points'] = key_points
-                    processed_article['has_key_points'] = True
                     print(f"    ✅ Generated {len(key_points)} key points")
                 else:
                     processed_article['key_points'] = []
-                    processed_article['has_key_points'] = False
             else:
                 processed_article['key_points'] = []
-                processed_article['has_key_points'] = False
             
             processed_articles.append(processed_article)
             
@@ -906,8 +894,8 @@ class NewsAPIFetcher:
                 if valid_sources:
                     print(f"📰 Using sources: {', '.join(valid_sources[:4])}")  # Limit to top 4 sources
                     
-                    # Fetch more articles for core categories
-                    headlines_data = self.fetch_top_headlines(sources=valid_sources[:4], page_size=30)
+                    # Fetch limited articles for core categories to maintain ~200 total
+                    headlines_data = self.fetch_top_headlines(sources=valid_sources[:2], page_size=8)
                     
                     if headlines_data:
                         articles = self.process_articles(headlines_data, category)
@@ -939,8 +927,8 @@ class NewsAPIFetcher:
         if 'sports' in self.source_categories:
             sports_sources = [source for source in self.source_categories['sports'] if source in available_sources]
             if sports_sources:
-                print(f"🏈 Fetching sports from: {', '.join(sports_sources[:2])}")
-                sports_data = self.fetch_top_headlines(sources=sports_sources[:2], page_size=25)
+                print(f"🏈 Fetching sports from: {', '.join(sports_sources[:1])}")
+                sports_data = self.fetch_top_headlines(sources=sports_sources[:1], page_size=6)
                 if sports_data:
                     articles = self.process_articles(sports_data, 'sports')
                     news_data['by_category']['sports'].extend(articles)
@@ -961,12 +949,12 @@ class NewsAPIFetcher:
         
         yesterday = (datetime.datetime.now() - datetime.timedelta(days=1)).strftime('%Y-%m-%d')
         
-        for query in trending_queries[:6]:  # Limit to 6 trending topics
+        for query in trending_queries[:3]:  # Limit to 3 trending topics
             print(f"🔥 Searching trending: {query}")
             trending_data = self.fetch_everything(
                 query=query,
                 from_date=yesterday,
-                page_size=15
+                page_size=4
             )
             
             if trending_data and 'articles' in trending_data:
@@ -986,13 +974,13 @@ class NewsAPIFetcher:
         print(f"\n📊 PHASE 4: Strategic Regional Coverage")
         
         # Focus on major regions only
-        major_regions = ['India', 'China', 'Europe', 'Middle East']
+        major_regions = ['India', 'China']  # Reduced to 2 regions
         for region in major_regions:
             print(f"🌍 Fetching {region} news...")
             regional_data = self.fetch_everything(
                 query=f'"{region}" news',
                 from_date=yesterday,
-                page_size=12
+                page_size=4
             )
             
             if regional_data and 'articles' in regional_data:
@@ -1011,7 +999,7 @@ class NewsAPIFetcher:
         print(f"\n📊 PHASE 5: Strategic Indian Coverage")
         
         # Focus on major Indian topics only
-        indian_topics = ['India economy', 'India politics', 'India technology']
+        indian_topics = ['India economy', 'India politics']  # Reduced to 2 topics
         indian_articles = []
         
         for topic in indian_topics:
@@ -1019,7 +1007,7 @@ class NewsAPIFetcher:
             indian_data = self.fetch_everything(
                 query=f'"{topic}" OR "Indian {topic.split()[1]}"',
                 from_date=yesterday,
-                page_size=10
+                page_size=4
             )
             
             if indian_data and 'articles' in indian_data:
@@ -1054,7 +1042,7 @@ class NewsAPIFetcher:
         print(f"\n📊 PHASE 6: Strategic Geopolitics")
         
         # Focus on current major geopolitical issues
-        geopolitical_topics = ['Ukraine war', 'China Taiwan', 'Middle East conflict']
+        geopolitical_topics = ['Ukraine war', 'China Taiwan']  # Reduced to 2 topics
         geopolitics_articles = []
         
         for topic in geopolitical_topics:
@@ -1062,7 +1050,7 @@ class NewsAPIFetcher:
             geo_data = self.fetch_everything(
                 query=f'"{topic}" OR "{topic.replace(" ", "-")}"',
                 from_date=yesterday,
-                page_size=8
+                page_size=4
             )
             
             if geo_data and 'articles' in geo_data:
@@ -1104,7 +1092,7 @@ class NewsAPIFetcher:
             all_articles.extend(articles)
         
         news_data['total_articles'] = len(all_articles)
-        news_data['articles_with_images'] = sum(1 for article in all_articles if article['has_image'])
+        news_data['articles_with_images'] = sum(1 for article in all_articles if article.get('image_url'))
         news_data['sources_processed'] = len(news_data['by_source'])
         
         if news_data['total_articles'] > 0:

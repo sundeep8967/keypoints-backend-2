@@ -374,7 +374,6 @@ class NewsAggregator:
             print("✅ RSS Data: Available")
             for category, articles in rss_data.get('by_category', {}).items():
                 for article in articles:
-                    article['data_source'] = 'rss'
                     all_articles.append(article)
                     original_counts['rss'] += 1
         else:
@@ -385,7 +384,6 @@ class NewsAggregator:
             print("✅ NewsAPI Data: Available")
             for category, articles in newsapi_data.get('by_category', {}).items():
                 for article in articles:
-                    article['data_source'] = 'newsapi'
                     all_articles.append(article)
                     original_counts['newsapi'] += 1
         else:
@@ -440,12 +438,7 @@ class NewsAggregator:
             combined_data['category_summary'][category]['deduplicated'] = len(articles)
             combined_data['category_summary'][category]['total'] = len(articles)
             
-            # Count by data source
-            for article in articles:
-                if article.get('data_source') == 'rss':
-                    combined_data['category_summary'][category]['rss'] += 1
-                elif article.get('data_source') == 'newsapi':
-                    combined_data['category_summary'][category]['newsapi'] += 1
+            # Note: Source tracking removed for cleaner output
         
         # Create sources summary
         combined_data['sources_summary'] = {

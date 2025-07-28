@@ -589,19 +589,6 @@ class NewsAggregator:
         print(f"  📡 RSS Sources: {combined_data['sources_summary']['rss_sources']}")
         print(f"  🔑 NewsAPI Sources: {combined_data['sources_summary']['newsapi_sources']}")
         print(f"  🎯 Deduplicated Sources: {combined_data['sources_summary'].get('deduplicated_sources', 0)}")
-        
-        # File size information
-        files_info = []
-        for filename in ['data/rss_news_data.json', 'data/newsapi_data.json', 'data/combined_news_data.json']:
-            if os.path.exists(filename):
-                size_kb = os.path.getsize(filename) / 1024
-                display_name = os.path.basename(filename)
-                files_info.append(f"{display_name}: {size_kb:.1f} KB")
-        
-        if files_info:
-            print(f"\n📁 Generated Files:")
-            for file_info in files_info:
-                print(f"  💾 {file_info}")
 
 def main():
     """Main function to execute both news fetchers"""
@@ -634,6 +621,29 @@ def main():
     
     # Print comprehensive summary
     aggregator.print_summary(combined_data)
+    
+    # Print Supabase status at the end
+    print(f"\n" + "="*70)
+    print("💾 DATABASE STORAGE SUMMARY")
+    print("="*70)
+    
+    if aggregator.use_supabase and aggregator.supabase_db:
+        try:
+            # Get database stats to show current status
+            stats = aggregator.get_database_stats()
+            if stats:
+                print("✅ SUPABASE: Successfully connected and data saved")
+                print(f"  📊 Total articles in database: {stats.get('total_articles', 0)}")
+                print(f"  🖼️  Articles with images: {stats.get('articles_with_images', 0)}")
+                print(f"  🎯 Articles with quality scores: Available")
+                print(f"  📈 Image success rate: {stats.get('image_success_rate', '0%')}")
+            else:
+                print("⚠️  SUPABASE: Connected but unable to fetch stats")
+        except Exception as e:
+            print(f"❌ SUPABASE: Error occurred - {e}")
+    else:
+        print("❌ SUPABASE: Not connected or disabled")
+        print("  💡 Enable Supabase by setting SUPABASE_URL and SUPABASE_KEY in .env")
     
     print(f"\n🎉 News aggregation complete!")
     print(f"📊 Check 'data/combined_news_data.json' for the complete dataset")

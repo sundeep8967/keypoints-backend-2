@@ -68,7 +68,6 @@ class SupabaseNewsDB:
                 "CREATE INDEX IF NOT EXISTS idx_news_articles_source ON news_articles(source);",
                 "CREATE INDEX IF NOT EXISTS idx_news_articles_category ON news_articles(category);",
                 "CREATE INDEX IF NOT EXISTS idx_news_articles_published ON news_articles(published);",
-                "CREATE INDEX IF NOT EXISTS idx_news_articles_has_image ON news_articles(has_image);",
                 "CREATE INDEX IF NOT EXISTS idx_news_articles_api_source ON news_articles(api_source);",
                 "CREATE INDEX IF NOT EXISTS idx_runs_timestamp ON aggregation_runs(run_timestamp);"
             ]

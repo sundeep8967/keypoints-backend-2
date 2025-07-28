@@ -98,10 +98,10 @@ class SupabaseNewsDB:
                 print("⚠️  No articles to insert")
                 return True
             
-            # Filter to only articles with images
+            # Filter to only articles with a valid image_url
             articles_with_images = [
                 article for article in articles 
-                if article.get('has_image', False) and article.get('image_url', '').strip()
+                if article.get('image_url', '').strip()
             ]
             
             if not articles_with_images:

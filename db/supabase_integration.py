@@ -144,7 +144,6 @@ class SupabaseNewsDB:
                     'category': category,
                     'summary': article.get('summary', ''),
                     'image_url': article.get('image_url', ''),
-                    'has_image': bool(article.get('image_url', '').strip()),
                     'api_source': article.get('api_source', 'unknown'),
                     'article_id': article_id
                 }

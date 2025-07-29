@@ -581,7 +581,7 @@ class NewsAggregator:
         
         print(f"\n📂 Category Breakdown:")
         for category, counts in combined_data['category_summary'].items():
-            category_name = category.replace('_', ' ').title()
+            category_name = category.title()
             print(f"  📁 {category_name}: {counts['total']} articles")
             print(f"     RSS: {counts['rss']} | NewsAPI: {counts['newsapi']}")
         

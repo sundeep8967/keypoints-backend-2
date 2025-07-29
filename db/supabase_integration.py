@@ -97,22 +97,60 @@ class SupabaseNewsDB:
                 print("⚠️  No articles to insert")
                 return True
             
-            # Filter to only articles with a valid image_url
-            articles_with_images = [
-                article for article in articles 
-                if article.get('image_url', '').strip()
-            ]
+            # Enhanced validation: articles must have image + title + (summary OR keypoints)
+            validation_stats = {
+                'total_articles': len(articles),
+                'missing_image': 0,
+                'missing_title': 0,
+                'missing_summary_and_keypoints': 0,
+                'passed_validation': 0
+            }
             
-            if not articles_with_images:
-                print("⚠️  No articles with images to insert")
+            validated_articles = []
+            
+            for article in articles:
+                # Validation Rule 1: Must have image
+                if not article.get('image_url', '').strip():
+                    validation_stats['missing_image'] += 1
+                    continue
+                
+                # Validation Rule 2: Must have title (minimum 10 characters)
+                if not article.get('title') or len(article.get('title', '').strip()) < 10:
+                    validation_stats['missing_title'] += 1
+                    continue
+                
+                # Validation Rule 3: Must have either summary OR keypoints (or both)
+                has_summary = article.get('summary') and len(article.get('summary', '').strip()) > 50
+                has_description = article.get('description') and len(article.get('description', '').strip()) > 50
+                has_keypoints = article.get('key_points') and len(article.get('key_points', [])) > 0
+                
+                if not (has_summary or has_description or has_keypoints):
+                    validation_stats['missing_summary_and_keypoints'] += 1
+                    continue
+                
+                # Article passed all validation rules
+                validation_stats['passed_validation'] += 1
+                validated_articles.append(article)
+            
+            # Print validation summary
+            print(f"\n📊 Article Validation Summary:")
+            print(f"  📰 Total articles processed: {validation_stats['total_articles']}")
+            print(f"  🖼️  Missing image: {validation_stats['missing_image']}")
+            print(f"  📝 Missing/short title: {validation_stats['missing_title']}")
+            print(f"  📄 Missing summary & keypoints: {validation_stats['missing_summary_and_keypoints']}")
+            print(f"  ✅ Passed validation: {validation_stats['passed_validation']}")
+            
+            if not validated_articles:
+                print("⚠️  No articles passed validation rules")
+                print("💡 Validation requires: image + title (10+ chars) + (summary OR keypoints)")
                 return True
             
-            print(f"📝 Filtering {len(articles)} articles → {len(articles_with_images)} articles with images")
-            print(f"🖼️  Inserting {len(articles_with_images)} articles with images into Supabase...")
+            print(f"🎯 Quality filter: {(validation_stats['passed_validation']/validation_stats['total_articles']*100):.1f}% articles met quality standards")
+            print(f"🖼️  Inserting {len(validated_articles)} high-quality articles into Supabase...")
             
             # Prepare articles for insertion - only essential fields
             processed_articles = []
-            for article in articles_with_images:
+            for article in validated_articles:
                 # Generate article_id if not present (using hash of link/url)
                 article_id = article.get('article_id')
                 article_link = article.get('link', '') or article.get('url', '')
@@ -125,15 +163,26 @@ class SupabaseNewsDB:
                 
                 # Override category with specific metadata if present
                 if article.get('indian_topic'):
-                    category = f"indian_{article.get('indian_topic', '').lower().replace(' ', '_')}"
+                    # Map indian_economy -> economy, indian_politics -> politics
+                    topic = article.get('indian_topic', '').lower().replace(' ', '')
+                    if 'economy' in topic:
+                        category = 'economy'
+                    elif 'politics' in topic:
+                        category = 'politics'
+                    else:
+                        category = 'india'
                 elif article.get('geopolitical_topic'):
-                    category = f"geopolitics_{article.get('geopolitical_topic', '').lower().replace(' ', '_')}"
+                    # All geopolitical topics -> geopolitics
+                    category = 'geopolitics'
+                elif article.get('region') and article.get('region').lower() == 'india':
+                    # regional_india -> india
+                    category = 'india'
                 elif article.get('region'):
-                    category = f"regional_{article.get('region', '').lower().replace(' ', '_')}"
-                elif article.get('state'):
-                    category = f"indian_state_{article.get('state', '').lower().replace(' ', '_')}"
-                elif article.get('city'):
-                    category = f"indian_city_{article.get('city', '').lower().replace(' ', '_')}"
+                    # Other regions keep their name (no underscores for frontend)
+                    category = article.get('region', '').lower().replace(' ', '').replace('_', '')
+                elif article.get('state') or article.get('city'):
+                    # Indian states/cities -> india
+                    category = 'india'
                 
                 processed_article = {
                     'title': article.get('title', ''),
@@ -172,7 +221,7 @@ class SupabaseNewsDB:
                     print(f"❌ Error inserting batch {i//batch_size + 1}: {batch_error}")
                     continue
             
-            print(f"🎉 Successfully inserted {total_inserted} articles")
+            print(f"🎉 Successfully inserted {total_inserted} high-quality articles")
             return True
             
         except Exception as e:
@@ -214,14 +263,25 @@ class SupabaseNewsDB:
             return []
     
     def get_articles_with_images(self, limit: int = 50) -> List[Dict]:
-        """Get articles that have images and key points"""
+        """Get high-quality articles that passed validation (images + title + summary/keypoints)"""
         try:
             # Filter articles that have image_url and key_points
             result = self.supabase.table('news_articles').select('*').neq('image_url', '').neq('key_points', '{}').order('id', desc=True).limit(limit).execute()
-            return result.data
+            
+            # Additional client-side validation for extra quality assurance
+            validated_articles = []
+            for article in result.data:
+                if (article.get('image_url') and 
+                    article.get('title') and len(article.get('title', '')) > 10 and
+                    (article.get('key_points') or 
+                     (article.get('summary') and len(article.get('summary', '')) > 50) or
+                     (article.get('description') and len(article.get('description', '')) > 50))):
+                    validated_articles.append(article)
+            
+            return validated_articles
             
         except Exception as e:
-            print(f"❌ Error fetching articles with images: {e}")
+            print(f"❌ Error fetching high-quality articles: {e}")
             return []
     
     def get_aggregation_stats(self) -> Dict:

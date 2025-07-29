@@ -130,28 +130,7 @@ jobs:
           echo "No combined data file was generated. Check the logs for errors." >> $GITHUB_STEP_SUMMARY
         fi
         
-    - name: Commit and push data (optional)
-      if: github.event_name == 'schedule'
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        
-        # Only commit if there are changes and files exist
-        if [ -f "data/combined_news_data.json" ]; then
-          git add data/*.json
-          
-          # Check if there are changes to commit
-          if ! git diff --staged --quiet; then
-            git commit -m "Daily news aggregation - $(date '+%Y-%m-%d %H:%M UTC')"
-            git push
-          else
-            echo "No changes to commit"
-          fi
-        else
-          echo "No data files to commit"
-        fi
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
         
     - name: Notify on failure
       if: failure()

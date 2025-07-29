@@ -119,12 +119,11 @@ class SupabaseNewsDB:
                     validation_stats['missing_title'] += 1
                     continue
                 
-                # Validation Rule 3: Must have either summary OR keypoints (or both)
-                has_summary = article.get('summary') and len(article.get('summary', '').strip()) > 50
+                # Validation Rule 3: Must have either description OR keypoints (or both)
                 has_description = article.get('description') and len(article.get('description', '').strip()) > 50
                 has_keypoints = article.get('key_points') and len(article.get('key_points', [])) > 0
                 
-                if not (has_summary or has_description or has_keypoints):
+                if not (has_description or has_keypoints):
                     validation_stats['missing_summary_and_keypoints'] += 1
                     continue
                 
@@ -137,12 +136,12 @@ class SupabaseNewsDB:
             print(f"  📰 Total articles processed: {validation_stats['total_articles']}")
             print(f"  🖼️  Missing image: {validation_stats['missing_image']}")
             print(f"  📝 Missing/short title: {validation_stats['missing_title']}")
-            print(f"  📄 Missing summary & keypoints: {validation_stats['missing_summary_and_keypoints']}")
+            print(f"  📄 Missing description & keypoints: {validation_stats['missing_summary_and_keypoints']}")
             print(f"  ✅ Passed validation: {validation_stats['passed_validation']}")
             
             if not validated_articles:
                 print("⚠️  No articles passed validation rules")
-                print("💡 Validation requires: image + title (10+ chars) + (summary OR keypoints)")
+                print("💡 Validation requires: image + title (10+ chars) + (description OR keypoints)")
                 return True
             
             print(f"🎯 Quality filter: {(validation_stats['passed_validation']/validation_stats['total_articles']*100):.1f}% articles met quality standards")
@@ -190,15 +189,13 @@ class SupabaseNewsDB:
                     'published': self._parse_datetime(article.get('published')),
                     'source': article.get('source', ''),
                     'category': category,
-                    'summary': article.get('summary', ''),
+                    'description': article.get('description', ''),
                     'image_url': article.get('image_url', ''),
                     'quality_score': article.get('quality_score', 0.0),
                     'article_id': article_id
                 }
                 
-                # Add optional fields only if they have content
-                if article.get('description'):
-                    processed_article['description'] = article.get('description', '')
+                # Description is now always included as primary content field
                 
                 if article.get('key_points') and len(article.get('key_points', [])) > 0:
                     processed_article['key_points'] = article.get('key_points', [])
@@ -274,7 +271,6 @@ class SupabaseNewsDB:
                 if (article.get('image_url') and 
                     article.get('title') and len(article.get('title', '')) > 10 and
                     (article.get('key_points') or 
-                     (article.get('summary') and len(article.get('summary', '')) > 50) or
                      (article.get('description') and len(article.get('description', '')) > 50))):
                     validated_articles.append(article)
             

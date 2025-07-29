@@ -289,6 +289,57 @@ class RSSNewsFetcher:
         
         return None
 
+    def clean_html_content(self, content):
+        """Clean HTML tags, links, and unwanted elements from content"""
+        if not content:
+            return ""
+        
+        try:
+            from bs4 import BeautifulSoup
+            import re
+            
+            # Parse HTML content
+            soup = BeautifulSoup(content, 'html.parser')
+            
+            # Remove unwanted elements completely
+            for element in soup(['script', 'style', 'nav', 'header', 'footer', 'aside', 'a']):
+                element.decompose()
+            
+            # Get clean text
+            clean_text = soup.get_text(separator=' ', strip=True)
+            
+            # Remove extra whitespace and clean up
+            clean_text = re.sub(r'\s+', ' ', clean_text)
+            
+            # Remove common unwanted phrases
+            unwanted_phrases = [
+                'Continue reading...',
+                'Read more...',
+                'Click here',
+                'Learn more',
+                'See more',
+                'View more',
+                'Read full article',
+                'Full story',
+                'More details'
+            ]
+            
+            for phrase in unwanted_phrases:
+                clean_text = clean_text.replace(phrase, '')
+            
+            # Clean up any remaining artifacts
+            clean_text = re.sub(r'\s+', ' ', clean_text).strip()
+            
+            return clean_text
+            
+        except Exception as e:
+            print(f"Error cleaning HTML content: {e}")
+            # Fallback: basic HTML tag removal
+            import re
+            clean_text = re.sub(r'<[^>]+>', '', content)
+            clean_text = re.sub(r'\s+', ' ', clean_text).strip()
+            return clean_text
+
     def expand_short_description(self, title, short_description):
         """Intelligently expand a short description to meet minimum length requirements"""
         if not short_description or len(short_description.strip()) < 50:
@@ -523,12 +574,15 @@ class RSSNewsFetcher:
             
             for entry in feed.entries[:8]:  # Limit to 8 articles per source for ~160 total
                 # Extract basic article info
+                # Clean description from HTML tags and links
+                raw_description = (entry.get('summary') or entry.get('description') or '').strip()
+                clean_description = self.clean_html_content(raw_description)
+                
                 article = {
                     'title': entry.get('title', '').strip(),
                     'url': entry.get('link', ''),  # Changed from 'link' to 'url'
                     'published': entry.get('published', ''),
-                    'summary': entry.get('summary', '').strip(),
-                    'description': entry.get('description', '').strip(),
+                    'description': clean_description,
                     'source': source_name,  # Use the RSS source name
                     'category': category,
                     'image_url': ''
@@ -539,7 +593,7 @@ class RSSNewsFetcher:
                     continue
                 
                 # Check if description is too short and extract full content if needed
-                current_description = article['description'] or article['summary']
+                current_description = article['description']
                 MIN_DESCRIPTION_LENGTH = 300  # Minimum description length threshold for summary apps
                 
                 if not current_description or len(current_description.strip()) < MIN_DESCRIPTION_LENGTH:

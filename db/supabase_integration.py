@@ -259,6 +259,56 @@ class SupabaseNewsDB:
             print(f"❌ Error fetching articles: {e}")
             return []
     
+    def cleanup_invalid_titles(self) -> Dict[str, int]:
+        """Remove articles with invalid titles (metadata/schedule) from database"""
+        from fetchnews.quality_scorer import NewsQualityScorer
+        
+        scorer = NewsQualityScorer()
+        cleanup_stats = {
+            'total_checked': 0,
+            'invalid_titles_found': 0,
+            'articles_removed': 0
+        }
+        
+        try:
+            # Get all articles to check titles
+            response = self.supabase.table('news_articles').select('id, title').execute()
+            articles = response.data
+            cleanup_stats['total_checked'] = len(articles)
+            
+            invalid_article_ids = []
+            
+            for article in articles:
+                title = article.get('title', '')
+                if not scorer.is_valid_news_title(title):
+                    invalid_article_ids.append(article['id'])
+                    cleanup_stats['invalid_titles_found'] += 1
+                    print(f"❌ Invalid title found: '{title[:60]}...'")
+            
+            # Remove invalid articles in batches
+            if invalid_article_ids:
+                print(f"\n🧹 Removing {len(invalid_article_ids)} articles with invalid titles...")
+                
+                # Remove in batches of 100
+                batch_size = 100
+                for i in range(0, len(invalid_article_ids), batch_size):
+                    batch = invalid_article_ids[i:i + batch_size]
+                    
+                    delete_response = self.supabase.table('news_articles').delete().in_('id', batch).execute()
+                    cleanup_stats['articles_removed'] += len(batch)
+                    print(f"  🗑️  Removed batch {i//batch_size + 1}: {len(batch)} articles")
+            
+            print(f"\n✅ Cleanup completed!")
+            print(f"  📊 Total articles checked: {cleanup_stats['total_checked']}")
+            print(f"  ❌ Invalid titles found: {cleanup_stats['invalid_titles_found']}")
+            print(f"  🗑️  Articles removed: {cleanup_stats['articles_removed']}")
+            
+            return cleanup_stats
+            
+        except Exception as e:
+            print(f"❌ Error during cleanup: {e}")
+            return cleanup_stats
+
     def get_articles_with_images(self, limit: int = 50) -> List[Dict]:
         """Get high-quality articles that passed validation (images + title + summary/keypoints)"""
         try:

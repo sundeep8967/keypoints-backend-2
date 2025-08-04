@@ -59,6 +59,38 @@ class NewsQualityScorer:
             'the guardian', 'washington post', 'new york times'
         ]
     
+    def is_valid_news_title(self, title: str) -> bool:
+        """Check if title is a valid news article title (not metadata/schedule)"""
+        if not title or len(title.strip()) < 10:
+            return False
+        
+        title_lower = title.lower().strip()
+        
+        # Reject broadcast schedule metadata
+        schedule_patterns = [
+            'at ', 'a.m.', 'p.m.', 'edt', 'est', 'pst', 'cst',
+            'news at', 'in brief', 'breaking news at',
+            'updates at', 'live at', 'tonight at'
+        ]
+        
+        # Reject social media/generic references
+        generic_patterns = [
+            "'s posts", "news posts", "latest posts", "updates from",
+            "follow us", "subscribe", "watch live", "tune in"
+        ]
+        
+        # Reject if title is mostly schedule/metadata
+        for pattern in schedule_patterns + generic_patterns:
+            if pattern in title_lower:
+                return False
+        
+        # Reject titles that are just source names + time
+        if any(time_word in title_lower for time_word in ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']):
+            if any(news_word in title_lower for news_word in ['news', 'update', 'brief']):
+                return False
+        
+        return True
+
     def calculate_content_quality_score(self, title: str, summary: str, image_url: str, 
                                       description: str, source: str) -> float:
         """
@@ -75,6 +107,10 @@ class NewsQualityScorer:
         Returns:
             Quality score between 0-1000
         """
+        # First check if title is valid (not metadata/schedule)
+        if not self.is_valid_news_title(title):
+            return 0.0  # Reject invalid titles completely
+        
         score = 0.0
         
         # Combine title, summary and description for importance analysis

@@ -24,7 +24,6 @@ load_dotenv()
 try:
     from fetchnews.rss_news_fetcher import RSSNewsFetcher
     from fetchnews.newsapi_fetcher import NewsAPIFetcher
-    from fetchnews.quality_scorer import NewsQualityScorer
     from db.supabase_integration import SupabaseNewsDB
 except ImportError as e:
     print(f"❌ Import Error: {e}")
@@ -38,9 +37,6 @@ class NewsAggregator:
         self.rss_fetcher = RSSNewsFetcher()
         self.newsapi_fetcher = NewsAPIFetcher()  # No key passed - uses its own triple key system
         
-        # Initialize quality scorer
-        self.quality_scorer = NewsQualityScorer()
-        print("🎯 Quality scoring system initialized")
         
         # Initialize Supabase connection
         self.use_supabase = use_supabase
@@ -397,13 +393,7 @@ class NewsAggregator:
         # Apply deduplication
         deduplicated_articles, deduplication_info = self.deduplicate_articles(all_articles)
         
-        # Add quality scores to all deduplicated articles
-        print("🎯 Calculating quality scores for articles...")
-        deduplicated_articles = self.quality_scorer.add_quality_scores_to_articles(deduplicated_articles)
-        
-        # Sort articles by quality score (highest first)
-        deduplicated_articles = self.quality_scorer.sort_articles_by_quality(deduplicated_articles)
-        print(f"✅ Quality scores calculated and articles sorted by quality")
+        print(f"✅ Articles processed and ready")
         
         combined_data['deduplication_info'] = deduplication_info
         combined_data['deduplication_info']['original_counts'] = original_counts
@@ -439,17 +429,6 @@ class NewsAggregator:
         combined_data['total_articles'] = len(deduplicated_articles)
         combined_data['total_articles_with_images'] = sum(1 for article in deduplicated_articles if article.get('has_image', False))
         
-        # Calculate quality score statistics
-        if deduplicated_articles:
-            quality_scores = [article.get('quality_score', 0) for article in deduplicated_articles]
-            combined_data['quality_stats'] = {
-                'average_quality_score': round(sum(quality_scores) / len(quality_scores), 1),
-                'highest_quality_score': max(quality_scores),
-                'lowest_quality_score': min(quality_scores),
-                'high_quality_articles': sum(1 for score in quality_scores if score >= 700),  # Breaking/major news
-                'medium_quality_articles': sum(1 for score in quality_scores if 400 <= score < 700),  # Important news
-                'low_quality_articles': sum(1 for score in quality_scores if score < 400)  # Regular news
-            }
         
         # Calculate overall image success rate
         if combined_data['total_articles'] > 0:
@@ -515,7 +494,6 @@ class NewsAggregator:
                     print(f"\n📊 Database Updated (Images Only):")
                     print(f"  📰 Total articles in DB: {stats.get('total_articles', 0)}")
                     print(f"  🖼️  Articles with images: {stats.get('articles_with_images', 0)}")
-                    print(f"  🔑 Articles with key points: {stats.get('articles_with_keypoints', 0)}")
                     print(f"  📈 Image success rate: {stats.get('image_success_rate', '0%')}")
                     print(f"  💡 Note: Only articles with images are saved to database")
             else:
@@ -546,17 +524,6 @@ class NewsAggregator:
         print(f"📰 Total articles collected: {combined_data['total_articles']}")
         print(f"🖼️  Articles with images: {combined_data['total_articles_with_images']} ({combined_data['overall_image_success_rate']})")
         print(f"📡 Unique sources: {combined_data['sources_summary']['total_unique_sources']}")
-        
-        # Quality score summary
-        if 'quality_stats' in combined_data:
-            quality_stats = combined_data['quality_stats']
-            print(f"\n🎯 Quality Score Analysis:")
-            print(f"  📊 Average quality score: {quality_stats['average_quality_score']}/1000")
-            print(f"  🏆 Highest quality score: {quality_stats['highest_quality_score']}/1000")
-            print(f"  📉 Lowest quality score: {quality_stats['lowest_quality_score']}/1000")
-            print(f"  🚨 High quality articles (700+): {quality_stats['high_quality_articles']} (Breaking/Major news)")
-            print(f"  📈 Medium quality articles (400-699): {quality_stats['medium_quality_articles']} (Important news)")
-            print(f"  📝 Regular articles (<400): {quality_stats['low_quality_articles']} (General news)")
         
         print(f"\n📊 Data Sources:")
         print(f"  📡 RSS Feeds: {'✅ Active' if combined_data['data_sources']['rss_feeds'] else '❌ Failed'}")
@@ -635,7 +602,6 @@ def main():
                 print("✅ SUPABASE: Successfully connected and data saved")
                 print(f"  📊 Total articles in database: {stats.get('total_articles', 0)}")
                 print(f"  🖼️  Articles with images: {stats.get('articles_with_images', 0)}")
-                print(f"  🎯 Articles with quality scores: Available")
                 print(f"  📈 Image success rate: {stats.get('image_success_rate', '0%')}")
             else:
                 print("⚠️  SUPABASE: Connected but unable to fetch stats")

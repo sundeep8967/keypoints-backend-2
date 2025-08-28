@@ -33,7 +33,6 @@ class SupabaseNewsDB:
             -- Add essential missing columns to news_articles table
             ALTER TABLE news_articles 
             ADD COLUMN IF NOT EXISTS description TEXT,
-            ADD COLUMN IF NOT EXISTS key_points TEXT[];
             """
             
             # Create aggregation_runs table to track each run
@@ -102,7 +101,6 @@ class SupabaseNewsDB:
                 'total_articles': len(articles),
                 'missing_image': 0,
                 'missing_title': 0,
-                'missing_summary_and_keypoints': 0,
                 'passed_validation': 0
             }
             
@@ -119,11 +117,10 @@ class SupabaseNewsDB:
                     validation_stats['missing_title'] += 1
                     continue
                 
-                # Validation Rule 3: Must have either description OR keypoints (or both)
+                # Validation Rule 3: Must have description
                 has_description = article.get('description') and len(article.get('description', '').strip()) > 50
-                has_keypoints = article.get('key_points') and len(article.get('key_points', [])) > 0
                 
-                if not (has_description or has_keypoints):
+                if not has_description:
                     validation_stats['missing_summary_and_keypoints'] += 1
                     continue
                 
@@ -136,12 +133,12 @@ class SupabaseNewsDB:
             print(f"  📰 Total articles processed: {validation_stats['total_articles']}")
             print(f"  🖼️  Missing image: {validation_stats['missing_image']}")
             print(f"  📝 Missing/short title: {validation_stats['missing_title']}")
-            print(f"  📄 Missing description & keypoints: {validation_stats['missing_summary_and_keypoints']}")
+            print(f"  📄 Missing description: {validation_stats['missing_summary_and_keypoints']}")
             print(f"  ✅ Passed validation: {validation_stats['passed_validation']}")
             
             if not validated_articles:
                 print("⚠️  No articles passed validation rules")
-                print("💡 Validation requires: image + title (10+ chars) + (description OR keypoints)")
+                print("💡 Validation requires: image + title (10+ chars) + description")
                 return True
             
             print(f"🎯 Quality filter: {(validation_stats['passed_validation']/validation_stats['total_articles']*100):.1f}% articles met quality standards")
@@ -191,14 +188,11 @@ class SupabaseNewsDB:
                     'category': category,
                     'description': article.get('description', ''),
                     'image_url': article.get('image_url', ''),
-                    'quality_score': article.get('quality_score', 0.0),
                     'article_id': article_id
                 }
                 
                 # Description is now always included as primary content field
                 
-                if article.get('key_points') and len(article.get('key_points', [])) > 0:
-                    processed_article['key_points'] = article.get('key_points', [])
                 processed_articles.append(processed_article)
             
             # Insert in batches to avoid timeout
@@ -261,9 +255,6 @@ class SupabaseNewsDB:
     
     def cleanup_invalid_titles(self) -> Dict[str, int]:
         """Remove articles with invalid titles (metadata/schedule) from database"""
-        from fetchnews.quality_scorer import NewsQualityScorer
-        
-        scorer = NewsQualityScorer()
         cleanup_stats = {
             'total_checked': 0,
             'invalid_titles_found': 0,
@@ -280,7 +271,8 @@ class SupabaseNewsDB:
             
             for article in articles:
                 title = article.get('title', '')
-                if not scorer.is_valid_news_title(title):
+                # Basic title validation
+                if len(title.strip()) < 10:
                     invalid_article_ids.append(article['id'])
                     cleanup_stats['invalid_titles_found'] += 1
                     print(f"❌ Invalid title found: '{title[:60]}...'")
@@ -310,17 +302,17 @@ class SupabaseNewsDB:
             return cleanup_stats
 
     def get_articles_with_images(self, limit: int = 50) -> List[Dict]:
-        """Get high-quality articles that passed validation (images + title + summary/keypoints)"""
+        """Get high-quality articles that passed validation (images + title + description)"""
         try:
-            # Filter articles that have image_url and key_points
-            result = self.supabase.table('news_articles').select('*').neq('image_url', '').neq('key_points', '{}').order('id', desc=True).limit(limit).execute()
+            # Filter articles that have image_url and description
+            result = self.supabase.table('news_articles').select('*').neq('image_url', '').neq('description', '').order('id', desc=True).limit(limit).execute()
             
             # Additional client-side validation for extra quality assurance
             validated_articles = []
             for article in result.data:
                 if (article.get('image_url') and 
                     article.get('title') and len(article.get('title', '')) > 10 and
-                    (article.get('key_points') or 
+                    (article.get('description') and 
                      (article.get('description') and len(article.get('description', '')) > 50))):
                     validated_articles.append(article)
             
@@ -341,14 +333,14 @@ class SupabaseNewsDB:
             images_result = self.supabase.table('news_articles').select('id', count='exact').neq('image_url', '').execute()
             articles_with_images = images_result.count
             
-            # Get articles with key points (non-empty key_points array)
-            keypoints_result = self.supabase.table('news_articles').select('id', count='exact').neq('key_points', '{}').execute()
-            articles_with_keypoints = keypoints_result.count
+            # Get articles with descriptions
+            descriptions_result = self.supabase.table('news_articles').select('id', count='exact').neq('description', '').execute()
+            articles_with_descriptions = descriptions_result.count
             
             return {
                 'total_articles': total_articles,
                 'articles_with_images': articles_with_images,
-                'articles_with_keypoints': articles_with_keypoints,
+                'articles_with_descriptions': articles_with_descriptions,
                 'image_success_rate': f"{(articles_with_images/total_articles*100):.1f}%" if total_articles > 0 else "0%"
             }
             
@@ -395,7 +387,7 @@ def main():
                 print(f"\n📊 Database Stats:")
                 print(f"  Total articles: {stats.get('total_articles', 0)}")
                 print(f"  Articles with images: {stats.get('articles_with_images', 0)}")
-                print(f"  Articles with key points: {stats.get('articles_with_keypoints', 0)}")
+                print(f"  Articles with descriptions: {stats.get('articles_with_descriptions', 0)}")
         else:
             print("❌ Please check your Supabase credentials")
             

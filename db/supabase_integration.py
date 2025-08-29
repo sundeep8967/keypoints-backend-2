@@ -96,11 +96,12 @@ class SupabaseNewsDB:
                 print("⚠️  No articles to insert")
                 return True
             
-            # Enhanced validation: articles must have image + title + (summary OR keypoints)
+            # Enhanced validation: articles must have image + title + description
             validation_stats = {
                 'total_articles': len(articles),
                 'missing_image': 0,
                 'missing_title': 0,
+                'missing_description': 0,
                 'passed_validation': 0
             }
             
@@ -117,11 +118,11 @@ class SupabaseNewsDB:
                     validation_stats['missing_title'] += 1
                     continue
                 
-                # Validation Rule 3: Must have description
+                # Validation Rule 3: Must have description (at least 50 characters)
                 has_description = article.get('description') and len(article.get('description', '').strip()) > 50
                 
                 if not has_description:
-                    validation_stats['missing_summary_and_keypoints'] += 1
+                    validation_stats['missing_description'] += 1
                     continue
                 
                 # Article passed all validation rules
@@ -133,12 +134,12 @@ class SupabaseNewsDB:
             print(f"  📰 Total articles processed: {validation_stats['total_articles']}")
             print(f"  🖼️  Missing image: {validation_stats['missing_image']}")
             print(f"  📝 Missing/short title: {validation_stats['missing_title']}")
-            print(f"  📄 Missing description: {validation_stats['missing_summary_and_keypoints']}")
+            print(f"  📄 Missing/short description: {validation_stats['missing_description']}")
             print(f"  ✅ Passed validation: {validation_stats['passed_validation']}")
             
             if not validated_articles:
                 print("⚠️  No articles passed validation rules")
-                print("💡 Validation requires: image + title (10+ chars) + description")
+                print("💡 Validation requires: image + title (10+ chars) + description (50+ chars)")
                 return True
             
             print(f"🎯 Quality filter: {(validation_stats['passed_validation']/validation_stats['total_articles']*100):.1f}% articles met quality standards")

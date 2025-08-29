@@ -53,7 +53,7 @@ class AsyncRSSNewsFetcher:
                 'BBC News': 'http://feeds.bbci.co.uk/news/rss.xml',
                 'CNN': 'http://rss.cnn.com/rss/edition.rss',
                 'Reuters': 'https://www.reuters.com/tools/rss',
-                'AP News': 'https://apnews.com/apf-topnews',
+                'AP News': 'https://apnews.com/apf-top-news',
                 'The Guardian': 'https://www.theguardian.com/world/rss'
             },
             'technology': {
@@ -66,6 +66,89 @@ class AsyncRSSNewsFetcher:
                 'Bloomberg': 'https://feeds.bloomberg.com/markets/news.rss',
                 'Reuters Business': 'https://www.reuters.com/business',
                 'Financial Times': 'https://www.ft.com/rss/home'
+            },
+            'india': {
+                'Times of India': 'http://timesofindia.indiatimes.com/rssfeedstopstories.cms',
+                'The Hindu': 'https://www.thehindu.com/feeder/default.rss',
+                'NDTV': 'http://feeds.feedburner.com/ndtvnews-top-stories'
+            },
+            'politics': {
+                'The Indian Express - Politics': 'http://indianexpress.com/section/india/politics/feed/',
+                'ThePrint - Politics': 'https://theprint.in/category/politics/feed/'
+            },
+            'karnataka': {
+                'The Hindu - Karnataka': 'https://www.thehindu.com/news/national/karnataka/feeder/default.aspx',
+                'Times of India - Karnataka': 'https://timesofindia.indiatimes.com/rssfeeds/-2128833038.cms',
+                'Indian Express - Bangalore': 'https://indianexpress.com/section/cities/bangalore/feed/'
+            },
+            'startups': {
+                'YourStory': 'https://yourstory.com/rss',
+                'Inc42': 'https://inc42.com/feed/',
+                'Entrackr': 'https://entrackr.com/feed/'
+            },
+            'entertainment': {
+                'Filmfare': 'https://www.filmfare.com/rss/news',
+                'Bollywood Hungama': 'https://www.bollywoodhungama.com/rss/bollywood-news/',
+                'The Indian Express - Entertainment': 'https://indianexpress.com/section/entertainment/feed/'
+            },
+            'health': {
+                'ET HealthWorld': 'http://health.economictimes.indiatimes.com/rss/topstories',
+                'The Indian Express - Health': 'https://indianexpress.com/section/lifestyle/health/feed/',
+                'Times of India - Health': 'https://timesofindia.indiatimes.com/rssfeeds/3908999.cms'
+            },
+            'sports': {
+                'NDTV Sports': 'https://sports.ndtv.com/rss/all',
+                'Times of India Sports': 'https://timesofindia.indiatimes.com/rssfeeds/4719148.cms',
+                'The Indian Express Sports': 'https://indianexpress.com/section/sports/feed/'
+            },
+            'education_jobs': {
+                'The Indian Express - Education': 'https://indianexpress.com/section/education/feed/',
+                'The Indian Express - Jobs': 'https://indianexpress.com/section/jobs/feed/',
+                'CareerIndia - Jobs': 'https://www.careerindia.com/rss/feeds/careerindia-fb.xml'
+            },
+            'automobile': {
+                'MotorBeam': 'https://www.motorbeam.com/feed/',
+                'RushLane': 'https://www.rushlane.com/feed/',
+                'Autocar India': 'https://www.autocarindia.com/rss'
+            },
+            'travel': {
+                'The Indian Express - Travel': 'https://indianexpress.com/section/auto-travel/feed/',
+                'Inditales': 'https://inditales.com/feed/',
+                'Breaking Travel News': 'https://feeds.feedburner.com/breakingtravelnews'
+            },
+            'food_drink': {
+                'NDTV Food': 'https://food.ndtv.com/rss/latest',
+                'Dassana\'s Veg Recipes': 'https://www.vegrecipesofindia.com/feed/',
+                'Archana\'s Kitchen': 'https://www.archanaskitchen.com/feed'
+            },
+            'real_estate': {
+                'The Economic Times - Realty': 'https://realty.economictimes.indiatimes.com/rss',
+                'The Property Times': 'https://thepropertytimes.in/feed/',
+                'Realty Fact': 'https://realtyfact.com/feed/'
+            },
+            'astrology': {
+                'The Indian Express - Horoscope': 'https://indianexpress.com/section/horoscope/feed/',
+                'AstroSage': 'https://www.astrosage.com/rss/daily-horoscope-feed.xml',
+                'GaneshaSpeaks': 'https://www.ganeshaspeaks.com/rss/daily-horoscope/all-signs/'
+            },
+            'trending': {
+                'Mashable': 'https://mashable.com/feeds/rss/all'
+            },
+            'cricket': {
+                'ESPNcricinfo - India': 'http://www.espncricinfo.com/rss/content/story/feeds/6.xml',
+                'NDTV Sports - Cricket': 'http://sports.ndtv.com/rss/cricket',
+                'ESPNcricinfo - General': 'https://www.espncricinfo.com/rss/content/story/feeds/0.xml',
+                'BBC Sport - Cricket': 'http://feeds.bbci.co.uk/sport/cricket/rss.xml',
+                'myKhel - Cricket': 'https://www.mykhel.com/rss/feeds/sports-cricket-fb.xml'
+            },
+            'cinema': {
+                'bollywood': {
+                    'Koimoi': 'https://www.koimoi.com/category/bollywood-news/feed/'
+                },
+                'kannada': {
+                    'Filmibeat Kannada': 'https://kannada.filmibeat.com/rss/feeds/filmibeat-kannada-fb.xml',
+                    'Hindustan Times Kannada - Entertainment': 'https://kannada.hindustantimes.com/rss/entertainment'
+                }
             }
         }
         

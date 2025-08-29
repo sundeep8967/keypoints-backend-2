@@ -29,18 +29,19 @@ class RSSNewsFetcher:
         self.rss_feeds = {
             'international': {
                 'BBC News': 'http://feeds.bbci.co.uk/news/rss.xml',
-                'Reuters': 'https://www.reuters.com/tools/rss',
+                'CNN': 'http://rss.cnn.com/rss/edition.rss',
                 'The Guardian': 'https://www.theguardian.com/world/rss'
             },
             'technology': {
                 'TechCrunch': 'https://techcrunch.com/feed/',
                 'The Verge': 'https://www.theverge.com/rss/index.xml',
+                'Ars Technica': 'https://feeds.arstechnica.com/arstechnica/index',
                 'Wired': 'https://www.wired.com/feed/rss'
             },
             'business': {
                 'Bloomberg': 'https://feeds.bloomberg.com/markets/news.rss',
                 'Economic Times': 'https://economictimes.indiatimes.com/rssfeedsdefault.cms',
-                'Livemint': 'http://www.livemint.com/rss/latestnews.xml'
+                'Financial Times': 'https://www.ft.com/rss/home'
             },
             'sports': {
                 'ESPN': 'https://www.espn.com/espn/rss/news',
@@ -50,13 +51,56 @@ class RSSNewsFetcher:
             'india': {
                 'NDTV': 'https://feeds.feedburner.com/ndtvnews-top-stories',
                 'Times of India': 'https://timesofindia.indiatimes.com/rssfeedstopstories.cms',
-                'The Hindu': 'https://www.thehindu.com/feeder/default.rss',
-                'Indian Express': 'http://indianexpress.com/print/front-page/feed/'
+                'The Hindu': 'https://www.thehindu.com/feeder/default.rss'
             },
             'startups': {
-                'YourStory': 'https://yourstory.com/rss',
                 'Inc42': 'https://inc42.com/feed/'
-            }
+            },
+            'entertainment': {
+                '123telugu': 'http://www.123telugu.com/feed/',
+                'The Indian Express - Entertainment': 'https://indianexpress.com/section/entertainment/feed/'
+            },
+            'politics': {
+                'ThePrint - Politics': 'https://theprint.in/category/politics/feed/'
+            },
+            'karnataka': {
+                'Times of India - Karnataka': 'https://timesofindia.indiatimes.com/rssfeeds/-2128833038.cms',
+                'Indian Express - Bangalore': 'https://indianexpress.com/section/cities/bangalore/feed/'
+            },
+            'health': {
+                'ET HealthWorld': 'http://health.economictimes.indiatimes.com/rss/topstories',
+                'The Indian Express - Health': 'https://indianexpress.com/section/lifestyle/health/feed/',
+                'Times of India - Health': 'https://timesofindia.indiatimes.com/rssfeeds/3908999.cms'
+            },
+            'education_jobs': {
+                'The Indian Express - Education': 'https://indianexpress.com/section/education/feed/',
+                'The Indian Express - Jobs': 'https://indianexpress.com/section/jobs/feed/'
+            },
+            'automobile': {
+                'MotorBeam': 'https://www.motorbeam.com/feed/',
+                'RushLane': 'https://www.rushlane.com/feed/'
+            },
+            'travel': {
+                'The Indian Express - Travel': 'https://indianexpress.com/section/auto-travel/feed/',
+                'Inditales': 'https://inditales.com/feed/',
+                'Breaking Travel News': 'https://feeds.feedburner.com/breakingtravelnews'
+            },
+            'real_estate': {
+                'The Property Times': 'https://thepropertytimes.in/feed/',
+                'Realty Fact': 'https://realtyfact.com/feed/'
+            },
+            'trending': {
+                'Mashable': 'https://mashable.com/feeds/rss/all'
+            },
+            'cricket': {
+                'ESPNcricinfo - India': 'http://www.espncricinfo.com/rss/content/story/feeds/6.xml',
+                'NDTV Sports - Cricket': 'http://sports.ndtv.com/rss/cricket',
+                'ESPNcricinfo - General': 'https://www.espncricinfo.com/rss/content/story/feeds/0.xml',
+                'BBC Sport - Cricket': 'http://feeds.bbci.co.uk/sport/cricket/rss.xml'
+            },
+            # 'cinema': {
+            #     'Hindustan Times Kannada - Entertainment': 'https://kannada.hindustantimes.com/rss/entertainment'
+            # }
         }
 
     def extract_image_from_article(self, article_url, timeout=10):

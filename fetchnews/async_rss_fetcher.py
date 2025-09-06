@@ -50,11 +50,8 @@ class AsyncRSSNewsFetcher:
         # RSS feeds organized by category (from your existing implementation)
         self.rss_feeds = {
             'international': {
-                'BBC News': 'http://feeds.bbci.co.uk/news/rss.xml',
                 'CNN': 'http://rss.cnn.com/rss/edition.rss',
-                'Reuters': 'https://www.reuters.com/tools/rss',
-                'AP News': 'https://apnews.com/apf-top-news',
-                'The Guardian': 'https://www.theguardian.com/world/rss'
+                'AP News': 'https://apnews.com/apf-top-news'
             },
             'technology': {
                 'TechCrunch': 'https://techcrunch.com/feed/',
@@ -63,9 +60,6 @@ class AsyncRSSNewsFetcher:
                 'Wired': 'https://www.wired.com/feed/rss'
             },
             'business': {
-                'Bloomberg': 'https://feeds.bloomberg.com/markets/news.rss',
-                'Reuters Business': 'https://www.reuters.com/business',
-                'Financial Times': 'https://www.ft.com/rss/home'
             },
             'india': {
                 'Times of India': 'http://timesofindia.indiatimes.com/rssfeedstopstories.cms',
@@ -98,8 +92,7 @@ class AsyncRSSNewsFetcher:
             },
             'sports': {
                 'NDTV Sports': 'https://sports.ndtv.com/rss/all',
-                'Times of India Sports': 'https://timesofindia.indiatimes.com/rssfeeds/4719148.cms',
-                'The Indian Express Sports': 'https://indianexpress.com/section/sports/feed/'
+                'Times of India Sports': 'https://timesofindia.indiatimes.com/rssfeeds/4719148.cms'
             },
             'education_jobs': {
                 'The Indian Express - Education': 'https://indianexpress.com/section/education/feed/',
@@ -113,8 +106,7 @@ class AsyncRSSNewsFetcher:
             },
             'travel': {
                 'The Indian Express - Travel': 'https://indianexpress.com/section/auto-travel/feed/',
-                'Inditales': 'https://inditales.com/feed/',
-                'Breaking Travel News': 'https://feeds.feedburner.com/breakingtravelnews'
+                'Inditales': 'https://inditales.com/feed/'
             },
             'food_drink': {
                 'NDTV Food': 'https://food.ndtv.com/rss/latest',
@@ -128,17 +120,13 @@ class AsyncRSSNewsFetcher:
             },
             'astrology': {
                 'The Indian Express - Horoscope': 'https://indianexpress.com/section/horoscope/feed/',
-                'AstroSage': 'https://www.astrosage.com/rss/daily-horoscope-feed.xml',
                 'GaneshaSpeaks': 'https://www.ganeshaspeaks.com/rss/daily-horoscope/all-signs/'
             },
             'trending': {
                 'Mashable': 'https://mashable.com/feeds/rss/all'
             },
             'cricket': {
-                'ESPNcricinfo - India': 'http://www.espncricinfo.com/rss/content/story/feeds/6.xml',
                 'NDTV Sports - Cricket': 'http://sports.ndtv.com/rss/cricket',
-                'ESPNcricinfo - General': 'https://www.espncricinfo.com/rss/content/story/feeds/0.xml',
-                'BBC Sport - Cricket': 'http://feeds.bbci.co.uk/sport/cricket/rss.xml',
                 'myKhel - Cricket': 'https://www.mykhel.com/rss/feeds/sports-cricket-fb.xml'
             },
             'cinema': {
@@ -146,8 +134,6 @@ class AsyncRSSNewsFetcher:
                     'Koimoi': 'https://www.koimoi.com/category/bollywood-news/feed/'
                 },
                 'kannada': {
-                    'Filmibeat Kannada': 'https://kannada.filmibeat.com/rss/feeds/filmibeat-kannada-fb.xml',
-                    'Hindustan Times Kannada - Entertainment': 'https://kannada.hindustantimes.com/rss/entertainment'
                 }
             }
         }

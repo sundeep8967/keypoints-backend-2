@@ -28,9 +28,7 @@ class RSSNewsFetcher:
         # RSS feeds organized by category - OPTIMIZED: Most Important Sources Only
         self.rss_feeds = {
             'international': {
-                'BBC News': 'http://feeds.bbci.co.uk/news/rss.xml',
-                'CNN': 'http://rss.cnn.com/rss/edition.rss',
-                'The Guardian': 'https://www.theguardian.com/world/rss'
+                'CNN': 'http://rss.cnn.com/rss/edition.rss'
             },
             'technology': {
                 'TechCrunch': 'https://techcrunch.com/feed/',
@@ -39,13 +37,9 @@ class RSSNewsFetcher:
                 'Wired': 'https://www.wired.com/feed/rss'
             },
             'business': {
-                'Bloomberg': 'https://feeds.bloomberg.com/markets/news.rss',
-                'Economic Times': 'https://economictimes.indiatimes.com/rssfeedsdefault.cms',
-                'Financial Times': 'https://www.ft.com/rss/home'
+                'Economic Times': 'https://economictimes.indiatimes.com/rssfeedsdefault.cms'
             },
             'sports': {
-                'ESPN': 'https://www.espn.com/espn/rss/news',
-                'BBC Sport': 'http://feeds.bbci.co.uk/sport/rss.xml',
                 'ESPNCricinfo': 'http://www.espncricinfo.com/rss/content/story/feeds/6.xml'
             },
             'india': {
@@ -57,7 +51,6 @@ class RSSNewsFetcher:
                 'Inc42': 'https://inc42.com/feed/'
             },
             'entertainment': {
-                '123telugu': 'http://www.123telugu.com/feed/',
                 'The Indian Express - Entertainment': 'https://indianexpress.com/section/entertainment/feed/'
             },
             'politics': {
@@ -82,8 +75,7 @@ class RSSNewsFetcher:
             },
             'travel': {
                 'The Indian Express - Travel': 'https://indianexpress.com/section/auto-travel/feed/',
-                'Inditales': 'https://inditales.com/feed/',
-                'Breaking Travel News': 'https://feeds.feedburner.com/breakingtravelnews'
+                'Inditales': 'https://inditales.com/feed/'
             },
             'real_estate': {
                 'The Property Times': 'https://thepropertytimes.in/feed/',
@@ -94,12 +86,9 @@ class RSSNewsFetcher:
             },
             'cricket': {
                 'ESPNcricinfo - India': 'http://www.espncricinfo.com/rss/content/story/feeds/6.xml',
-                'NDTV Sports - Cricket': 'http://sports.ndtv.com/rss/cricket',
-                'ESPNcricinfo - General': 'https://www.espncricinfo.com/rss/content/story/feeds/0.xml',
-                'BBC Sport - Cricket': 'http://feeds.bbci.co.uk/sport/cricket/rss.xml'
+                'NDTV Sports - Cricket': 'http://sports.ndtv.com/rss/cricket'
             },
             # 'cinema': {
-            #     'Hindustan Times Kannada - Entertainment': 'https://kannada.hindustantimes.com/rss/entertainment'
             # }
         }
 

@@ -113,11 +113,7 @@ class AsyncRSSNewsFetcher:
                 'Dassana\'s Veg Recipes': 'https://www.vegrecipesofindia.com/feed/',
                 'Archana\'s Kitchen': 'https://www.archanaskitchen.com/feed'
             },
-            'real_estate': {
-                'The Economic Times - Realty': 'https://realty.economictimes.indiatimes.com/rss',
-                'The Property Times': 'https://thepropertytimes.in/feed/',
-                'Realty Fact': 'https://realtyfact.com/feed/'
-            },
+           
             'astrology': {
                 'The Indian Express - Horoscope': 'https://indianexpress.com/section/horoscope/feed/',
                 'GaneshaSpeaks': 'https://www.ganeshaspeaks.com/rss/daily-horoscope/all-signs/'

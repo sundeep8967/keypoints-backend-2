@@ -77,19 +77,11 @@ class RSSNewsFetcher:
                 'The Indian Express - Travel': 'https://indianexpress.com/section/auto-travel/feed/',
                 'Inditales': 'https://inditales.com/feed/'
             },
-            'real_estate': {
-                'The Property Times': 'https://thepropertytimes.in/feed/',
-                'Realty Fact': 'https://realtyfact.com/feed/'
-            },
-            'trending': {
-                'Mashable': 'https://mashable.com/feeds/rss/all'
-            },
             'cricket': {
                 'ESPNcricinfo - India': 'http://www.espncricinfo.com/rss/content/story/feeds/6.xml',
                 'NDTV Sports - Cricket': 'http://sports.ndtv.com/rss/cricket'
             },
-            # 'cinema': {
-            # }
+            
         }
 
     def extract_image_from_article(self, article_url, timeout=10):

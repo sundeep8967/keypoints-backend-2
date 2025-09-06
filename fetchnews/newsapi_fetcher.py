@@ -67,10 +67,7 @@ class NewsAPIFetcher:
                 'techcrunch', 'the-verge', 'wired', 'ars-technica', 'engadget',
                 'techradar', 'the-next-web', 'hacker-news'
             ],
-            'business': [
-                'bloomberg', 'the-wall-street-journal', 'financial-times', 'fortune',
-                'business-insider', 'cnbc', 'marketwatch', 'forbes'
-            ],
+           
             'sports': [
                 'espn', 'bbc-sport', 'fox-sports', 'the-sport-bible',
                 'nfl-news', 'nba-news', 'mlb-news'

@@ -11,3 +11,4 @@
 'Breaking Travel News': 'https://feeds.feedburner.com/breakingtravelnews',
 'Filmibeat Kannada': 'https://kannada.filmibeat.com/rss/feeds/filmibeat-kannada-fb.xml',
 'Hindustan Times Kannada - Entertainment': 'https://kannada.hindustantimes.com/rss/entertainment',
+'The Property Times': 'https://thepropertytimes.in/feed/',

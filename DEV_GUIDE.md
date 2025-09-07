@@ -324,7 +324,6 @@ jobs:
 - `GEMINI_API_KEY_2`: Secondary Gemini key (optional)
 - `GEMINI_API_KEY_3`: Tertiary Gemini key (optional)
 - `GEMINI_API_KEY_4`: Fourth Gemini key (optional)
-- `GEMINI_API_KEY_5`, `GEMINI_API_KEY_6`, etc.: Additional keys supported (unlimited)
 - `SUPABASE_URL`: Database URL
 - `SUPABASE_KEY`: Database service key
 

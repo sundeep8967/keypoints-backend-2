@@ -2,15 +2,14 @@
 
 ## 🎯 Project Overview
 
-**AI-Powered News Intelligence Platform** that fetches, enhances, and stores news articles from multiple sources with advanced deduplication, quality scoring, and AI enhancement capabilities.
+**AI-Powered News Intelligence Platform** that fetches, enhances, and stores news articles from multiple sources with advanced deduplication and AI enhancement capabilities.
 
 ### Core Features
 - 🔄 **Multi-Source Aggregation**: RSS feeds + NewsAPI integration
 - 🤖 **AI Enhancement**: Gemini-powered content enrichment
 - 🗄️ **Database Storage**: Supabase integration for enhanced articles only
-- 🎯 **Quality Scoring**: Intelligent article ranking (0-1000 points)
 - 🔍 **Advanced Deduplication**: Title, URL, and content similarity detection
-- ⚡ **Performance Optimized**: 42.9% faster with async processing
+- ⚡ **Parallel Processing**: Simultaneous RSS and NewsAPI fetching
 
 ---
 
@@ -18,7 +17,7 @@
 
 ### Data Flow
 ```
-RSS Feeds + NewsAPI → Deduplication → Quality Scoring → AI Enhancement → Supabase
+RSS Feeds + NewsAPI → Deduplication → AI Enhancement → Supabase
 ```
 
 ### Key Components
@@ -118,9 +117,9 @@ news-aggregator/
 ## 🔧 Core Components
 
 ### 1. News Fetching (`fetchnews/`)
-- **RSS Fetcher**: Processes RSS feeds with async optimization
+- **RSS Fetcher**: Processes RSS feeds with parallel execution
 - **NewsAPI Fetcher**: Triple-key system for enhanced rate limits
-- **Async Versions**: 42.9% performance improvement over sequential
+- **Parallel Processing**: ThreadPoolExecutor for simultaneous fetching
 
 ### 2. AI Enhancement (`enhance_news_with_ai.js`)
 - **Multi-Model Support**: Gemini 2.0 Flash, Flash-Lite, 1.5 Flash
@@ -132,11 +131,6 @@ news-aggregator/
 - **Quality Validation**: Articles must have image + title + description
 - **Batch Processing**: Efficient bulk inserts
 
-### 4. Quality Scoring System
-- **Content Importance**: 0-900 points (breaking news = 900)
-- **Regional Relevance**: +200 points for India/Bengaluru content
-- **Content Quality**: 0-300 points (title, summary, image, description)
-- **Source Trust**: 1.0x - 1.5x multiplier for trusted sources
 
 ---
 
@@ -164,25 +158,20 @@ python main.py
 
 ## 📊 Performance Metrics
 
-### Optimization Results
-- **42.9% faster execution** (proven by benchmark)
-- **1.8x speed multiplier** over sequential processing
-- **Time reduction**: 20.04s → 11.45s for test workload
-- **Processing speed**: <3 minutes (exceeds <5min target)
+### Processing Results
+- **Parallel execution** for faster processing
+- **Improved throughput** over sequential processing
+- **Processing speed**: Typically completes in under 5 minutes
 
-### Quality Scoring Distribution
-- **High Quality (700+ points)**: Breaking news, major events
-- **Medium Quality (400-699 points)**: Important social/cultural news
-- **Regular Quality (<400 points)**: General news and updates
 
 ---
 
 ## 🔍 Deduplication System
 
 ### Multi-Level Detection
-1. **URL Similarity**: Normalized URL comparison (90% threshold)
-2. **Title Similarity**: SequenceMatcher analysis (85% threshold)
-3. **Content Similarity**: TF-IDF + cosine similarity (75% threshold)
+1. **URL Similarity**: Normalized URL comparison (configurable via `URL_SIMILARITY_THRESHOLD`, default: 90%)
+2. **Title Similarity**: SequenceMatcher analysis (configurable via `TITLE_SIMILARITY_THRESHOLD`, default: 85%)
+3. **Content Similarity**: TF-IDF + cosine similarity (configurable via `CONTENT_SIMILARITY_THRESHOLD`, default: 75%)
 
 ### Advanced Features
 - **Smart Normalization**: Removes query parameters, fragments
@@ -198,11 +187,16 @@ python main.py
 - **Title Optimization**: Improves clarity and engagement
 - **Metadata Extraction**: Identifies topics, regions, categories
 - **Image Validation**: Ensures proper image URLs
+- **Database Storage**: Only enhanced articles are stored in Supabase
 
 ### Rate Limit Optimization
 - **Model-Specific Limits**: Different RPM for each Gemini model
-- **Dynamic Adjustment**: Updates based on successful model
-- **Fallback Handling**: Graceful degradation on failures
+  - Gemini 2.0 Flash: 15 RPM (configurable via `GEMINI_2_0_FLASH_RPM`)
+  - Gemini 2.0 Flash-Lite: 30 RPM (configurable via `GEMINI_2_0_FLASH_LITE_RPM`)
+  - Gemini 1.5 Flash: 15 RPM (configurable via `GEMINI_1_5_FLASH_RPM`)
+- **Multi-Key Support**: Unlimited API keys (GEMINI_API_KEY_1 through GEMINI_API_KEY_N)
+- **Dynamic Key Rotation**: Automatic failover between available keys
+- **Batch Processing**: Configurable article limit via `MAX_ARTICLES_TO_ENHANCE`
 
 ---
 
@@ -220,17 +214,49 @@ CREATE TABLE news_articles (
     description TEXT,
     image_url TEXT,
     article_id TEXT,
-    enhanced_by_ai BOOLEAN DEFAULT FALSE,
-    quality_score FLOAT,
+    created_at TIMESTAMP DEFAULT NOW()
+);
+```
+
+**Note:** All articles in this table are AI-enhanced by design. Raw articles remain in local JSON files only.
+
+### aggregation_runs Table
+```sql
+CREATE TABLE aggregation_runs (
+    id SERIAL PRIMARY KEY,
+    run_timestamp TIMESTAMP DEFAULT NOW(),
+    execution_time_seconds FLOAT,
+    total_articles INTEGER,
+    articles_with_images INTEGER,
+    image_success_rate TEXT,
+    total_duplicates_removed INTEGER,
+    title_duplicates INTEGER,
+    url_duplicates INTEGER,
+    content_duplicates INTEGER,
+    rss_sources INTEGER,
+    newsapi_sources INTEGER,
+    api_requests_used INTEGER,
+    primary_key_requests INTEGER,
+    secondary_key_requests INTEGER,
+    tertiary_key_requests INTEGER,
+    current_api_key TEXT,
+    data_sources_active JSONB,
+    deduplication_settings JSONB,
     created_at TIMESTAMP DEFAULT NOW()
 );
 ```
 
 ### Key Indexes
-- `idx_news_articles_link` - Fast URL lookups
-- `idx_news_articles_quality_score` - Quality-based sorting
-- `idx_news_articles_category` - Category filtering
-- `idx_news_articles_published` - Date-based queries
+```sql
+-- Performance indexes for news_articles table
+CREATE INDEX IF NOT EXISTS idx_news_articles_link ON news_articles(link);
+CREATE INDEX IF NOT EXISTS idx_news_articles_source ON news_articles(source);
+CREATE INDEX IF NOT EXISTS idx_news_articles_category ON news_articles(category);
+CREATE INDEX IF NOT EXISTS idx_news_articles_published ON news_articles(published);
+
+-- Performance indexes for aggregation_runs table
+CREATE INDEX IF NOT EXISTS idx_runs_timestamp ON aggregation_runs(run_timestamp);
+```
 
 ---
 
@@ -242,8 +268,8 @@ CREATE TABLE news_articles (
 name: Daily News Aggregation
 on:
   schedule:
-    - cron: '0 6 * * *'  # Daily at 6 AM UTC
-  workflow_dispatch:     # Manual trigger
+    - cron: '30 3 * * *'  # Daily at 3:30 AM UTC (9:00 AM IST)
+  workflow_dispatch:      # Manual trigger
 
 jobs:
   aggregate-news:
@@ -262,20 +288,43 @@ jobs:
         run: |
           pip install -r requirements.txt
           npm install
-      - name: Run pipeline
-        env:
-          NEWSAPI_KEY: ${{ secrets.NEWSAPI_KEY }}
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
-        run: python main.py
+      - name: Create .env file from secrets
+        run: |
+          echo "NEWSAPI_KEY_PRIMARY=${{ secrets.NEWSAPI_KEY_PRIMARY }}" >> .env
+          echo "NEWSAPI_KEY_SECONDARY=${{ secrets.NEWSAPI_KEY_SECONDARY }}" >> .env
+          echo "NEWSAPI_KEY_TERTIARY=${{ secrets.NEWSAPI_KEY_TERTIARY }}" >> .env
+          echo "SUPABASE_URL=${{ secrets.SUPABASE_URL }}" >> .env
+          echo "SUPABASE_KEY=${{ secrets.SUPABASE_KEY }}" >> .env
+          echo "GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}" >> .env
+          echo "GEMINI_API_KEY_2=${{ secrets.GEMINI_API_KEY_2 }}" >> .env
+          echo "GEMINI_API_KEY_3=${{ secrets.GEMINI_API_KEY_3 }}" >> .env
+          echo "GEMINI_API_KEY_4=${{ secrets.GEMINI_API_KEY_4 }}" >> .env
+          echo "TITLE_SIMILARITY_THRESHOLD=0.85" >> .env
+          echo "URL_SIMILARITY_THRESHOLD=0.90" >> .env
+          echo "CONTENT_SIMILARITY_THRESHOLD=0.75" >> .env
+          echo "MAX_ARTICLES_TO_ENHANCE=999999" >> .env
+      
+      - name: Install Playwright browsers
+        run: playwright install chromium
+      
+      - name: Download spaCy model
+        run: python -m spacy download en_core_web_sm
+      
+      - name: Run complete automated pipeline
+        run: echo "3" | python main.py
+        timeout-minutes: 45
 ```
 
 ### Required Secrets
-- `NEWSAPI_KEY`: NewsAPI authentication
+- `NEWSAPI_KEY_PRIMARY`: Primary NewsAPI authentication key
+- `NEWSAPI_KEY_SECONDARY`: Secondary NewsAPI key (optional)
+- `NEWSAPI_KEY_TERTIARY`: Tertiary NewsAPI key (optional)
+- `NEWSAPI_KEY`: Fallback NewsAPI key (optional, used if PRIMARY not set)
 - `GEMINI_API_KEY`: Primary Gemini API key
-- `GEMINI_API_KEY_2`: Secondary key (optional)
-- `GEMINI_API_KEY_3`: Tertiary key (optional)
+- `GEMINI_API_KEY_2`: Secondary Gemini key (optional)
+- `GEMINI_API_KEY_3`: Tertiary Gemini key (optional)
+- `GEMINI_API_KEY_4`: Fourth Gemini key (optional)
+- `GEMINI_API_KEY_5`, `GEMINI_API_KEY_6`, etc.: Additional keys supported (unlimited)
 - `SUPABASE_URL`: Database URL
 - `SUPABASE_KEY`: Database service key
 
@@ -294,6 +343,22 @@ jobs:
 2. **Enhanced Data**: Goes to Supabase from `data/combined_news_data_enhanced.json`
 3. **No Duplicates**: Only enhanced articles reach the database
 4. **Quality First**: Articles must pass validation (image + title + description)
+
+### Environment Configuration
+```bash
+# Content extraction settings
+MIN_DESCRIPTION_LENGTH=100          # Minimum description length for content extraction
+TITLE_SIMILARITY_THRESHOLD=0.85     # Title deduplication threshold (0.0-1.0)
+URL_SIMILARITY_THRESHOLD=0.90       # URL deduplication threshold (0.0-1.0)
+CONTENT_SIMILARITY_THRESHOLD=0.75   # Content deduplication threshold (0.0-1.0)
+
+# AI Enhancement settings
+MAX_ARTICLES_TO_ENHANCE=999999      # Process ALL articles (or set specific limit)
+GEMINI_2_0_FLASH_RPM=15            # Gemini 2.0 Flash rate limit (RPM)
+GEMINI_2_0_FLASH_LITE_RPM=30       # Gemini 2.0 Flash-Lite rate limit (RPM)
+GEMINI_1_5_FLASH_RPM=15            # Gemini 1.5 Flash rate limit (RPM)
+DEFAULT_RPM=10                     # Default conservative rate limit
+```
 
 ### Testing Guidelines
 1. **Local Testing**: Use `python main.py` with option 1 or 2
@@ -321,6 +386,26 @@ pip install -r requirements.txt
 
 # Node.js dependencies
 npm install
+
+# Additional required installations
+playwright install chromium          # For web scraping
+python -m spacy download en_core_web_sm  # For NLP processing
+```
+
+#### Database Design
+```sql
+-- All articles in news_articles table are AI-enhanced by design
+-- No enhanced_by_ai column needed since raw articles stay in JSON files
+-- Database contains only processed, enhanced articles
+```
+
+#### NewsAPI Key Issues
+```bash
+# Multiple NewsAPI keys supported for redundancy
+NEWSAPI_KEY_PRIMARY=your_primary_key     # Primary key
+NEWSAPI_KEY_SECONDARY=your_backup_key    # Fallback key
+NEWSAPI_KEY_TERTIARY=your_third_key      # Additional fallback
+NEWSAPI_KEY=your_legacy_key              # Legacy fallback
 ```
 
 #### Supabase Connection
@@ -342,7 +427,6 @@ SUPABASE_KEY=your-service-role-key
 ### Key Metrics
 - **Processing Time**: Target <3 minutes for full pipeline
 - **Success Rate**: Aim for >95% article processing
-- **Quality Distribution**: Monitor high/medium/low quality ratios
 - **Enhancement Rate**: Track AI processing success
 
 ### Log Analysis
@@ -353,35 +437,21 @@ grep "❌" logs/pipeline.log
 # Monitor performance
 grep "execution_time" data/combined_news_data.json
 
-# Quality metrics
-grep "quality_stats" data/combined_news_data.json
+# Enhancement metrics
+grep "enhancement_info" data/combined_news_data_enhanced.json
 ```
 
 ---
 
 ## 🔮 Future Roadmap
 
-### Phase 1: Foundation ✅ COMPLETE
-- Multi-source aggregation
-- Basic deduplication
-- Supabase integration
-
-### Phase 2: Intelligence ✅ COMPLETE
-- AI enhancement with Gemini
-- Quality scoring system
-- Advanced deduplication
-
-### Phase 3: Scale & Performance ✅ 75% COMPLETE
-- Async optimization (42.9% improvement)
-- Rate limit optimization
-- Advanced caching mechanisms
-- Multi-language support (remaining)
-
-### Phase 4: Enterprise Features 🔄 PLANNED
-- Real-time processing
-- WebSocket updates
-- Load balancing
-- ML-based content filtering
+### Current Status
+- ✅ **Multi-source aggregation**: RSS feeds + NewsAPI
+- ✅ **AI enhancement**: Gemini-powered content enrichment
+- ✅ **Advanced deduplication**: Multi-level similarity detection
+- ✅ **Parallel processing**: ThreadPoolExecutor optimization
+- ✅ **Database integration**: Supabase with enhanced articles only
+- ✅ **Automated pipeline**: GitHub Actions daily aggregation
 
 ---
 
@@ -406,16 +476,16 @@ grep "quality_stats" data/combined_news_data.json
 
 ## 🎉 Success Metrics
 
-### Technical KPIs
-- ✅ **Processing Speed**: <3 minutes (exceeds <5min target)
-- ✅ **System Uptime**: 99.5% reliability maintained
-- ✅ **Performance**: 42.9% improvement achieved
-- ✅ **Quality**: Intelligent scoring and ranking
+### Technical Achievements
+- ✅ **Processing Speed**: Efficient parallel processing
+- ✅ **Performance**: Improved throughput with ThreadPoolExecutor
+- ✅ **AI Enhancement**: Gemini-powered content enrichment
+- ✅ **Reliability**: Robust error handling and fallback mechanisms
 
 ### Business Value
-- **Cost Efficiency**: 43% reduction in processing time
-- **User Experience**: Faster, higher-quality news delivery
-- **Scalability**: Enterprise-ready async architecture
+- **Cost Efficiency**: Parallel processing for better resource utilization
+- **User Experience**: Faster, AI-enhanced news delivery
+- **Scalability**: Multi-threaded architecture ready for scaling
 - **Intelligence**: AI-powered content enhancement
 
 ---

@@ -67,7 +67,6 @@ class SupabaseNewsDB:
                 "CREATE INDEX IF NOT EXISTS idx_news_articles_source ON news_articles(source);",
                 "CREATE INDEX IF NOT EXISTS idx_news_articles_category ON news_articles(category);",
                 "CREATE INDEX IF NOT EXISTS idx_news_articles_published ON news_articles(published);",
-                "CREATE INDEX IF NOT EXISTS idx_news_articles_quality_score ON news_articles(quality_score DESC);",
                 "CREATE INDEX IF NOT EXISTS idx_runs_timestamp ON aggregation_runs(run_timestamp);"
             ]
             
@@ -142,8 +141,8 @@ class SupabaseNewsDB:
                 print("💡 Validation requires: image + title (10+ chars) + description (50+ chars)")
                 return True
             
-            print(f"🎯 Quality filter: {(validation_stats['passed_validation']/validation_stats['total_articles']*100):.1f}% articles met quality standards")
-            print(f"🖼️  Inserting {len(validated_articles)} high-quality articles into Supabase...")
+            print(f"🎯 Validation filter: {(validation_stats['passed_validation']/validation_stats['total_articles']*100):.1f}% articles met validation standards")
+            print(f"🖼️  Inserting {len(validated_articles)} validated articles into Supabase...")
             
             # Prepare articles for insertion - only essential fields
             processed_articles = []
@@ -189,8 +188,7 @@ class SupabaseNewsDB:
                     'category': category,
                     'description': article.get('description', ''),
                     'image_url': article.get('image_url', ''),
-                    'article_id': article_id,
-                    'enhanced_by_ai': article.get('enhanced_by_ai', False) if is_enhanced else False
+                    'article_id': article_id
                 }
                 
                 # Description is now always included as primary content field
@@ -214,7 +212,7 @@ class SupabaseNewsDB:
                     print(f"❌ Error inserting batch {i//batch_size + 1}: {batch_error}")
                     continue
             
-            print(f"🎉 Successfully inserted {total_inserted} high-quality articles")
+            print(f"🎉 Successfully inserted {total_inserted} validated articles")
             return True
             
         except Exception as e:
@@ -323,12 +321,12 @@ class SupabaseNewsDB:
             return cleanup_stats
 
     def get_articles_with_images(self, limit: int = 50) -> List[Dict]:
-        """Get high-quality articles that passed validation (images + title + description)"""
+        """Get validated articles that passed validation (images + title + description)"""
         try:
             # Filter articles that have image_url and description
             result = self.supabase.table('news_articles').select('*').neq('image_url', '').neq('description', '').order('id', desc=True).limit(limit).execute()
             
-            # Additional client-side validation for extra quality assurance
+            # Additional client-side validation for extra assurance
             validated_articles = []
             for article in result.data:
                 if (article.get('image_url') and 
@@ -340,7 +338,7 @@ class SupabaseNewsDB:
             return validated_articles
             
         except Exception as e:
-            print(f"❌ Error fetching high-quality articles: {e}")
+            print(f"❌ Error fetching validated articles: {e}")
             return []
     
     def get_aggregation_stats(self) -> Dict:

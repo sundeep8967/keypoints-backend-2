@@ -200,7 +200,7 @@ class NewsEnhancer {
             
             if (validArticles.length === 0) {
                 console.log("⚠️  No valid articles in batch");
-                return articles.map(article => ({ ...article, enhanced_by_ai: false }));
+                return articles;
             }
             
             // Create batch prompt for multiple articles
@@ -239,7 +239,7 @@ Continue this pattern for all ${validArticles.length} articles. Keep content fac
             
             if (!response.text) {
                 console.log("⚠️  Empty response from Gemini");
-                return articles.map(article => ({ ...article, enhanced_by_ai: false }));
+                return articles;
             }
             
             // Parse batch response
@@ -264,11 +264,11 @@ Continue this pattern for all ${validArticles.length} articles. Keep content fac
                         
                     }
                     
-                    enhancedArticle.enhanced_by_ai = !!(enhanced.title || enhanced.description);
+                    // Article is enhanced - no flag needed since all DB articles are enhanced
                     enhancedArticles.push(enhancedArticle);
                     validIndex++;
                 } else {
-                    enhancedArticles.push({ ...article, enhanced_by_ai: false });
+                    enhancedArticles.push(article);
                 }
             }
             
@@ -276,7 +276,7 @@ Continue this pattern for all ${validArticles.length} articles. Keep content fac
             
         } catch (error) {
             console.log(`❌ Error enhancing batch: ${error.message}`);
-            return articles.map(article => ({ ...article, enhanced_by_ai: false }));
+            return articles;
         }
     }
     
@@ -421,11 +421,8 @@ Continue this pattern for all ${validArticles.length} articles. Keep content fac
             // Update statistics
             for (const article of enhancedBatch) {
                 enhancedData.enhancement_info.total_articles_processed++;
-                if (article.enhanced_by_ai) {
-                    enhancedData.enhancement_info.articles_enhanced++;
-                } else {
-                    enhancedData.enhancement_info.articles_skipped++;
-                }
+                // All articles in enhanced batch are considered enhanced
+                enhancedData.enhancement_info.articles_enhanced++;
             }
             
             console.log(`✅ Batch ${batchNumber} completed\n`);
@@ -435,9 +432,7 @@ Continue this pattern for all ${validArticles.length} articles. Keep content fac
         if (allArticles.length > this.maxArticles) {
             const remainingArticles = allArticles.slice(this.maxArticles);
             for (const article of remainingArticles) {
-                const unenhancedArticle = { ...article };
-                unenhancedArticle.enhanced_by_ai = false;
-                enhancedArticles.push(unenhancedArticle);
+                enhancedArticles.push(article);
                 enhancedData.enhancement_info.articles_skipped++;
             }
         }

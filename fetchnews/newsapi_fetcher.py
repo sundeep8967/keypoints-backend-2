@@ -171,7 +171,7 @@ class NewsAPIFetcher:
             if response.status_code == 200:
                 soup = BeautifulSoup(response.text, 'html.parser')
                 
-                # Try multiple methods to find high-quality images
+                # Try multiple methods to find images
                 image_selectors = [
                     ('meta', {'property': 'og:image'}),
                     ('meta', {'name': 'twitter:image:src'}),
@@ -196,7 +196,7 @@ class NewsAPIFetcher:
                                 parsed_url = urlparse(article_url)
                                 image_url = f"{parsed_url.scheme}://{parsed_url.netloc}{image_url}"
                             
-                            # Validate and prefer high-quality images
+                            # Validate and prefer images
                             if image_url.startswith('http') and not any(skip in image_url.lower() for skip in ['logo', 'icon', 'avatar']):
                                 return image_url
                             
@@ -936,7 +936,7 @@ class NewsAPIFetcher:
                             else:
                                 print(f"    ❌ All methods failed - skipping article with insufficient content")
             
-            # Try to get better image if current one is low quality or missing
+            # Try to get better image if current one is missing
             if not processed_article['image_url'] or 'placeholder' in processed_article['image_url'].lower():
                 enhanced_image = self.extract_image_from_article(processed_article['url'])
                 if enhanced_image:

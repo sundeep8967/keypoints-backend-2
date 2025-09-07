@@ -1,9 +1,9 @@
 name: Daily News Aggregation
 
 on:
-  # Run daily at 6:00 AM UTC (11:30 AM IST)
+  # Run daily at 3:30 AM UTC (9:00 AM IST)
   schedule:
-    - cron: '0 6 * * *'
+    - cron: '30 3 * * *'
   
   # Allow manual trigger
   workflow_dispatch:

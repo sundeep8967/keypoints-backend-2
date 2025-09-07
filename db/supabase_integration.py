@@ -89,8 +89,8 @@ class SupabaseNewsDB:
             print(f"❌ Error creating tables: {e}")
             return False
     
-    def insert_articles(self, articles: List[Dict[str, Any]]) -> bool:
-        """Insert only articles with images into the database"""
+    def insert_articles(self, articles: List[Dict[str, Any]], is_enhanced: bool = False) -> bool:
+        """Insert articles into the database (enhanced or raw)"""
         try:
             if not articles:
                 print("⚠️  No articles to insert")
@@ -189,7 +189,8 @@ class SupabaseNewsDB:
                     'category': category,
                     'description': article.get('description', ''),
                     'image_url': article.get('image_url', ''),
-                    'article_id': article_id
+                    'article_id': article_id,
+                    'enhanced_by_ai': article.get('enhanced_by_ai', False) if is_enhanced else False
                 }
                 
                 # Description is now always included as primary content field
@@ -237,6 +238,25 @@ class SupabaseNewsDB:
             
         except Exception as e:
             print(f"❌ Error logging run metadata: {e}")
+            return False
+    
+    def insert_enhancement_run(self, enhancement_metadata: Dict[str, Any]) -> bool:
+        """Insert AI enhancement run metadata"""
+        try:
+            enhancement_info = enhancement_metadata.get('enhancement_info', {})
+            
+            print("📊 AI Enhancement Run Summary:")
+            print(f"  🤖 Total articles processed: {enhancement_info.get('total_articles_processed', 0)}")
+            print(f"  ✨ Articles enhanced: {enhancement_info.get('articles_enhanced', 0)}")
+            print(f"  ⏭️  Articles skipped: {enhancement_info.get('articles_skipped', 0)}")
+            print(f"  📈 Enhancement rate: {enhancement_info.get('enhancement_rate', '0%')}")
+            print(f"  🔧 API version: {enhancement_info.get('api_version', 'N/A')}")
+            print(f"  🧠 Model used: {enhancement_info.get('model_used', 'N/A')}")
+            
+            return True
+            
+        except Exception as e:
+            print(f"❌ Error logging enhancement metadata: {e}")
             return False
     
     def get_recent_articles(self, limit: int = 100, category: Optional[str] = None) -> List[Dict]:

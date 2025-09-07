@@ -1,0 +1,23 @@
+{
+  "name": "news-enhancement-tool",
+  "version": "1.0.0",
+  "description": "AI-powered news enhancement using Gemini API",
+  "type": "module",
+  "main": "enhance_news_with_ai.js",
+  "scripts": {
+    "enhance": "node enhance_news_with_ai.js",
+    "test": "node -e \"console.log('Node.js setup working!')\""
+  },
+  "dependencies": {
+    "@google/genai": "^0.3.0",
+    "dotenv": "^16.0.0"
+  },
+  "keywords": [
+    "news",
+    "ai",
+    "gemini",
+    "enhancement"
+  ],
+  "author": "",
+  "license": "MIT"
+}

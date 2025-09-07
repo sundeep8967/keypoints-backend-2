@@ -25,6 +25,12 @@ jobs:
       with:
         python-version: '3.11'
         
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
     - name: Cache pip dependencies
       uses: actions/cache@v4
       with:
@@ -33,10 +39,14 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-pip-
           
-    - name: Install dependencies
+    - name: Install Python dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
+        
+    - name: Install Node.js dependencies
+      run: |
+        npm install
         
     - name: Install Playwright browsers
       run: |
@@ -53,20 +63,26 @@ jobs:
         echo "NEWSAPI_KEY_TERTIARY=${{ secrets.NEWSAPI_KEY_TERTIARY }}" >> .env
         echo "SUPABASE_URL=${{ secrets.SUPABASE_URL }}" >> .env
         echo "SUPABASE_KEY=${{ secrets.SUPABASE_KEY }}" >> .env
+        echo "GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}" >> .env
+        echo "GEMINI_API_KEY_2=${{ secrets.GEMINI_API_KEY_2 }}" >> .env
+        echo "GEMINI_API_KEY_3=${{ secrets.GEMINI_API_KEY_3 }}" >> .env
+        echo "GEMINI_API_KEY_4=${{ secrets.GEMINI_API_KEY_4 }}" >> .env
         echo "TITLE_SIMILARITY_THRESHOLD=0.85" >> .env
         echo "URL_SIMILARITY_THRESHOLD=0.90" >> .env
         echo "CONTENT_SIMILARITY_THRESHOLD=0.75" >> .env
+        echo "MAX_ARTICLES_TO_ENHANCE=999999" >> .env
         
     - name: Create data directory
       run: |
         mkdir -p data
         
-    - name: Run news aggregation
+    - name: Run complete automated pipeline
       run: |
-        # Use sequential mode (1) - optimal for GitHub free tier
-        echo "1" | python main.py
+        # Use full automated pipeline (3) - Fetch → AI Enhance → Supabase
+        echo "3" | python main.py
       env:
         PYTHONPATH: ${{ github.workspace }}
+      timeout-minutes: 45
         
     - name: Upload aggregated data as artifacts
       uses: actions/upload-artifact@v4
@@ -75,6 +91,7 @@ jobs:
         path: |
           data/*.json
         retention-days: 7
+        if-no-files-found: warn
         
     - name: Generate summary report
       run: |
@@ -106,6 +123,20 @@ jobs:
           echo "- **Title Duplicates:** $TITLE_DUPLICATES" >> $GITHUB_STEP_SUMMARY
           echo "- **Content Duplicates:** $CONTENT_DUPLICATES" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # AI Enhancement info (if enhanced file exists)
+          if [ -f "data/combined_news_data_enhanced.json" ]; then
+            ENHANCED_ARTICLES=$(python -c "import json; data=json.load(open('data/combined_news_data_enhanced.json')); print(data.get('enhancement_info', {}).get('articles_enhanced', 0))")
+            ENHANCEMENT_RATE=$(python -c "import json; data=json.load(open('data/combined_news_data_enhanced.json')); print(data.get('enhancement_info', {}).get('enhancement_rate', '0%'))")
+            AI_MODEL=$(python -c "import json; data=json.load(open('data/combined_news_data_enhanced.json')); print(data.get('enhancement_info', {}).get('model_used', 'N/A'))")
+            
+            echo "### AI Enhancement Results" >> $GITHUB_STEP_SUMMARY
+            echo "- **Articles Enhanced:** $ENHANCED_ARTICLES" >> $GITHUB_STEP_SUMMARY
+            echo "- **Enhancement Rate:** $ENHANCEMENT_RATE" >> $GITHUB_STEP_SUMMARY
+            echo "- **AI Model Used:** $AI_MODEL" >> $GITHUB_STEP_SUMMARY
+            echo "- **Quad-Key System:** ✅ Active" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+          fi
           
           # File sizes
           echo "### Generated Files" >> $GITHUB_STEP_SUMMARY

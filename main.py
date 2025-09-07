@@ -8,6 +8,8 @@ import json
 import datetime
 import os
 import time
+import subprocess
+import sys
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import re
 from difflib import SequenceMatcher
@@ -36,7 +38,6 @@ class NewsAggregator:
         # Initialize fetchers - let NewsAPIFetcher handle its own triple key system
         self.rss_fetcher = RSSNewsFetcher()
         self.newsapi_fetcher = NewsAPIFetcher()  # No key passed - uses its own triple key system
-        
         
         # Initialize Supabase connection
         self.use_supabase = use_supabase
@@ -455,52 +456,131 @@ class NewsAggregator:
         
         return combined_data
     
-    def save_combined_data(self, combined_data, filename='data/combined_news_data.json'):
-        """Save combined data to JSON file and Supabase"""
+    def save_combined_data(self, combined_data, filename='data/combined_news_data.json', save_to_supabase=False):
+        """Save combined data to JSON file only (no Supabase - wait for enhanced data)"""
         # Save to JSON file
         os.makedirs('data', exist_ok=True)
         with open(filename, 'w', encoding='utf-8') as f:
             json.dump(combined_data, f, indent=2, ensure_ascii=False)
         print(f"💾 Combined data saved to {filename}")
         
-        # Save to Supabase if enabled
-        if self.use_supabase and self.supabase_db:
-            self.save_to_supabase(combined_data)
+        # DO NOT save raw data to Supabase - only enhanced data should go to Supabase
+        if save_to_supabase and self.use_supabase and self.supabase_db:
+            print("⚠️  Skipping raw data upload - only enhanced data will be saved to Supabase")
+            # self.save_to_supabase(combined_data)  # Commented out to prevent duplicate uploads
     
-    def save_to_supabase(self, combined_data):
-        """Save aggregated news data to Supabase database"""
+    def run_ai_enhancement(self):
+        """Run the AI enhancement JavaScript file"""
         try:
-            print("\n🔗 Saving data to Supabase...")
+            print("\n🤖 PHASE 3: AI ENHANCEMENT")
+            print("-" * 50)
+            print("🔄 Starting AI enhancement with Gemini...")
             
-            # Collect all deduplicated articles
+            # Check if Node.js is available
+            try:
+                subprocess.run(['node', '--version'], check=True, capture_output=True)
+            except (subprocess.CalledProcessError, FileNotFoundError):
+                print("❌ Node.js not found. Please install Node.js to run AI enhancement.")
+                return False
+            
+            # Check if the enhancement script exists
+            if not os.path.exists('enhance_news_with_ai.js'):
+                print("❌ enhance_news_with_ai.js not found. Skipping AI enhancement.")
+                return False
+            
+            # Check if combined_news_data.json exists
+            if not os.path.exists('data/combined_news_data.json'):
+                print("❌ combined_news_data.json not found. Cannot run AI enhancement.")
+                return False
+            
+            # Run the Node.js enhancement script
+            print("🚀 Executing: node enhance_news_with_ai.js")
+            result = subprocess.run(
+                ['node', 'enhance_news_with_ai.js'],
+                capture_output=True,
+                text=True,
+                timeout=1800  # 30 minutes timeout
+            )
+            
+            if result.returncode == 0:
+                print("✅ AI enhancement completed successfully!")
+                
+                # Show some output from the enhancement process
+                if result.stdout:
+                    lines = result.stdout.strip().split('\n')
+                    # Show last few lines which usually contain the summary
+                    for line in lines[-10:]:
+                        if line.strip():
+                            print(f"   {line}")
+                
+                return True
+            else:
+                print("❌ AI enhancement failed!")
+                if result.stderr:
+                    print(f"Error: {result.stderr}")
+                return False
+                
+        except subprocess.TimeoutExpired:
+            print("⏰ AI enhancement timed out (30 minutes). This might happen with very large datasets.")
+            return False
+        except Exception as e:
+            print(f"❌ Error running AI enhancement: {e}")
+            return False
+    
+    def save_enhanced_to_supabase(self):
+        """Save ONLY AI-enhanced articles to Supabase (this is the ONLY Supabase upload method)"""
+        try:
+            enhanced_file = 'data/combined_news_data_enhanced.json'
+            if not os.path.exists(enhanced_file):
+                print("⚠️  Enhanced data file not found. Skipping enhanced data upload.")
+                return False
+            
+            print("\n🔗 Saving ONLY AI-enhanced data to Supabase (no raw data)...")
+            print("📋 Source: combined_news_data_enhanced.json")
+            
+            # Load enhanced data
+            with open(enhanced_file, 'r', encoding='utf-8') as f:
+                enhanced_data = json.load(f)
+            
+            # Collect all enhanced articles
             all_articles = []
-            for category, articles in combined_data.get('by_category_deduplicated', {}).items():
+            for category, articles in enhanced_data.get('by_category_enhanced', {}).items():
                 all_articles.extend(articles)
             
             if not all_articles:
-                print("⚠️  No articles to save to database")
-                return
+                print("⚠️  No enhanced articles to save to database")
+                return False
             
-            # Save articles to database
-            success = self.supabase_db.insert_articles(all_articles)
+            # Save enhanced articles to database
+            success = self.supabase_db.insert_articles(all_articles, is_enhanced=True)
             
             if success:
-                # Save aggregation run metadata
-                self.supabase_db.insert_aggregation_run(combined_data)
+                # Save enhancement run metadata
+                enhancement_metadata = {
+                    'timestamp': enhanced_data.get('enhancement_timestamp'),
+                    'enhancement_info': enhanced_data.get('enhancement_info', {}),
+                    'total_articles': len(all_articles)
+                }
+                self.supabase_db.insert_enhancement_run(enhancement_metadata)
                 
-                # Show database stats
-                stats = self.supabase_db.get_aggregation_stats()
-                if stats:
-                    print(f"\n📊 Database Updated (Images Only):")
-                    print(f"  📰 Total articles in DB: {stats.get('total_articles', 0)}")
-                    print(f"  🖼️  Articles with images: {stats.get('articles_with_images', 0)}")
-                    print(f"  📈 Image success rate: {stats.get('image_success_rate', '0%')}")
-                    print(f"  💡 Note: Only articles with images are saved to database")
+                print(f"✅ Enhanced articles saved to Supabase!")
+                print(f"   📰 Total enhanced articles: {len(all_articles)}")
+                print(f"   🤖 Enhancement rate: {enhanced_data.get('enhancement_info', {}).get('enhancement_rate', 'N/A')}")
+                return True
             else:
-                print("❌ Failed to save articles to database")
+                print("❌ Failed to save enhanced articles to database")
+                return False
                 
         except Exception as e:
-            print(f"❌ Error saving to Supabase: {e}")
+            print(f"❌ Error saving enhanced data to Supabase: {e}")
+            return False
+
+    def save_to_supabase(self, combined_data):
+        """DEPRECATED: Only save enhanced articles to Supabase, not raw data"""
+        print("⚠️  WARNING: save_to_supabase() called but raw data should NOT go to Supabase")
+        print("⚠️  Only enhanced articles from combined_news_data_enhanced.json should be uploaded")
+        print("⚠️  Use save_enhanced_to_supabase() instead")
+        return False
     
     def get_database_stats(self):
         """Get statistics from Supabase database"""
@@ -558,9 +638,9 @@ class NewsAggregator:
         print(f"  🎯 Deduplicated Sources: {combined_data['sources_summary'].get('deduplicated_sources', 0)}")
 
 def main():
-    """Main function to execute both news fetchers"""
-    print("🌟 Welcome to the Comprehensive News Aggregator!")
-    print("This tool fetches news from RSS feeds AND NewsAPI")
+    """Main function to execute the complete automated pipeline"""
+    print("🌟 Welcome to the Automated News Pipeline!")
+    print("This tool: Fetches → Enhances with AI → Saves to Supabase")
     print("="*70)
     
     # Initialize aggregator
@@ -570,33 +650,75 @@ def main():
     print("\nChoose execution method:")
     print("1. Sequential (RSS first, then NewsAPI) - Slower but more stable")
     print("2. Parallel (Both simultaneously) - Faster but uses more resources")
+    print("3. Full Auto Pipeline (Parallel + AI + Supabase) - Complete automation")
     
     while True:
-        choice = input("\nEnter your choice (1 or 2): ").strip()
-        if choice in ['1', '2']:
+        choice = input("\nEnter your choice (1, 2, or 3): ").strip()
+        if choice in ['1', '2', '3']:
             break
-        print("Please enter 1 or 2")
+        print("Please enter 1, 2, or 3")
     
     # Execute based on choice
     if choice == '1':
         combined_data = aggregator.run_both_sequential()
-    else:
+    elif choice == '2':
+        combined_data = aggregator.run_both_parallel()
+    else:  # choice == '3'
+        print("\n🚀 STARTING FULL AUTOMATED PIPELINE...")
+        print("="*70)
         combined_data = aggregator.run_both_parallel()
     
-    # Save combined results
-    aggregator.save_combined_data(combined_data)
+    # Save combined results (local files only - NO SUPABASE for raw data)
+    aggregator.save_combined_data(combined_data, save_to_supabase=False)
     
     # Print comprehensive summary
     aggregator.print_summary(combined_data)
     
-    # Print Supabase status at the end
+    # If full auto pipeline or user wants AI enhancement
+    if choice == '3':
+        # Run AI Enhancement automatically
+        ai_success = aggregator.run_ai_enhancement()
+        
+        if ai_success:
+            # Save enhanced data to Supabase
+            if aggregator.use_supabase and aggregator.supabase_db:
+                aggregator.save_enhanced_to_supabase()
+        else:
+            print("⚠️  AI enhancement failed, but raw data is still available")
+    else:
+        # Ask if user wants to run AI enhancement
+        print(f"\n" + "="*70)
+        print("🤖 AI ENHANCEMENT OPTION")
+        print("="*70)
+        
+        ai_choice = input("\nDo you want to run AI enhancement now? (y/N): ").strip().lower()
+        if ai_choice in ['y', 'yes']:
+            ai_success = aggregator.run_ai_enhancement()
+            
+            if ai_success and aggregator.use_supabase and aggregator.supabase_db:
+                save_choice = input("\nSave enhanced data to Supabase? (y/N): ").strip().lower()
+                if save_choice in ['y', 'yes']:
+                    aggregator.save_enhanced_to_supabase()
+    
+    # Print final status
     print(f"\n" + "="*70)
-    print("💾 DATABASE STORAGE SUMMARY")
+    print("💾 FINAL PIPELINE STATUS")
     print("="*70)
     
+    # Check what files were created
+    files_created = []
+    if os.path.exists('data/combined_news_data.json'):
+        files_created.append("✅ Raw news data: data/combined_news_data.json")
+    
+    if os.path.exists('data/combined_news_data_enhanced.json'):
+        files_created.append("✅ AI-enhanced data: data/combined_news_data_enhanced.json")
+    
+    for file_info in files_created:
+        print(f"  {file_info}")
+    
+    # Supabase status
     if aggregator.use_supabase and aggregator.supabase_db:
         try:
-            # Get database stats to show current status
             stats = aggregator.get_database_stats()
             if stats:
                 print("✅ SUPABASE: Successfully connected and data saved")
@@ -611,8 +733,9 @@ def main():
         print("❌ SUPABASE: Not connected or disabled")
         print("  💡 Enable Supabase by setting SUPABASE_URL and SUPABASE_KEY in .env")
     
-    print(f"\n🎉 News aggregation complete!")
-    print(f"📊 Check 'data/combined_news_data.json' for the complete dataset")
+    print(f"\n🎉 Pipeline execution complete!")
+    if choice == '3':
+        print("🚀 Full automation completed: Fetch → AI Enhance → Supabase")
     
     return combined_data
 

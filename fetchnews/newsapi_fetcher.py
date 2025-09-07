@@ -55,30 +55,78 @@ class NewsAPIFetcher:
         total_requests = key_count * 100
         print(f"🔑 NewsAPI initialized with {key_count} API keys ({total_requests} requests/day total)")
         
-        # NewsAPI source mappings to match your RSS categories
+        # Indian-centric NewsAPI source categorization system
         self.source_categories = {
-            'international': [
-                'bbc-news', 'cnn', 'reuters', 'associated-press', 'the-guardian-uk',
-                'al-jazeera-english', 'independent', 'the-times-of-india',
-                'abc-news', 'cbs-news', 'nbc-news', 'fox-news', 'usa-today',
-                'the-washington-post', 'the-new-york-times', 'npr'
+            'indian_news': {
+                'sources': [
+                    'the-times-of-india', 'the-hindu', 'ndtv', 'google-news-in',
+                    'india-today', 'the-indian-express', 'hindustan-times'
+                ],
+                'priority': 'critical',
+                'description': 'India-focused news from top publications',
+                'keywords': ['india', 'indian', 'delhi', 'mumbai', 'politics', 'government', 'modi', 'bjp']
+            },
+            'cricket_sports': {
+                'sources': [
+                    'espn-cric-info'
+                ],
+                'priority': 'critical',
+                'description': 'Cricket and Indian sports coverage',
+                'keywords': ['cricket', 'ipl', 'virat kohli', 'rohit sharma', 'indian team']
+            },
+            'bengaluru_local': {
+                'sources': [
+                    'the-times-of-india', 'the-hindu', 'google-news-in', 'deccan-herald'
+                ],
+                'priority': 'high',
+                'description': 'Bengaluru and Karnataka local news',
+                'keywords': ['bengaluru', 'bangalore', 'karnataka', 'traffic', 'metro', 'bbmp', 'startup']
+            },
+            'bollywood_entertainment': {
+                'sources': [
+                    'the-indian-express', 'filmibeat', 'bollywood-hungama', 'pinkvilla'
+                ],
+                'priority': 'high',
+                'description': 'Bollywood news and celebrity updates',
+                'keywords': ['bollywood', 'shahrukh khan', 'deepika padukone', 'movie', 'celebrity']
+            },
+            'technology_india': {
+                'sources': [
+                    'techcrunch', 'the-verge', 'business-insider', 'yourstory'
+                ],
+                'priority': 'high',
+                'description': 'Indian tech startups and innovation',
+                'keywords': ['startup india', 'indian tech', 'bengaluru tech', 'flipkart', 'swiggy']
+            },
+            'government_schemes': {
+                'sources': [
+                    'the-hindu', 'the-indian-express', 'ndtv', 'business-standard'
+                ],
+                'priority': 'medium',
+                'description': 'Government policies and citizen benefits',
+                'keywords': ['government scheme', 'pm kisan', 'ayushman bharat', 'mudra loan']
+            },
+            
+            
+        }
+
+        # Indian-focused source reliability and credibility ratings
+        self.source_credibility = {
+            'tier_1_premium_indian': [
+                'the-hindu', 'the-times-of-india', 'the-indian-express', 
+                'ndtv', 'india-today', 'hindustan-times'
             ],
-            'technology': [
-                'techcrunch', 'the-verge', 'wired', 'ars-technica', 'engadget',
-                'techradar', 'the-next-web', 'hacker-news'
+            'tier_2_reliable_indian': [
+                'google-news-in', 'business-standard', 'deccan-herald',
+                'espn-cric-info', 'yourstory', 'livemint'
             ],
-           
-            'sports': [
-                'espn', 'bbc-sport', 'fox-sports', 'the-sport-bible',
-                'nfl-news', 'nba-news', 'mlb-news'
+            'tier_3_entertainment_indian': [
+                'filmibeat', 'bollywood-hungama', 'pinkvilla', 'filmfare'
             ],
-            'india': [
-                'the-times-of-india', 'the-hindu', 'google-news-in'
-            ],
-            'geopolitics': [
-                'bbc-news', 'cnn', 'reuters', 'associated-press', 'the-guardian-uk',
-                'al-jazeera-english', 'the-washington-post', 'the-new-york-times',
-                'financial-times', 'the-economist'
+            
+            'tier_4_global_relevant': [
+                'bbc-news', 'reuters', 'al-jazeera-english', 'techcrunch',
+                'the-verge', 'business-insider', 'espn'
             ]
         }
     
@@ -127,6 +175,229 @@ class NewsAPIFetcher:
         if self.current_key_index < len(key_names):
             key_name = key_names[self.current_key_index]
             self.requests_made[key_name] += 1
+    
+    def get_sources_by_category(self, category):
+        """Get sources for a specific category"""
+        if category in self.source_categories:
+            return self.source_categories[category]['sources']
+        return []
+    
+    def get_category_priority(self, category):
+        """Get priority level for a category"""
+        if category in self.source_categories:
+            return self.source_categories[category]['priority']
+        return 'low'
+    
+    def get_high_priority_categories(self):
+        """Get all high priority categories"""
+        return [cat for cat, data in self.source_categories.items() 
+                if data['priority'] in ['critical', 'high']]
+    
+    def get_critical_priority_categories(self):
+        """Get critical priority categories (Indian news and cricket)"""
+        return [cat for cat, data in self.source_categories.items() 
+                if data['priority'] == 'critical']
+    
+    def get_sources_by_credibility_tier(self, tier):
+        """Get sources by credibility tier"""
+        return self.source_credibility.get(tier, [])
+    
+    def categorize_article_by_content(self, title, description):
+        """Intelligently categorize article based on content with Indian focus"""
+        title_lower = (title or '').lower()
+        desc_lower = (description or '').lower()
+        content = f"{title_lower} {desc_lower}"
+
+        # Check category keywords with Indian context
+        category_scores = {}
+        for category, data in self.source_categories.items():
+            score = sum(1 for keyword in data['keywords'] if keyword.lower() in content)
+            if score > 0:
+                category_scores[category] = score
+
+        # Special handling for Indian content
+        if any(word in content for word in ['india', 'indian', 'delhi', 'mumbai', 'bengaluru', 'bangalore']):
+            if 'cricket' in content or 'ipl' in content:
+                return 'cricket_sports', None, 'critical'
+            elif any(word in content for word in ['bollywood', 'movie', 'actor', 'actress']):
+                return 'bollywood_entertainment', None, 'high'
+            elif any(word in content for word in ['startup', 'tech', 'flipkart', 'swiggy']):
+                return 'technology_india', None, 'high'
+            elif any(word in content for word in ['bengaluru', 'bangalore', 'karnataka']):
+                return 'bengaluru_local', None, 'high'
+            else:
+                return 'indian_news', None, 'critical'
+        
+        if category_scores:
+            best_category = max(category_scores.items(), key=lambda x: x[1])
+            return best_category[0], None, self.get_category_priority(best_category[0])
+        
+        return 'general', None, 'low'
+    
+    def get_optimal_sources_for_category(self, category, available_sources, max_sources=4):
+        """Get optimal sources for a category based on availability and credibility"""
+        category_sources = self.get_sources_by_category(category)
+        
+        # Filter by availability
+        valid_sources = [source for source in category_sources if source in available_sources]
+        
+        # Prioritize by credibility tier
+        prioritized_sources = []
+        
+        # Add tier 1 sources first
+        tier1_sources = [s for s in valid_sources if s in self.source_credibility['tier_1_premium']]
+        prioritized_sources.extend(tier1_sources[:2])  # Max 2 tier 1 sources
+        
+        # Add tier 2 sources
+        tier2_sources = [s for s in valid_sources if s in self.source_credibility['tier_2_reliable'] 
+                        and s not in prioritized_sources]
+        prioritized_sources.extend(tier2_sources[:2])  # Max 2 tier 2 sources
+        
+        # Add tier 3 sources if needed
+        if len(prioritized_sources) < max_sources:
+            tier3_sources = [s for s in valid_sources if s in self.source_credibility['tier_3_specialized'] 
+                            and s not in prioritized_sources]
+            remaining_slots = max_sources - len(prioritized_sources)
+            prioritized_sources.extend(tier3_sources[:remaining_slots])
+        
+        return prioritized_sources[:max_sources]
+    
+    def analyze_source_coverage(self, available_sources):
+        """Analyze which categories have good source coverage"""
+        coverage_report = {}
+        
+        for category, data in self.source_categories.items():
+            category_sources = data['sources']
+            available_count = sum(1 for source in category_sources if source in available_sources)
+            total_count = len(category_sources)
+            coverage_percentage = (available_count / total_count) * 100 if total_count > 0 else 0
+            
+            # Get credibility breakdown
+            tier1_available = sum(1 for source in category_sources 
+                                if source in available_sources and source in self.source_credibility['tier_1_premium'])
+            tier2_available = sum(1 for source in category_sources 
+                                if source in available_sources and source in self.source_credibility['tier_2_reliable'])
+            tier3_available = sum(1 for source in category_sources 
+                                if source in available_sources and source in self.source_credibility['tier_3_specialized'])
+            
+            coverage_report[category] = {
+                'available_sources': available_count,
+                'total_sources': total_count,
+                'coverage_percentage': coverage_percentage,
+                'priority': data['priority'],
+                'tier1_available': tier1_available,
+                'tier2_available': tier2_available,
+                'tier3_available': tier3_available,
+                'recommended_sources': self.get_optimal_sources_for_category(category, available_sources)
+            }
+        
+        return coverage_report
+    
+    def print_categorization_summary(self, news_data):
+        """Print detailed categorization summary"""
+        print("\n" + "="*80)
+        print("🎯 ENHANCED SOURCE CATEGORIZATION SUMMARY")
+        print("="*80)
+        
+        # Overall statistics
+        total_articles = news_data.get('total_articles', 0)
+        print(f"📊 Total Articles: {total_articles}")
+        print(f"📂 Categories Processed: {len(news_data.get('categories', []))}")
+        print(f"📰 Sources Used: {len(news_data.get('by_source', {}))}")
+        
+        # Category breakdown with enhanced metrics
+        print(f"\n📈 CATEGORY PERFORMANCE:")
+        for category, articles in news_data.get('by_category', {}).items():
+            if not articles:
+                continue
+                
+            category_data = self.source_categories.get(category, {})
+            priority = category_data.get('priority', 'unknown')
+            
+            # Calculate content accuracy
+            correctly_categorized = sum(1 for a in articles if a.get('detected_category') == category)
+            accuracy_rate = (correctly_categorized / len(articles)) * 100 if articles else 0
+            
+            # Calculate credibility distribution
+            credibility_counts = {}
+            for tier in ['tier_1_premium', 'tier_2_reliable', 'tier_3_specialized', 'unrated']:
+                credibility_counts[tier] = sum(1 for a in articles if a.get('source_credibility') == tier)
+            
+            print(f"  📁 {category.title()} ({priority} priority):")
+            print(f"     📰 Articles: {len(articles)}")
+            print(f"     🎯 Content Accuracy: {accuracy_rate:.1f}%")
+            print(f"     🏆 Credibility: T1:{credibility_counts['tier_1_premium']} | "
+                  f"T2:{credibility_counts['tier_2_reliable']} | "
+                  f"T3:{credibility_counts['tier_3_specialized']} | "
+                  f"Unrated:{credibility_counts['unrated']}")
+            
+            # Special metrics for specific categories
+            if category == 'cricket_sports':
+                sport_breakdown = {}
+                cricket_count = 0
+                indian_sports_count = 0
+                for article in articles:
+                    for sport in article.get('sport_types', []):
+                        sport_breakdown[sport] = sport_breakdown.get(sport, 0) + 1
+                    if article.get('is_cricket'):
+                        cricket_count += 1
+                    if article.get('is_indian_sport'):
+                        indian_sports_count += 1
+                if sport_breakdown:
+                    sports_str = ', '.join([f"{sport}:{count}" for sport, count in sport_breakdown.items()])
+                    print(f"     🏏 Sports: {sports_str}")
+                    print(f"     🇮🇳 Cricket: {cricket_count}, Indian Sports: {indian_sports_count}")
+            
+            
+            
+            elif category == 'indian_news':
+                # Count political vs general news
+                political_count = sum(1 for a in articles if any(word in (a.get('title', '') + a.get('description', '')).lower() 
+                                    for word in ['modi', 'bjp', 'congress', 'election', 'parliament']))
+                print(f"     🏛️ Political news: {political_count}/{len(articles)}")
+            
+            elif category == 'bengaluru_local':
+                # Count traffic vs startup vs general local news
+                traffic_count = sum(1 for a in articles if 'traffic' in (a.get('title', '') + a.get('description', '')).lower())
+                startup_count = sum(1 for a in articles if 'startup' in (a.get('title', '') + a.get('description', '')).lower())
+                print(f"     🚦 Traffic: {traffic_count}, 🚀 Startups: {startup_count}")
+            
+    # Source credibility overview
+        print(f"\n🏆 SOURCE CREDIBILITY OVERVIEW:")
+        all_articles = []
+        for articles in news_data.get('by_category', {}).values():
+            all_articles.extend(articles)
+        
+        total_credibility = {}
+        for tier in ['tier_1_premium', 'tier_2_reliable', 'tier_3_specialized', 'unrated']:
+            count = sum(1 for a in all_articles if a.get('source_credibility') == tier)
+            percentage = (count / len(all_articles)) * 100 if all_articles else 0
+            total_credibility[tier] = {'count': count, 'percentage': percentage}
+        
+        print(f"  🥇 Tier 1 Premium: {total_credibility['tier_1_premium']['count']} articles ({total_credibility['tier_1_premium']['percentage']:.1f}%)")
+        print(f"  🥈 Tier 2 Reliable: {total_credibility['tier_2_reliable']['count']} articles ({total_credibility['tier_2_reliable']['percentage']:.1f}%)")
+        print(f"  🥉 Tier 3 Specialized: {total_credibility['tier_3_specialized']['count']} articles ({total_credibility['tier_3_specialized']['percentage']:.1f}%)")
+        print(f"  ❓ Unrated: {total_credibility['unrated']['count']} articles ({total_credibility['unrated']['percentage']:.1f}%)")
+
+        # Indian news category breakdown
+        indian_news_articles = news_data.get('by_category', {}).get('indian_news', [])
+        if indian_news_articles:
+            print(f"\n🇮🇳 INDIAN NEWS BREAKDOWN:")
+            print(f"  📰 Total Indian news articles: {len(indian_news_articles)}")
+            
+            # Analyze by states/cities mentioned
+            state_mentions = {}
+            for article in indian_news_articles:
+                content = f"{article.get('title', '')} {article.get('description', '')}".lower()
+                for state in ['delhi', 'mumbai', 'bengaluru', 'bangalore', 'chennai', 'kolkata', 'hyderabad', 'pune']:
+                    if state in content:
+                        state_mentions[state] = state_mentions.get(state, 0) + 1
+            
+            if state_mentions:
+                cities_str = ', '.join([f"{city}:{count}" for city, count in sorted(state_mentions.items(), key=lambda x: x[1], reverse=True)[:5]])
+                print(f"  🏙️ Top cities mentioned: {cities_str}")
+        
+        print("="*80)
         
         # Indian states for targeted news search
         self.indian_states = [
@@ -146,22 +417,9 @@ class NewsAPIFetcher:
             'Nagpur', 'Indore', 'Thane', 'Bhopal', 'Visakhapatnam', 'Pimpri',
             'Patna', 'Vadodara', 'Ghaziabad', 'Ludhiana', 'Agra', 'Nashik'
         ]
-        
-        # Geopolitical keywords and topics
-        self.geopolitical_keywords = [
-            'diplomacy', 'sanctions', 'trade war', 'military alliance', 'NATO',
-            'UN Security Council', 'G7', 'G20', 'BRICS', 'territorial dispute',
-            'cyber warfare', 'nuclear weapons', 'arms deal', 'peace treaty',
-            'international relations', 'foreign policy', 'summit meeting',
-            'border conflict', 'refugee crisis', 'humanitarian aid'
-        ]
-        
-        # Key geopolitical regions and conflicts
+
         self.geopolitical_regions = [
-            'Ukraine Russia', 'China Taiwan', 'Middle East', 'South China Sea',
-            'North Korea', 'Iran nuclear', 'Afghanistan', 'Syria conflict',
-            'Israel Palestine', 'Kashmir dispute', 'Brexit', 'EU relations',
-            'US China relations', 'India Pakistan', 'Turkey Greece'
+            'India Pakistan'
         ]
 
     def extract_image_from_article(self, article_url, timeout=10):
@@ -741,104 +999,7 @@ class NewsAPIFetcher:
         
         return indian_articles
 
-    def fetch_geopolitics_news(self, max_topics=8):
-        """Fetch geopolitics and international relations news"""
-        print("🌍 Fetching Geopolitics & International Relations news...")
-        
-        geopolitics_articles = []
-        
-        # Get yesterday's date for recent news
-        yesterday = (datetime.datetime.now() - datetime.timedelta(days=1)).strftime('%Y-%m-%d')
-        
-        # Fetch news for key geopolitical regions/conflicts
-        selected_regions = self.geopolitical_regions[:max_topics]
-        
-        for region in selected_regions:
-            try:
-                query = f'"{region}" geopolitics OR diplomacy OR conflict'
-                print(f"  🔍 Searching for {region} geopolitics...")
-                
-                region_data = self.fetch_everything(
-                    query=query,
-                    from_date=yesterday,
-                    page_size=4  # Limit per region
-                )
-                
-                if region_data and 'articles' in region_data:
-                    articles = self.process_articles(region_data, 'geopolitics', f"{region} Geopolitics")
-                    for article in articles:
-                        article['geopolitical_region'] = region
-                        article['topic_type'] = 'regional_conflict'
-                    geopolitics_articles.extend(articles)
-                    print(f"    ✅ {region}: {len(articles)} articles")
-                else:
-                    print(f"    ⚠️  {region}: No articles found")
-                
-                time.sleep(0.3)  # Rate limiting
-                
-            except Exception as e:
-                print(f"    ❌ {region}: Error - {e}")
-        
-        # Fetch news for general geopolitical keywords
-        selected_keywords = self.geopolitical_keywords[:6]  # Top 6 keywords
-        
-        for keyword in selected_keywords:
-            try:
-                query = f'"{keyword}" international OR global'
-                print(f"  🔍 Searching for {keyword} news...")
-                
-                keyword_data = self.fetch_everything(
-                    query=query,
-                    from_date=yesterday,
-                    page_size=3  # Limit per keyword
-                )
-                
-                if keyword_data and 'articles' in keyword_data:
-                    articles = self.process_articles(keyword_data, 'geopolitics', f"{keyword.title()} News")
-                    for article in articles:
-                        article['geopolitical_keyword'] = keyword
-                        article['topic_type'] = 'thematic'
-                    geopolitics_articles.extend(articles)
-                    print(f"    ✅ {keyword}: {len(articles)} articles")
-                else:
-                    print(f"    ⚠️  {keyword}: No articles found")
-                
-                time.sleep(0.3)  # Rate limiting
-                
-            except Exception as e:
-                print(f"    ❌ {keyword}: Error - {e}")
-        
-        # Fetch from dedicated geopolitical sources
-        print("  📰 Fetching from geopolitical sources...")
-        geo_sources = ['bbc-news', 'reuters', 'al-jazeera-english', 'the-guardian-uk']
-        available_geo_sources = [source for source in geo_sources if source in self.get_available_sources_list()]
-        
-        if available_geo_sources:
-            try:
-                geo_headlines = self.fetch_top_headlines(sources=available_geo_sources, page_size=15)
-                if geo_headlines and 'articles' in geo_headlines:
-                    # Filter for geopolitical content
-                    geo_articles = []
-                    for article in geo_headlines['articles']:
-                        title_lower = (article.get('title') or '').lower()
-                        desc_lower = (article.get('description') or '').lower()
-                        
-                        # Check if article contains geopolitical keywords
-                        if any(keyword.lower() in title_lower or keyword.lower() in desc_lower 
-                               for keyword in self.geopolitical_keywords + [region.split()[0] for region in self.geopolitical_regions]):
-                            geo_articles.append(article)
-                    
-                    if geo_articles:
-                        articles = self.process_articles({'articles': geo_articles}, 'geopolitics', 'Geopolitical Sources')
-                        for article in articles:
-                            article['topic_type'] = 'source_based'
-                        geopolitics_articles.extend(articles)
-                        print(f"    ✅ Geopolitical sources: {len(articles)} articles")
-                        
-            except Exception as e:
-                print(f"    ❌ Geopolitical sources: Error - {e}")
-        
-        return geopolitics_articles
+    
 
     def get_available_sources_list(self):
         """Helper method to get list of available source IDs"""
@@ -980,30 +1141,78 @@ class NewsAPIFetcher:
         # Strategic fetching with 300 requests - prioritize high-value content
         print(f"\n🎯 Strategic fetching with {len(self.available_keys)} API keys (300 requests total)")
         
-        # Phase 1: Core Categories (High Priority) - 50 requests
-        core_categories = ['international', 'technology', 'business']
-        print(f"\n📊 PHASE 1: Core Categories (High Priority)")
+        # Phase 1: Critical Indian Categories (Highest Priority)
+        critical_categories = self.get_critical_priority_categories()
+        print(f"\n📊 PHASE 1: Critical Indian Categories ({', '.join(critical_categories)})")
         
-        for category in core_categories:
+        # Phase 1A: High Priority Indian Categories
+        high_priority_categories = [cat for cat in self.get_high_priority_categories() if cat not in critical_categories]
+        print(f"📊 PHASE 1A: High Priority Indian Categories ({', '.join(high_priority_categories)})")
+        
+        # Analyze source coverage first
+        coverage_report = self.analyze_source_coverage(available_sources)
+        print(f"\n📈 Source Coverage Analysis:")
+        for category, report in coverage_report.items():
+            if report['priority'] in ['critical', 'high']:
+                priority_icon = "🔥" if report['priority'] == 'critical' else "📊"
+                print(f"  {priority_icon} {category.title()}: {report['coverage_percentage']:.1f}% coverage "
+                      f"(T1:{report.get('tier1_available', 0)}, T2:{report.get('tier2_available', 0)}, T3:{report.get('tier3_available', 0)})")
+        
+        # Process critical categories first (Indian news and cricket)
+        all_priority_categories = critical_categories + high_priority_categories
+        
+        for category in all_priority_categories:
             if category in self.source_categories:
-                preferred_sources = self.source_categories[category]
                 print(f"\n📂 Processing {category.title()} category...")
                 
-                # Filter sources that are actually available
-                valid_sources = [source for source in preferred_sources if source in available_sources]
+                # Use intelligent source selection
+                optimal_sources = self.get_optimal_sources_for_category(category, available_sources, max_sources=3)
                 
-                if valid_sources:
-                    print(f"📰 Using sources: {', '.join(valid_sources[:4])}")  # Limit to top 4 sources
+                if optimal_sources:
+                    print(f"📰 Optimal sources: {', '.join(optimal_sources)}")
                     
-                    # Fetch limited articles for core categories to maintain ~200 total
-                    headlines_data = self.fetch_top_headlines(sources=valid_sources[:2], page_size=8)
+                    # Fetch with prioritized sources
+                    headlines_data = self.fetch_top_headlines(sources=optimal_sources, page_size=10)
                     
                     if headlines_data:
                         articles = self.process_articles(headlines_data, category)
-                        news_data['by_category'][category].extend(articles)
                         
-                        # Group by source
+                        # Enhanced article processing with intelligent categorization
+                        enhanced_articles = []
                         for article in articles:
+                            # Re-categorize based on content for better accuracy
+                            detected_category, conflict, priority = self.categorize_article_by_content(
+                                article['title'], article['description']
+                            )
+                            
+                            # Add metadata
+                            article['detected_category'] = detected_category
+                            article['content_priority'] = priority
+                            
+                            
+                            # Determine source credibility
+                            # Extract source ID from the article's source info
+                            source_info = article.get('source', {})
+                            if isinstance(source_info, dict):
+                                source_id = source_info.get('id', '')
+                            else:
+                                source_id = ''
+                            
+                            # Find credibility tier
+                            article['source_id'] = source_id
+                            for tier, sources in self.source_credibility.items():
+                                if source_id in sources:
+                                    article['source_credibility'] = tier
+                                    break
+                            else:
+                                article['source_credibility'] = 'unrated'
+                            
+                            enhanced_articles.append(article)
+                        
+                        news_data['by_category'][category].extend(enhanced_articles)
+                        
+                        # Group by source with enhanced metadata
+                        for article in enhanced_articles:
                             source_name = article['source']
                             if source_name not in news_data['by_source']:
                                 news_data['by_source'][source_name] = []
@@ -1011,32 +1220,102 @@ class NewsAPIFetcher:
                         
                         news_data['api_status'][category] = {
                             'status': 'success',
-                            'articles_count': len(articles),
-                            'sources_used': valid_sources[:4]
+                            'articles_count': len(enhanced_articles),
+                            'sources_used': optimal_sources,
+                            'coverage_percentage': coverage_report[category]['coverage_percentage'],
+                            'credibility_breakdown': {
+                                'tier1': sum(1 for a in enhanced_articles if a.get('source_credibility') == 'tier_1_premium'),
+                                'tier2': sum(1 for a in enhanced_articles if a.get('source_credibility') == 'tier_2_reliable'),
+                                'tier3': sum(1 for a in enhanced_articles if a.get('source_credibility') == 'tier_3_specialized')
+                            }
                         }
                         
-                        print(f"✅ {category}: {len(articles)} articles from {len(valid_sources[:4])} premium sources")
+                        print(f"✅ {category}: {len(enhanced_articles)} articles from {len(optimal_sources)} optimal sources")
+                        print(f"   🎯 Content analysis: {sum(1 for a in enhanced_articles if a['detected_category'] == category)} correctly categorized")
                     else:
                         print(f"❌ {category}: Failed to fetch data")
+                        news_data['api_status'][category] = {
+                            'status': 'failed',
+                            'error': 'No data received from API'
+                        }
+                else:
+                    print(f"⚠️  {category}: No optimal sources available")
+                    news_data['api_status'][category] = {
+                        'status': 'skipped',
+                        'reason': 'No available sources'
+                    }
                 
-                time.sleep(0.3)  # Reduced delay for efficiency
+                time.sleep(0.3)  # Rate limiting
         
-        # Phase 2: Sports + Specialized Content - 30 requests
-        print(f"\n📊 PHASE 2: Sports & Specialized Content")
+        # Phase 2: Additional Indian Content - Enhanced approach
+        print(f"\n📊 PHASE 2: Additional Indian Content & Specialized Coverage")
         
-        # Sports with targeted approach
-        if 'sports' in self.source_categories:
-            sports_sources = [source for source in self.source_categories['sports'] if source in available_sources]
-            if sports_sources:
-                print(f"🏈 Fetching sports from: {', '.join(sports_sources[:1])}")
-                sports_data = self.fetch_top_headlines(sources=sports_sources[:1], page_size=6)
+        # Cricket and sports with intelligent source selection (if not already processed)
+        if 'cricket_sports' not in [cat for cat in all_priority_categories] and 'cricket_sports' in self.source_categories:
+            optimal_sports_sources = self.get_optimal_sources_for_category('cricket_sports', available_sources, max_sources=2)
+            if optimal_sports_sources:
+                print(f"🏏 Fetching cricket/sports from optimal sources: {', '.join(optimal_sports_sources)}")
+                sports_data = self.fetch_top_headlines(sources=optimal_sports_sources, page_size=8)
                 if sports_data:
-                    articles = self.process_articles(sports_data, 'sports')
-                    news_data['by_category']['sports'].extend(articles)
-                    print(f"✅ Sports: {len(articles)} articles")
-        
-        # Phase 3: Trending Topics & Breaking News - 40 requests
-        print(f"\n📊 PHASE 3: Trending Topics & Breaking News")
+                    articles = self.process_articles(sports_data, 'cricket_sports')
+                    
+                    # Enhanced cricket/sports article processing with Indian focus
+                    enhanced_sports_articles = []
+                    for article in articles:
+                        # Detect sport type and add metadata with Indian focus
+                        title_desc = f"{article['title']} {article['description']}".lower()
+                        
+                        # Detect specific sports with Indian emphasis
+                        sport_types = {
+                            'cricket': ['cricket', 'ipl', 'test match', 'odi', 't20', 'wicket', 'batsman', 'bowler', 'virat kohli', 'rohit sharma', 'indian cricket'],
+                            'football': ['indian super league', 'isl', 'indian football'],
+                            'hockey': ['hockey', 'indian hockey', 'field hockey', 'hockey india'],
+                            'badminton': ['badminton', 'pv sindhu', 'saina nehwal', 'indian badminton'],
+                            'kabaddi': ['kabaddi', 'pro kabaddi', 'pkl', 'indian kabaddi']
+                        }
+                        
+                        detected_sports = []
+                        for sport, keywords in sport_types.items():
+                            if any(keyword in title_desc for keyword in keywords):
+                                detected_sports.append(sport)
+                        
+                        # Prioritize cricket and Indian sports
+                        article['sport_types'] = detected_sports
+                        article['is_indian_sport'] = any(sport in ['cricket', 'hockey', 'badminton', 'kabaddi'] for sport in detected_sports)
+                        article['is_cricket'] = 'cricket' in detected_sports
+                        enhanced_sports_articles.append(article)
+                    
+                    news_data['by_category']['cricket_sports'].extend(enhanced_sports_articles)
+                    
+                    # Update source grouping
+                    for article in enhanced_sports_articles:
+                        source_name = article['source']
+                        if source_name not in news_data['by_source']:
+                            news_data['by_source'][source_name] = []
+                        news_data['by_source'][source_name].append(article)
+                    
+                    news_data['api_status']['cricket_sports'] = {
+                        'status': 'success',
+                        'articles_count': len(enhanced_sports_articles),
+                        'sources_used': optimal_sports_sources,
+                        'sport_breakdown': {
+                            sport: sum(1 for a in enhanced_sports_articles if sport in a.get('sport_types', []))
+                            for sport in ['cricket', 'football', 'hockey', 'badminton', 'kabaddi']
+                        }
+                    }
+                    
+                    print(f"✅ Cricket/Sports: {len(enhanced_sports_articles)} articles from {len(optimal_sports_sources)} sources")
+                    indian_sports = sum(1 for a in enhanced_sports_articles if a['is_indian_sport'])
+                    cricket_articles = sum(1 for a in enhanced_sports_articles if a['is_cricket'])
+                    print(f"   🏏 Cricket coverage: {cricket_articles} articles")
+                    print(f"   🇮🇳 Indian sports coverage: {indian_sports} articles")
+                else:
+                    print(f"❌ Sports: Failed to fetch data")
+            else:
+                print(f"⚠️  Sports: No optimal sources available")
+
+        # Phase 4: Trending Topics & Breaking News - 25 requests
+        print(f"\n📊 PHASE 4: Trending Topics & Breaking News")
         
         # Get trending topics with targeted searches
         trending_queries = [
@@ -1150,50 +1429,7 @@ class NewsAPIFetcher:
                 'articles_count': len(indian_articles),
                 'topics_covered': len(set(a.get('indian_topic') for a in indian_articles))
             }
-        
-        # Phase 6: Strategic Geopolitics - 10 requests
-        print(f"\n📊 PHASE 6: Strategic Geopolitics")
-        
-        # Focus on current major geopolitical issues
-        geopolitical_topics = ['Ukraine war', 'China Taiwan']  # Reduced to 2 topics
-        geopolitics_articles = []
-        
-        for topic in geopolitical_topics:
-            print(f"🌍 Fetching {topic}...")
-            geo_data = self.fetch_everything(
-                query=f'"{topic}" OR "{topic.replace(" ", "-")}"',
-                from_date=yesterday,
-                page_size=4
-            )
-            
-            if geo_data and 'articles' in geo_data:
-                articles = self.process_articles(geo_data, 'geopolitics', f"{topic.title()}")
-                for article in articles:
-                    article['geopolitical_topic'] = topic
-                    article['topic_type'] = 'current_conflict'
-                geopolitics_articles.extend(articles)
-                print(f"✅ {topic}: {len(articles)} articles")
-            
-            time.sleep(0.2)
-        
-        if geopolitics_articles:
-            news_data['by_category']['geopolitics'] = geopolitics_articles
-            if 'geopolitics' not in news_data['categories']:
-                news_data['categories'].append('geopolitics')
-            
-            # Group by source
-            for article in geopolitics_articles:
-                source_name = article['source']
-                if source_name not in news_data['by_source']:
-                    news_data['by_source'][source_name] = []
-                news_data['by_source'][source_name].append(article)
-            
-            news_data['api_status']['geopolitics'] = {
-                'status': 'success',
-                'total_articles': len(geopolitics_articles),
-                'topics_covered': len(set(a.get('geopolitical_topic') for a in geopolitics_articles))
-            }
-        
+
         # Summary of strategic approach
         total_estimated_requests = 4 + 1 + 6 + 4 + 3 + 3 + 1  # ~22 strategic requests
         print(f"\n📊 Strategic Summary: ~{total_estimated_requests} requests used efficiently")
@@ -1254,7 +1490,10 @@ def main():
     # Fetch news from NewsAPI
     news_data = fetcher.fetch_all_news()
     
-    # Print summary
+    # Print enhanced categorization summary
+    fetcher.print_categorization_summary(news_data)
+    
+    # Print basic summary
     print("\n" + "="*60)
     print("📊 NEWSAPI EXTRACTION SUMMARY")
     print("="*60)
@@ -1279,24 +1518,29 @@ def main():
     if api_usage.get('exhausted_keys', 0) > 0:
         print(f"  🔄 Key rotation occurred due to rate limits")
     
-    print("\n📊 By Category:")
-    for category, articles in news_data['by_category'].items():
-        print(f"  📁 {category.title()}: {len(articles)} articles")
-    
-    print("\n🔍 API Status:")
+    print("\n📊 Enhanced API Status:")
     for category, status in news_data['api_status'].items():
-        status_icon = "✅" if status['status'] == 'success' else "❌"
-        if status['status'] == 'success':
-            print(f"  {status_icon} {category}: {status['articles_count']} articles")
+        status_icon = "✅" if status.get('status') == 'success' else "❌" if status.get('status') == 'failed' else "⚠️"
+        if status.get('status') == 'success':
+            articles_count = status.get('articles_count', 0)
+            sources_used = len(status.get('sources_used', []))
+            coverage = status.get('coverage_percentage', 0)
+            print(f"  {status_icon} {category}: {articles_count} articles from {sources_used} sources ({coverage:.1f}% coverage)")
+            
+            # Show credibility breakdown if available
+            credibility = status.get('credibility_breakdown', {})
+            if credibility:
+                print(f"     🏆 Credibility: T1:{credibility.get('tier1', 0)} T2:{credibility.get('tier2', 0)} T3:{credibility.get('tier3', 0)}")
         else:
-            print(f"  {status_icon} {category}: {status.get('error', 'Unknown error')}")
+            error_msg = status.get('error', status.get('reason', 'Unknown error'))
+            print(f"  {status_icon} {category}: {error_msg}")
     
     # Save to JSON file
     fetcher.save_to_json(news_data)
     
-    print(f"\n🎉 Complete! Your NewsAPI data is saved in 'newsapi_data.json'")
-    if os.path.exists('newsapi_data.json'):
-        print(f"📁 File size: {os.path.getsize('newsapi_data.json') / 1024:.1f} KB")
+    print(f"\n🎉 Complete! Your enhanced NewsAPI data is saved in 'data/newsapi_data.json'")
+    if os.path.exists('data/newsapi_data.json'):
+        print(f"📁 File size: {os.path.getsize('data/newsapi_data.json') / 1024:.1f} KB")
     
     return news_data
 

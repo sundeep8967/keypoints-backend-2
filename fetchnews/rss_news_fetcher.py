@@ -28,33 +28,39 @@ class RSSNewsFetcher:
         # RSS feeds organized by category - OPTIMIZED: Most Important Sources Only
         self.rss_feeds = {
             'international': {
-                'CNN': 'http://rss.cnn.com/rss/edition.rss'
+                
+                'The Indian Express World': 'https://indianexpress.com/section/world/feed/'
             },
             'technology': {
                 'TechCrunch': 'https://techcrunch.com/feed/',
-                'The Verge': 'https://www.theverge.com/rss/index.xml',
+                
                 'Ars Technica': 'https://feeds.arstechnica.com/arstechnica/index',
-                'Wired': 'https://www.wired.com/feed/rss'
+                'The Indian Express Technology': 'https://indianexpress.com/section/technology/feed/',
+                'The Indian Express Artificial Intelligence': 'https://indianexpress.com/section/technology/artificial-intelligence/feed/'
             },
-            'business': {
-                'Economic Times': 'https://economictimes.indiatimes.com/rssfeedsdefault.cms'
-            },
+
             'sports': {
-                'ESPNCricinfo': 'http://www.espncricinfo.com/rss/content/story/feeds/6.xml'
+                'ESPNCricinfo': 'http://www.espncricinfo.com/rss/content/story/feeds/6.xml',
+                'The Indian Express Sports': 'https://indianexpress.com/section/sports/feed/'
             },
             'india': {
                 'NDTV': 'https://feeds.feedburner.com/ndtvnews-top-stories',
                 'Times of India': 'https://timesofindia.indiatimes.com/rssfeedstopstories.cms',
-                'The Hindu': 'https://www.thehindu.com/feeder/default.rss'
+                'The Hindu': 'https://www.thehindu.com/feeder/default.rss',
+                'The Indian Express India': 'https://indianexpress.com/section/india/feed/',
+                'The Indian Express Explained': 'https://indianexpress.com/section/explained/feed/',
+                'India Today': 'https://www.indiatoday.in/rss/home'
             },
             'startups': {
                 'Inc42': 'https://inc42.com/feed/'
             },
             'entertainment': {
-                'The Indian Express - Entertainment': 'https://indianexpress.com/section/entertainment/feed/'
+                'The Indian Express - Entertainment': 'https://indianexpress.com/section/entertainment/feed/',
+                'The Indian Express Art And Culture': 'https://indianexpress.com/section/lifestyle/art-and-culture/feed/'
             },
             'politics': {
-                'ThePrint - Politics': 'https://theprint.in/category/politics/feed/'
+                'ThePrint - Politics': 'https://theprint.in/category/politics/feed/',
+                'The Indian Express Politics': 'https://indianexpress.com/section/politics/feed/'
             },
             'karnataka': {
                 'Times of India - Karnataka': 'https://timesofindia.indiatimes.com/rssfeeds/-2128833038.cms',
@@ -63,25 +69,37 @@ class RSSNewsFetcher:
             'health': {
                 'ET HealthWorld': 'http://health.economictimes.indiatimes.com/rss/topstories',
                 'The Indian Express - Health': 'https://indianexpress.com/section/lifestyle/health/feed/',
-                'Times of India - Health': 'https://timesofindia.indiatimes.com/rssfeeds/3908999.cms'
+                
             },
             'education_jobs': {
                 'The Indian Express - Education': 'https://indianexpress.com/section/education/feed/',
                 'The Indian Express - Jobs': 'https://indianexpress.com/section/jobs/feed/'
             },
-            'automobile': {
-                'MotorBeam': 'https://www.motorbeam.com/feed/',
-                'RushLane': 'https://www.rushlane.com/feed/'
-            },
+        
             'travel': {
                 'The Indian Express - Travel': 'https://indianexpress.com/section/auto-travel/feed/',
-                'Inditales': 'https://inditales.com/feed/'
+                
             },
             'cricket': {
                 'ESPNcricinfo - India': 'http://www.espncricinfo.com/rss/content/story/feeds/6.xml',
-                'NDTV Sports - Cricket': 'http://sports.ndtv.com/rss/cricket'
+                'NDTV Sports - Cricket': 'http://sports.ndtv.com/rss/cricket',
+                'The Indian Express Cricket': 'https://indianexpress.com/section/sports/cricket/feed/'
             },
-            
+            'lifestyle': {
+                'The Indian Express Lifestyle': 'https://indianexpress.com/section/lifestyle/feed/'
+            },
+            'history': {
+                'The Indian Express 40 Years Ago': 'https://indianexpress.com/section/opinion/40-years-ago/feed/'
+            },
+            'ahmedabad': {
+                'The Indian Express Ahmedabad': 'https://indianexpress.com/section/cities/ahmedabad/feed/'
+            },
+            'delhi': {
+                'The Indian Express Delhi': 'https://indianexpress.com/section/cities/delhi/feed/'
+            },
+            'mumbai': {
+                'The Indian Express Mumbai': 'https://indianexpress.com/section/cities/mumbai/feed/'
+            }
         }
 
     def extract_image_from_article(self, article_url, timeout=10):

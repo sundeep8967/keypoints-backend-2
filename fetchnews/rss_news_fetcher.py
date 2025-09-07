@@ -56,7 +56,8 @@ class RSSNewsFetcher:
             },
             'entertainment': {
                 'The Indian Express - Entertainment': 'https://indianexpress.com/section/entertainment/feed/',
-                'The Indian Express Art And Culture': 'https://indianexpress.com/section/lifestyle/art-and-culture/feed/'
+                'The Indian Express Art And Culture': 'https://indianexpress.com/section/lifestyle/art-and-culture/feed/',
+                'Pinkvilla': 'https://www.pinkvilla.com/rss.xml'
             },
             'politics': {
                 'ThePrint - Politics': 'https://theprint.in/category/politics/feed/',

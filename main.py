@@ -486,18 +486,49 @@ class NewsAggregator:
         
         return combined_data
     
-    def save_combined_data(self, combined_data, filename='data/combined_news_data.json', save_to_supabase=False):
-        """Save combined data to JSON file only (no Supabase - wait for enhanced data)"""
-        # Save to JSON file
+    def save_combined_data(self, combined_data, filename='data/combined_news_data.json', save_to_supabase=False, optimize_space=True):
+        """Save combined data with space optimization"""
         os.makedirs('data', exist_ok=True)
-        with open(filename, 'w', encoding='utf-8') as f:
-            json.dump(combined_data, f, indent=2, ensure_ascii=False)
-        print(f"💾 Combined data saved to {filename}")
+        
+        if optimize_space:
+            # Use space optimizer for efficient storage
+            try:
+                from space_optimizer import SpaceOptimizer
+                optimizer = SpaceOptimizer()
+                
+                # Store in database for efficient duplicate detection
+                all_articles = []
+                for category_articles in combined_data.get('by_category_deduplicated', {}).values():
+                    all_articles.extend(category_articles)
+                
+                if all_articles:
+                    stored_count, duplicate_count = optimizer.store_articles_efficiently(all_articles, 'combined')
+                    print(f"💾 Stored {stored_count} articles in database, skipped {duplicate_count} duplicates")
+                
+                # Create minimal JSON output
+                minimal_file = optimizer.create_minimal_json_output(all_articles, os.path.basename(filename))
+                print(f"📄 Created space-optimized output: {minimal_file}")
+                
+                # Run optimization
+                optimizer.optimize_all()
+                
+            except ImportError:
+                print("⚠️  Space optimizer not available, using standard JSON storage")
+                # Fallback to standard storage
+                with open(filename, 'w', encoding='utf-8') as f:
+                    json.dump(combined_data, f, indent=2, ensure_ascii=False)
+                file_size = os.path.getsize(filename) / 1024
+                print(f"💾 Combined data saved to {filename} ({file_size:.1f} KB)")
+        else:
+            # Standard JSON storage
+            with open(filename, 'w', encoding='utf-8') as f:
+                json.dump(combined_data, f, indent=2, ensure_ascii=False)
+            file_size = os.path.getsize(filename) / 1024
+            print(f"💾 Combined data saved to {filename} ({file_size:.1f} KB)")
         
         # DO NOT save raw data to Supabase - only enhanced data should go to Supabase
         if save_to_supabase and self.use_supabase and self.supabase_db:
             print("⚠️  Skipping raw data upload - only enhanced data will be saved to Supabase")
-            # self.save_to_supabase(combined_data)  # Commented out to prevent duplicate uploads
     
     def run_ai_enhancement(self):
         """Run the AI enhancement JavaScript file"""

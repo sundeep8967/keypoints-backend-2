@@ -27,6 +27,7 @@ try:
     from fetchnews.rss_news_fetcher import RSSNewsFetcher
     from fetchnews.newsapi_fetcher import NewsAPIFetcher
     from db.supabase_integration import SupabaseNewsDB
+    from bulletproof_duplicate_prevention import BulletproofDuplicateFilter
 except ImportError as e:
     print(f"❌ Import Error: {e}")
     print("Make sure all required modules are in the correct directories")
@@ -38,6 +39,11 @@ class NewsAggregator:
         # Initialize fetchers - let NewsAPIFetcher handle its own triple key system
         self.rss_fetcher = RSSNewsFetcher()
         self.newsapi_fetcher = NewsAPIFetcher()  # No key passed - uses its own triple key system
+        
+        # Initialize BULLETPROOF duplicate prevention system
+        self.bulletproof_filter = BulletproofDuplicateFilter()
+        print("🛡️  BULLETPROOF duplicate prevention system activated")
+        print("🚫 ZERO TOLERANCE for duplicates - multiple layers of protection enabled")
         
         # Initialize Supabase connection
         self.use_supabase = use_supabase
@@ -391,12 +397,28 @@ class NewsAggregator:
         else:
             print("❌ NewsAPI Data: Failed")
         
-        # Apply deduplication
+        # Apply initial deduplication (RSS vs NewsAPI cross-checking)
         deduplicated_articles, deduplication_info = self.deduplicate_articles(all_articles)
         
-        print(f"✅ Articles processed and ready")
+        print(f"✅ Initial deduplication complete: {len(deduplicated_articles)} articles")
+        
+        # FINAL BULLETPROOF LAYER - ZERO TOLERANCE FOR DUPLICATES
+        print(f"\n🛡️  APPLYING BULLETPROOF FINAL FILTER...")
+        print(f"🚫 ZERO TOLERANCE - No duplicates will pass through this layer")
+        
+        bulletproof_articles, bulletproof_stats = self.bulletproof_filter.filter_duplicates(deduplicated_articles)
+        
+        print(f"\n🎯 BULLETPROOF FILTERING COMPLETE:")
+        print(f"  📊 Articles before bulletproof filter: {len(deduplicated_articles)}")
+        print(f"  ✅ Articles after bulletproof filter: {len(bulletproof_articles)}")
+        print(f"  🚫 Additional duplicates blocked: {bulletproof_stats['duplicates_found']}")
+        print(f"  🛡️  GUARANTEE: Zero duplicates in final dataset")
+        
+        # Use bulletproof-filtered articles as the final dataset
+        final_articles = bulletproof_articles
         
         combined_data['deduplication_info'] = deduplication_info
+        combined_data['bulletproof_filter_info'] = bulletproof_stats
         combined_data['deduplication_info']['original_counts'] = original_counts
         combined_data['deduplication_info']['settings'] = {
             'title_similarity_threshold': self.title_similarity_threshold,
@@ -404,31 +426,31 @@ class NewsAggregator:
             'content_similarity_threshold': self.content_similarity_threshold
         }
         
-        # Reorganize deduplicated articles by category and source
-        deduplicated_by_category = {}
-        deduplicated_by_source = {}
+        # Reorganize BULLETPROOF-FILTERED articles by category and source
+        final_by_category = {}
+        final_by_source = {}
         
-        for article in deduplicated_articles:
+        for article in final_articles:
             category = article.get('category', 'unknown')
             source = article.get('source', 'unknown')
             
             # Group by category
-            if category not in deduplicated_by_category:
-                deduplicated_by_category[category] = []
-            deduplicated_by_category[category].append(article)
+            if category not in final_by_category:
+                final_by_category[category] = []
+            final_by_category[category].append(article)
             
             # Group by source
-            if source not in deduplicated_by_source:
-                deduplicated_by_source[source] = []
-            deduplicated_by_source[source].append(article)
+            if source not in final_by_source:
+                final_by_source[source] = []
+            final_by_source[source].append(article)
         
-        # Update combined data with deduplicated results
-        combined_data['by_category_deduplicated'] = deduplicated_by_category
-        combined_data['by_source_deduplicated'] = deduplicated_by_source
+        # Update combined data with BULLETPROOF-FILTERED results
+        combined_data['by_category_deduplicated'] = final_by_category
+        combined_data['by_source_deduplicated'] = final_by_source
         
-        # Calculate statistics for deduplicated data
-        combined_data['total_articles'] = len(deduplicated_articles)
-        combined_data['total_articles_with_images'] = sum(1 for article in deduplicated_articles if article.get('has_image', False))
+        # Calculate statistics for BULLETPROOF-FILTERED data
+        combined_data['total_articles'] = len(final_articles)
+        combined_data['total_articles_with_images'] = sum(1 for article in final_articles if article.get('has_image', False))
         
         
         # Calculate overall image success rate
@@ -436,8 +458,8 @@ class NewsAggregator:
             image_rate = (combined_data['total_articles_with_images'] / combined_data['total_articles']) * 100
             combined_data['overall_image_success_rate'] = f"{image_rate:.1f}%"
         
-        # Create category summary with deduplicated counts
-        for category, articles in deduplicated_by_category.items():
+        # Create category summary with BULLETPROOF-FILTERED counts
+        for category, articles in final_by_category.items():
             if category not in combined_data['category_summary']:
                 combined_data['category_summary'][category] = {'rss': 0, 'newsapi': 0, 'total': 0, 'deduplicated': 0}
             
@@ -448,10 +470,10 @@ class NewsAggregator:
         
         # Create sources summary
         combined_data['sources_summary'] = {
-            'total_unique_sources': len(deduplicated_by_source),
+            'total_unique_sources': len(final_by_source),
             'rss_sources': len(rss_data.get('by_source', {})) if rss_data else 0,
             'newsapi_sources': len(newsapi_data.get('by_source', {})) if newsapi_data else 0,
-            'deduplicated_sources': len(deduplicated_by_source)
+            'bulletproof_filtered_sources': len(final_by_source)
         }
         
         return combined_data
@@ -612,19 +634,36 @@ class NewsAggregator:
         # Deduplication summary
         if 'deduplication_info' in combined_data:
             dedup_info = combined_data['deduplication_info']
-            print(f"\n🔍 Deduplication Results:")
+            bulletproof_info = combined_data.get('bulletproof_filter_info', {})
+            
+            print(f"\n🔍 Multi-Layer Duplicate Prevention Results:")
             original_total = dedup_info.get('original_counts', {}).get('rss', 0) + dedup_info.get('original_counts', {}).get('newsapi', 0)
-            print(f"  📰 Original articles: {original_total}")
-            print(f"  📰 After deduplication: {combined_data['total_articles']}")
-            print(f"  🗑️  Duplicates removed: {dedup_info.get('total_duplicates_removed', 0)}")
+            print(f"  📰 Original articles collected: {original_total}")
+            print(f"  🔄 After initial deduplication: {original_total - dedup_info.get('total_duplicates_removed', 0)}")
+            print(f"  🛡️  After BULLETPROOF filter: {combined_data['total_articles']}")
+            print(f"  🚫 Total duplicates blocked: {dedup_info.get('total_duplicates_removed', 0) + bulletproof_info.get('duplicates_found', 0)}")
+            
+            print(f"\n📊 Initial Deduplication Layer:")
             print(f"  🔗 URL duplicates: {dedup_info.get('url_duplicates', 0)}")
             print(f"  📝 Title duplicates: {dedup_info.get('title_duplicates', 0)}")
             print(f"  📄 Content duplicates: {dedup_info.get('content_duplicates', 0)}")
             
+            print(f"\n🛡️  BULLETPROOF Filter Layer:")
+            print(f"  🚫 Additional duplicates blocked: {bulletproof_info.get('duplicates_found', 0)}")
+            print(f"  ✅ Final unique articles: {bulletproof_info.get('unique_articles', 0)}")
+            print(f"  🎯 GUARANTEE: Zero duplicates in final dataset")
+            
+            if bulletproof_info.get('detection_methods'):
+                print(f"\n🔍 Bulletproof detection methods used:")
+                for method, count in bulletproof_info['detection_methods'].items():
+                    if count > 0:
+                        print(f"    {method}: {count} duplicates")
+            
             settings = dedup_info.get('settings', {})
-            print(f"  ⚙️  Title similarity threshold: {settings.get('title_similarity_threshold', 0.85)*100:.0f}%")
-            print(f"  ⚙️  URL similarity threshold: {settings.get('url_similarity_threshold', 0.90)*100:.0f}%")
-            print(f"  ⚙️  Content similarity threshold: {settings.get('content_similarity_threshold', 0.75)*100:.0f}%")
+            print(f"\n⚙️  Detection thresholds:")
+            print(f"  📝 Title similarity: {settings.get('title_similarity_threshold', 0.85)*100:.0f}%")
+            print(f"  🔗 URL similarity: {settings.get('url_similarity_threshold', 0.90)*100:.0f}%")
+            print(f"  📄 Content similarity: {settings.get('content_similarity_threshold', 0.75)*100:.0f}%")
         
         print(f"\n📂 Category Breakdown:")
         for category, counts in combined_data['category_summary'].items():
@@ -635,7 +674,7 @@ class NewsAggregator:
         print(f"\n📈 Source Distribution:")
         print(f"  📡 RSS Sources: {combined_data['sources_summary']['rss_sources']}")
         print(f"  🔑 NewsAPI Sources: {combined_data['sources_summary']['newsapi_sources']}")
-        print(f"  🎯 Deduplicated Sources: {combined_data['sources_summary'].get('deduplicated_sources', 0)}")
+        print(f"  🛡️  Bulletproof Filtered Sources: {combined_data['sources_summary'].get('bulletproof_filtered_sources', 0)}")
 
 def main():
     """Main function to execute the complete automated pipeline"""

@@ -15,6 +15,16 @@ from dotenv import load_dotenv
 from playwright.sync_api import sync_playwright
 import re
 from collections import Counter
+import sys
+
+# Add project root to path for imports
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+try:
+    from newsapi_history_manager import NewsAPIHistoryManager
+except ImportError:
+    print("⚠️  NewsAPI History Manager not found. Duplicate detection will be disabled.")
+    NewsAPIHistoryManager = None
 
 # Load environment variables
 load_dotenv()
@@ -54,6 +64,13 @@ class NewsAPIFetcher:
         key_count = len(self.available_keys)
         total_requests = key_count * 100
         print(f"🔑 NewsAPI initialized with {key_count} API keys ({total_requests} requests/day total)")
+        
+        # Initialize NewsAPI History Manager for advanced duplicate detection
+        self.history_manager = NewsAPIHistoryManager() if NewsAPIHistoryManager else None
+        if self.history_manager:
+            print("🧠 Advanced NewsAPI duplicate detection enabled (file-based)")
+        else:
+            print("⚠️  Basic duplicate detection only (NewsAPI History Manager not available)")
         
         # Indian-centric NewsAPI source categorization system
         self.source_categories = {
@@ -1435,10 +1452,65 @@ class NewsAPIFetcher:
         print(f"\n📊 Strategic Summary: ~{total_estimated_requests} requests used efficiently")
         print(f"🎯 Remaining quota: ~{300 - total_estimated_requests} requests for future runs")
         
-        # Calculate statistics
+        # Apply NewsAPI duplicate detection to all collected articles
         all_articles = []
         for category, articles in news_data['by_category'].items():
             all_articles.extend(articles)
+        
+        if self.history_manager and all_articles:
+            print(f"\n🧠 Applying NewsAPI duplicate detection to {len(all_articles)} articles...")
+            unique_articles, duplicate_stats = self.history_manager.check_newsapi_duplicates(all_articles)
+            
+            print(f"📊 NewsAPI Duplicate Detection Results:")
+            print(f"  📰 Total articles collected: {len(all_articles)}")
+            print(f"  🆕 Unique articles after filtering: {len(unique_articles)}")
+            print(f"  🔄 Duplicates removed: {duplicate_stats['duplicates_found']}")
+            print(f"  ⏰ Time-filtered articles: {duplicate_stats['time_filtered']}")
+            
+            # Reorganize articles by category after duplicate removal
+            news_data['by_category'] = {}
+            news_data['by_source'] = {}
+            
+            # Initialize categories
+            for category in self.source_categories.keys():
+                news_data['by_category'][category] = []
+            
+            # Redistribute unique articles
+            for article in unique_articles:
+                category = article.get('category', 'general')
+                source = article.get('source', 'unknown')
+                
+                # Add to category
+                if category not in news_data['by_category']:
+                    news_data['by_category'][category] = []
+                news_data['by_category'][category].append(article)
+                
+                # Add to source
+                if source not in news_data['by_source']:
+                    news_data['by_source'][source] = []
+                news_data['by_source'][source].append(article)
+            
+            # Update statistics with deduplicated data
+            all_articles = unique_articles
+            
+            # Add duplicate detection info to news_data
+            news_data['newsapi_duplicate_detection'] = {
+                'enabled': True,
+                'total_checked': duplicate_stats['total_checked'],
+                'duplicates_found': duplicate_stats['duplicates_found'],
+                'time_filtered': duplicate_stats['time_filtered'],
+                'detection_methods': {
+                    'url_duplicates': duplicate_stats['url_duplicates'],
+                    'title_duplicates': duplicate_stats['title_duplicates'],
+                    'content_duplicates': duplicate_stats['content_duplicates'],
+                    'fuzzy_duplicates': duplicate_stats['fuzzy_duplicates']
+                }
+            }
+        else:
+            news_data['newsapi_duplicate_detection'] = {
+                'enabled': False,
+                'reason': 'NewsAPI History Manager not available'
+            }
         
         news_data['total_articles'] = len(all_articles)
         news_data['articles_with_images'] = sum(1 for article in all_articles if article.get('image_url'))
@@ -1474,6 +1546,20 @@ class NewsAPIFetcher:
         with open(filename, 'w', encoding='utf-8') as f:
             json.dump(news_data, f, indent=2, ensure_ascii=False)
         print(f"💾 NewsAPI data saved to {filename}")
+    
+    def cleanup_old_newsapi_history(self, days_to_keep=7):
+        """Clean up old NewsAPI history files"""
+        if self.history_manager:
+            self.history_manager.cleanup_old_newsapi_history(days_to_keep)
+        else:
+            print("⚠️  NewsAPI History Manager not available for cleanup")
+    
+    def get_newsapi_history_summary(self):
+        """Get summary of NewsAPI history"""
+        if not self.history_manager:
+            return {"error": "NewsAPI History Manager not available"}
+        
+        return self.history_manager.get_newsapi_statistics()
 
 def main():
     # Get API key from environment variable

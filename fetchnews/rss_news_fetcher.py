@@ -16,6 +16,16 @@ from threading import Lock
 from playwright.sync_api import sync_playwright
 import re
 from collections import Counter
+import sys
+
+# Add project root to path for imports
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+try:
+    from rss_history_manager import RSSHistoryManager
+except ImportError:
+    print("⚠️  RSS History Manager not found. Duplicate detection will be disabled.")
+    RSSHistoryManager = None
 
 class RSSNewsFetcher:
     def __init__(self):
@@ -24,6 +34,13 @@ class RSSNewsFetcher:
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
         })
         self.lock = Lock()
+        
+        # Initialize RSS History Manager for advanced duplicate detection
+        self.history_manager = RSSHistoryManager() if RSSHistoryManager else None
+        if self.history_manager:
+            print("🧠 Advanced RSS duplicate detection enabled (file-based)")
+        else:
+            print("⚠️  Basic duplicate detection only (RSS History Manager not available)")
         
         # RSS feeds organized by category - OPTIMIZED: Most Important Sources Only
         self.rss_feeds = {
@@ -574,7 +591,7 @@ class RSSNewsFetcher:
         return None
 
     def process_feed(self, source_name, feed_url, category):
-        """Process a single RSS feed"""
+        """Process a single RSS feed with advanced duplicate detection"""
         articles = []
         try:
             print(f"Fetching {source_name} ({category})...")
@@ -585,6 +602,7 @@ class RSSNewsFetcher:
             if feed.bozo and feed.bozo_exception:
                 print(f"Warning: Feed parsing issue for {source_name}: {feed.bozo_exception}")
             
+            raw_articles = []
             for entry in feed.entries[:8]:  # Limit to 8 articles per source for ~160 total
                 # Extract basic article info
                 # Clean description from HTML tags and links
@@ -649,8 +667,25 @@ class RSSNewsFetcher:
                 if image_url:
                     article['image_url'] = image_url
                 
+                raw_articles.append(article)
+            
+            # Apply advanced duplicate detection using RSS History Manager
+            if self.history_manager and raw_articles:
+                print(f"  🧠 Applying advanced duplicate detection for {source_name}...")
+                unique_articles, duplicate_stats = self.history_manager.check_duplicates_advanced(
+                    raw_articles, source_name
+                )
+                articles = unique_articles
                 
-                articles.append(article)
+                print(f"  📊 {source_name} duplicate detection:")
+                print(f"    📰 Raw articles: {len(raw_articles)}")
+                print(f"    🆕 Unique articles: {len(unique_articles)}")
+                print(f"    🔄 Duplicates filtered: {duplicate_stats['duplicates_found']}")
+            else:
+                # Fallback: use all articles if history manager not available
+                articles = raw_articles
+                if not self.history_manager:
+                    print(f"  ⚠️  No duplicate detection for {source_name} (history manager disabled)")
                 
         except Exception as e:
             print(f"Error processing feed {source_name}: {e}")
@@ -733,6 +768,26 @@ class RSSNewsFetcher:
             image_success_rate = (news_data['articles_with_images'] / news_data['total_articles']) * 100
             news_data['image_success_rate'] = f"{image_success_rate:.1f}%"
         
+        # Add RSS history statistics if available
+        if self.history_manager:
+            print("\n📊 RSS History Statistics:")
+            total_historical = 0
+            for category, feeds in self.rss_feeds.items():
+                for source_name in feeds.keys():
+                    stats = self.history_manager.get_feed_statistics(source_name)
+                    total_historical += stats['total_articles_seen']
+                    print(f"  📚 {source_name}: {stats['total_articles_seen']} total seen, {stats['historical_articles_stored']} stored")
+            
+            news_data['rss_history_stats'] = {
+                'total_articles_ever_seen': total_historical,
+                'duplicate_detection_enabled': True,
+                'history_files_count': len([f for f in os.listdir(self.history_manager.history_dir) if f.endswith('_history.json')])
+            }
+        else:
+            news_data['rss_history_stats'] = {
+                'duplicate_detection_enabled': False
+            }
+        
         return news_data
 
     def save_to_json(self, news_data, filename='data/rss_news_data.json'):
@@ -741,6 +796,35 @@ class RSSNewsFetcher:
         with open(filename, 'w', encoding='utf-8') as f:
             json.dump(news_data, f, indent=2, ensure_ascii=False)
         print(f"💾 News data saved to {filename}")
+    
+    def cleanup_old_rss_history(self, days_to_keep=30):
+        """Clean up old RSS history files"""
+        if self.history_manager:
+            self.history_manager.cleanup_old_history(days_to_keep)
+        else:
+            print("⚠️  RSS History Manager not available for cleanup")
+    
+    def get_rss_history_summary(self):
+        """Get summary of RSS history across all feeds"""
+        if not self.history_manager:
+            return {"error": "RSS History Manager not available"}
+        
+        summary = {
+            'total_feeds_tracked': 0,
+            'total_articles_seen': 0,
+            'total_historical_stored': 0,
+            'feeds': {}
+        }
+        
+        for category, feeds in self.rss_feeds.items():
+            for source_name in feeds.keys():
+                stats = self.history_manager.get_feed_statistics(source_name)
+                summary['feeds'][source_name] = stats
+                summary['total_feeds_tracked'] += 1
+                summary['total_articles_seen'] += stats['total_articles_seen']
+                summary['total_historical_stored'] += stats['historical_articles_stored']
+        
+        return summary
 
 def main():
     fetcher = RSSNewsFetcher()

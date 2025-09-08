@@ -15,7 +15,7 @@ load_dotenv()
 
 class SupabaseNewsDB:
     def __init__(self):
-        """Initialize Supabase client"""
+        """Initialize Supabase client with local caching for duplicate prevention"""
         self.url = os.getenv('SUPABASE_URL')
         self.key = os.getenv('SUPABASE_KEY')
         
@@ -24,6 +24,12 @@ class SupabaseNewsDB:
         
         self.supabase: Client = create_client(self.url, self.key)
         print(f"🔗 Connected to Supabase: {self.url}")
+        
+        # Local cache for duplicate prevention
+        self._url_cache = set()
+        self._title_cache = set()
+        self._cache_loaded = False
+        self._cache_file = 'data/article_cache.json'
     
     def create_tables(self):
         """Add missing columns to existing news_articles table"""
@@ -89,7 +95,7 @@ class SupabaseNewsDB:
             return False
     
     def insert_articles(self, articles: List[Dict[str, Any]], is_enhanced: bool = False) -> bool:
-        """Insert articles into the database (enhanced or raw)"""
+        """Insert articles into the database (enhanced or raw) with duplicate checking"""
         try:
             if not articles:
                 print("⚠️  No articles to insert")
@@ -142,11 +148,24 @@ class SupabaseNewsDB:
                 return True
             
             print(f"🎯 Validation filter: {(validation_stats['passed_validation']/validation_stats['total_articles']*100):.1f}% articles met validation standards")
-            print(f"🖼️  Inserting {len(validated_articles)} validated articles into Supabase...")
+            
+            # NEW: Check for existing articles in database to prevent duplicates
+            print(f"🔍 Checking for existing articles in database...")
+            new_articles = self._filter_existing_articles(validated_articles)
+            
+            if not new_articles:
+                print("⚠️  All articles already exist in database - no new articles to insert")
+                return True
+            
+            print(f"📊 Duplicate Check Results:")
+            print(f"  📰 Articles after validation: {len(validated_articles)}")
+            print(f"  🆕 New articles to insert: {len(new_articles)}")
+            print(f"  🔄 Existing articles skipped: {len(validated_articles) - len(new_articles)}")
+            print(f"🖼️  Inserting {len(new_articles)} new articles into Supabase...")
             
             # Prepare articles for insertion - only essential fields
             processed_articles = []
-            for article in validated_articles:
+            for article in new_articles:
                 # Generate article_id if not present (using hash of link/url)
                 article_id = article.get('article_id')
                 article_link = article.get('link', '') or article.get('url', '')
@@ -213,6 +232,11 @@ class SupabaseNewsDB:
                     continue
             
             print(f"🎉 Successfully inserted {total_inserted} validated articles")
+            
+            # Update cache with newly inserted articles
+            self._update_cache(processed_articles)
+            print(f"📋 Cache updated with {len(processed_articles)} new articles")
+            
             return True
             
         except Exception as e:
@@ -366,6 +390,159 @@ class SupabaseNewsDB:
         except Exception as e:
             print(f"❌ Error fetching stats: {e}")
             return {}
+    
+    def _load_cache(self):
+        """Load existing URLs and titles from local cache file"""
+        try:
+            if self._cache_loaded:
+                return
+            
+            print("📂 Loading article cache for duplicate prevention...")
+            
+            # Try to load from cache file first
+            if os.path.exists(self._cache_file):
+                with open(self._cache_file, 'r', encoding='utf-8') as f:
+                    cache_data = json.load(f)
+                    self._url_cache = set(cache_data.get('urls', []))
+                    self._title_cache = set(cache_data.get('titles', []))
+                    print(f"  📋 Loaded cache: {len(self._url_cache)} URLs, {len(self._title_cache)} titles")
+            else:
+                # First time - build cache from database
+                print("  🔄 Building initial cache from database...")
+                self._build_cache_from_database()
+            
+            self._cache_loaded = True
+            
+        except Exception as e:
+            print(f"⚠️  Error loading cache: {e}")
+            print("  🔄 Building cache from database...")
+            self._build_cache_from_database()
+            self._cache_loaded = True
+    
+    def _build_cache_from_database(self):
+        """Build cache by fetching all existing URLs and titles from database"""
+        try:
+            # Fetch all URLs and titles from database
+            result = self.supabase.table('news_articles').select('link, title').execute()
+            
+            for row in result.data:
+                if row.get('link'):
+                    self._url_cache.add(row['link'])
+                if row.get('title'):
+                    self._title_cache.add(row['title'])
+            
+            print(f"  ✅ Built cache: {len(self._url_cache)} URLs, {len(self._title_cache)} titles")
+            self._save_cache()
+            
+        except Exception as e:
+            print(f"❌ Error building cache from database: {e}")
+    
+    def _save_cache(self):
+        """Save cache to local file"""
+        try:
+            os.makedirs('data', exist_ok=True)
+            cache_data = {
+                'urls': list(self._url_cache),
+                'titles': list(self._title_cache),
+                'last_updated': datetime.datetime.now().isoformat()
+            }
+            
+            with open(self._cache_file, 'w', encoding='utf-8') as f:
+                json.dump(cache_data, f, indent=2, ensure_ascii=False)
+                
+        except Exception as e:
+            print(f"⚠️  Error saving cache: {e}")
+    
+    def _update_cache(self, articles: List[Dict[str, Any]]):
+        """Update cache with newly inserted articles"""
+        for article in articles:
+            url = article.get('link', '') or article.get('url', '')
+            title = article.get('title', '').strip()
+            
+            if url:
+                self._url_cache.add(url)
+            if title:
+                self._title_cache.add(title)
+        
+        # Save updated cache
+        self._save_cache()
+    
+    def _filter_existing_articles(self, articles: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        """Filter out articles using fast local cache (no database queries during filtering)"""
+        try:
+            if not articles:
+                return []
+            
+            # Load cache if not already loaded
+            self._load_cache()
+            
+            new_articles = []
+            duplicate_stats = {
+                'checked': 0,
+                'duplicates_found': 0,
+                'url_matches': 0,
+                'title_matches': 0
+            }
+            
+            print(f"🚀 Fast cache-based duplicate checking for {len(articles)} articles...")
+            
+            for article in articles:
+                duplicate_stats['checked'] += 1
+                article_url = article.get('link', '') or article.get('url', '')
+                article_title = article.get('title', '').strip()
+                
+                is_duplicate = False
+                
+                # Check 1: URL-based duplicate detection using cache
+                if article_url and article_url in self._url_cache:
+                    is_duplicate = True
+                    duplicate_stats['url_matches'] += 1
+                
+                # Check 2: Title-based duplicate detection using cache
+                elif article_title and article_title in self._title_cache:
+                    is_duplicate = True
+                    duplicate_stats['title_matches'] += 1
+                
+                if not is_duplicate:
+                    new_articles.append(article)
+                else:
+                    duplicate_stats['duplicates_found'] += 1
+            
+            print(f"  📊 Cache-based duplicate check summary:")
+            print(f"    🔍 Articles checked: {duplicate_stats['checked']}")
+            print(f"    🔄 Duplicates found: {duplicate_stats['duplicates_found']}")
+            print(f"    🔗 URL matches: {duplicate_stats['url_matches']}")
+            print(f"    📝 Title matches: {duplicate_stats['title_matches']}")
+            print(f"    🆕 New articles: {len(new_articles)}")
+            print(f"    ⚡ Cache performance: No database queries needed!")
+            
+            return new_articles
+            
+        except Exception as e:
+            print(f"❌ Error in cache-based filtering: {e}")
+            print("⚠️  Proceeding with all articles (cache check failed)")
+            return articles
+    
+    def refresh_cache(self):
+        """Manually refresh the cache from database (useful for maintenance)"""
+        print("🔄 Refreshing article cache from database...")
+        self._cache_loaded = False
+        self._url_cache.clear()
+        self._title_cache.clear()
+        self._load_cache()
+        print("✅ Cache refreshed successfully")
+    
+    def get_cache_stats(self):
+        """Get cache statistics"""
+        if not self._cache_loaded:
+            self._load_cache()
+        
+        return {
+            'urls_cached': len(self._url_cache),
+            'titles_cached': len(self._title_cache),
+            'cache_file_exists': os.path.exists(self._cache_file),
+            'cache_loaded': self._cache_loaded
+        }
     
     def _parse_datetime(self, date_str: str) -> Optional[str]:
         """Parse various datetime formats to ISO format"""

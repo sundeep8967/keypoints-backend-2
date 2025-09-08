@@ -17,14 +17,69 @@ import re
 from collections import Counter
 import sys
 
-# Add project root to path for imports
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# ROBUST import handling for GitHub Actions compatibility
+import sys
+from pathlib import Path
 
+# Multiple fallback strategies for import
+NewsAPIHistoryManager = None
+import_error_details = []
+
+# Strategy 1: Direct import (works when run from project root)
 try:
     from newsapi_history_manager import NewsAPIHistoryManager
-except ImportError:
-    print("⚠️  NewsAPI History Manager not found. Duplicate detection will be disabled.")
-    NewsAPIHistoryManager = None
+except ImportError as e:
+    import_error_details.append(f"Direct import failed: {e}")
+
+# Strategy 2: Add current directory to path
+if NewsAPIHistoryManager is None:
+    try:
+        current_dir = Path(__file__).parent.parent
+        if str(current_dir) not in sys.path:
+            sys.path.insert(0, str(current_dir))
+        from newsapi_history_manager import NewsAPIHistoryManager
+    except ImportError as e:
+        import_error_details.append(f"Current dir import failed: {e}")
+
+# Strategy 3: Add working directory to path
+if NewsAPIHistoryManager is None:
+    try:
+        work_dir = Path.cwd()
+        if str(work_dir) not in sys.path:
+            sys.path.insert(0, str(work_dir))
+        from newsapi_history_manager import NewsAPIHistoryManager
+    except ImportError as e:
+        import_error_details.append(f"Working dir import failed: {e}")
+
+# Strategy 4: Look for file in common locations
+if NewsAPIHistoryManager is None:
+    common_paths = [
+        Path.cwd(),
+        Path(__file__).parent.parent,
+        Path(__file__).parent.parent.parent,
+        Path("/github/workspace") if Path("/github/workspace").exists() else None
+    ]
+    
+    for path in common_paths:
+        if path and (path / "newsapi_history_manager.py").exists():
+            try:
+                if str(path) not in sys.path:
+                    sys.path.insert(0, str(path))
+                from newsapi_history_manager import NewsAPIHistoryManager
+                break
+            except ImportError as e:
+                import_error_details.append(f"Path {path} import failed: {e}")
+
+# CRITICAL: Fail loudly if import fails
+if NewsAPIHistoryManager is None:
+    error_msg = "🚨 CRITICAL ERROR: NewsAPI History Manager import failed!\n"
+    error_msg += "This will disable duplicate prevention completely.\n"
+    error_msg += "Import attempts:\n" + "\n".join(f"  - {err}" for err in import_error_details)
+    error_msg += f"\nCurrent working directory: {Path.cwd()}"
+    error_msg += f"\nFile location: {Path(__file__).parent}"
+    error_msg += f"\nPython path: {sys.path[:3]}..."
+    print(error_msg)
+    raise ImportError("NewsAPI History Manager is required for duplicate prevention")
 
 # Load environment variables
 load_dotenv()

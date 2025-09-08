@@ -38,11 +38,13 @@ RSS Feeds + NewsAPI → Deduplication → AI Enhancement → Supabase
 - Gemini API key(s)
 
 ### Installation
-```bash
-# 1. Clone and setup Python environment
-pip install -r requirements.txt
 
-# 2. Install Node.js dependencies
+⚠️ **DEPENDENCY FIX APPLIED** - Fixed version conflicts:
+
+```bash
+# Install with fixed dependency versions
+pip install -r requirements.txt
+playwright install  # Required for browser automation
 npm install
 
 # 3. Configure environment

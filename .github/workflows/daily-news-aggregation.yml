@@ -84,12 +84,21 @@ jobs:
         PYTHONPATH: ${{ github.workspace }}
       timeout-minutes: 45
         
+    - name: Commit duplicate prevention data
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add data/compact_hashes.txt data/rss_history/ data/newsapi_history/ || true
+        git commit -m "Update duplicate prevention data [skip ci]" || exit 0
+        git push || exit 0
+        
     - name: Upload aggregated data as artifacts
       uses: actions/upload-artifact@v4
       with:
         name: news-data-${{ github.run_number }}
         path: |
           data/*.json
+          data/compact_hashes.txt
         retention-days: 7
         if-no-files-found: warn
         

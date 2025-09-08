@@ -14,8 +14,16 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 import re
 from difflib import SequenceMatcher
 from urllib.parse import urlparse
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
+# Robust sklearn imports with fallback
+try:
+    from sklearn.feature_extraction.text import TfidfVectorizer
+    from sklearn.metrics.pairwise import cosine_similarity
+    SKLEARN_AVAILABLE = True
+except ImportError as e:
+    print(f"⚠️  Warning: sklearn not available ({e}). Advanced similarity detection disabled.")
+    TfidfVectorizer = None
+    cosine_similarity = None
+    SKLEARN_AVAILABLE = False
 import numpy as np
 from dotenv import load_dotenv
 

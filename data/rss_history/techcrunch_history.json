@@ -1,0 +1,83 @@
+{
+  "source": "TechCrunch",
+  "articles": [
+    {
+      "title": "Bluesky adds private bookmarks",
+      "url": "https://techcrunch.com/2025/09/08/bluesky-adds-private-bookmarks/",
+      "published": "Mon, 08 Sep 2025 19:40:51 +0000",
+      "added_date": "2025-09-08T19:57:14.058157",
+      "content_hash": "ad4e87451dd275098ce9fc7eeddda143"
+    },
+    {
+      "title": "Pinecone founder Edo Liberty discusses why the next big AI breakthrough starts with search, at TechCrunch Disrupt 2025",
+      "url": "https://techcrunch.com/2025/09/08/pinecone-founder-edo-liberty-explores-the-real-missing-link-in-enterprise-ai-at-techcrunch-disrupt-2025/",
+      "published": "Mon, 08 Sep 2025 19:14:54 +0000",
+      "added_date": "2025-09-08T19:57:14.061747",
+      "content_hash": "699721292d83d00c6ba0c6959d649d56"
+    },
+    {
+      "title": "Flexport’s Ryan Petersen on building through chaos at TechCrunch Disrupt 2025",
+      "url": "https://techcrunch.com/2025/09/08/find-out-how-flexports-ceo-ryan-petersen-builds-when-the-rules-keep-changing-at-techcrunch-disrupt-2025/",
+      "published": "Mon, 08 Sep 2025 19:00:00 +0000",
+      "added_date": "2025-09-08T19:57:14.067826",
+      "content_hash": "70de5cbe0260e6f24d2edce00fc95754"
+    },
+    {
+      "title": "Space DOTS raises $1.5M seed round to provide insights on orbital threats",
+      "url": "https://techcrunch.com/2025/09/08/space-dots-raises-1-5m-seed-round-to-provide-insights-on-orbital-threats/",
+      "published": "Mon, 08 Sep 2025 19:00:00 +0000",
+      "added_date": "2025-09-08T19:57:14.075970",
+      "content_hash": "cba323bb28299911b3f7508c4e575c29"
+    },
+    {
+      "title": "VC giant Insight Partners notifies staff and limited partners after data breach",
+      "url": "https://techcrunch.com/2025/09/08/vc-giant-insight-partners-notifies-staff-and-limited-partners-after-data-breach/",
+      "published": "Mon, 08 Sep 2025 18:56:04 +0000",
+      "added_date": "2025-09-08T19:57:14.088624",
+      "content_hash": "c232a25a8803eb140ca581567e67a4f9"
+    },
+    {
+      "title": "Cognition AI defies turbulence with a $400M raise at $10.2B valuation",
+      "url": "https://techcrunch.com/2025/09/08/cognition-ai-defies-turbulence-with-a-400m-raise-at-10-2b-valuation/",
+      "published": "Mon, 08 Sep 2025 18:49:04 +0000",
+      "added_date": "2025-09-08T19:57:14.151962",
+      "content_hash": "701cc267477e7d0b5e8de36252178185"
+    },
+    {
+      "title": "Google’s AI Mode adds 5 new languages including Hindi, Japanese, and Korean",
+      "url": "https://techcrunch.com/2025/09/08/googles-ai-mode-adds-5-new-languages-including-hindi-japanese-and-korean/",
+      "published": "Mon, 08 Sep 2025 18:46:10 +0000",
+      "added_date": "2025-09-08T19:57:14.216845",
+      "content_hash": "829c57b9fcc5785005f2b12065c141c7"
+    },
+    {
+      "title": "Signal introduces free and paid backup plans for your chats",
+      "url": "https://techcrunch.com/2025/09/08/signal-introduces-free-and-paid-backup-plans-for-your-chats/",
+      "published": "Mon, 08 Sep 2025 17:44:27 +0000",
+      "added_date": "2025-09-08T19:57:14.356148",
+      "content_hash": "6f7abf702c43e4e6aa8d4e9c5f13c2a8"
+    }
+  ],
+  "url_hashes": [
+    "57eecc9dadec5796f29dc563b89943cb",
+    "39cf226df9db731df70c19450eaeec68",
+    "47694ce7a341eff4c6ba0d6feda29cf1",
+    "146c67169149109b7b83fbeb73f1802e",
+    "d47fbb1629bca3f24301b4dc57b16830",
+    "3cb0d605378fc978ad54ddfc6b22b3bd",
+    "e20a5fd0dedab60d49c893981ec0fb88",
+    "05339bb4c597ff1762dbe5efe36c3ec0"
+  ],
+  "title_hashes": [
+    "a5d917b3cef7fc7eb4384ff860e860f3",
+    "ca131f50fe32e743667a0d87433e2355",
+    "0b808e544e62da524a7c3758a97dcf86",
+    "8112e7bca7a6a4300aba7cda931fd04b",
+    "3c706398154c8f3a40abc9b1b56a7a2f",
+    "dc893cf5324d5e956eef0f521d5ce70e",
+    "5a3fb149a80cac3bf57894bb7a409135",
+    "5ddd25198fded61b71cfa5d6e13f70a1"
+  ],
+  "last_updated": "2025-09-08T19:57:14.356344",
+  "total_articles_seen": 8
+}

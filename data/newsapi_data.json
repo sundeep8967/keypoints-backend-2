@@ -1,0 +1,1205 @@
+{
+  "extraction_timestamp": "2025-09-10T23:33:59.222385",
+  "total_articles": 55,
+  "articles_with_images": 51,
+  "image_success_rate": "92.7%",
+  "sources_processed": 7,
+  "api_source": "newsapi.org",
+  "categories": [
+    "indian_news",
+    "cricket_sports",
+    "bengaluru_local",
+    "bollywood_entertainment",
+    "technology_india",
+    "government_schemes",
+    "trending",
+    "regional",
+    "economy",
+    "politics"
+  ],
+  "by_category": {
+    "indian_news": [
+      {
+        "title": "Google News",
+        "url": "https://news.google.com/rss/articles/CBMihgJBVV95cUxNdlNrOE1lWG5MWU5yb2hpQXByZERycEJnTzlDeHlyMkNuRjY2LTJoQnlZSlNVMUVEUkNoakhjc2VfX3pGWWNlSVpKX0VUQ0Z2dHctX0c2ZHFGQklGVHJIdzNYVkRfTGJVcVZqTlJFWmhlblRlakRYN0hyc1NvLWR3bzdwTWt3LWFSUVpZeTJOYk12WS1kd1BMcTZNQ0JUMEdMempMZVJYclUtSXpId1g4SWstYlh4NUF5aDl6bjVpbmpJcVVQVVVwWUNTNm1VWTc3M0w3cUdVNWlnWDFhMTlSc3N6T0g2VnFCNV9fV3BWcjNQVEFHQ05feGloT0Q3cks5X1E1NUZ30gGLAkFVX3lxTE5mMGZWeUFBZ0N2bjgxbUx2STNFZkxvMV9zU0V1cG82VFFrQ19nNENvZkx6RjdyVTk3ZW1MUTBpcDY5TWNMXzBPQnd2aFAyaEZDV1BFNFBPR2FrMFdFNDktNjdPaURNY1FxalduTFNPemxwUTBjV1l0ZnhGc29UNC1Ma3A5MmJ4YWxESnhsVk9GU2FNcUVWM2NMUGRYd19XbjZMb3ZrdGRCVUhjQ1Y3S2twNGZSSW9qU1JlT0RDaDAzNGxWaExMV3RxSXpDYlNaZVpkNVh5bnZjLXFIN3haSkp6Sjg3OWRCc1hwcVhET24wTlFWSWFSRE41QmxGZTY1RU5wR3pmeGlFYVJIOA",
+        "published": "2025-09-09T18:00:05+00:00",
+        "description": "This article discusses google news. Comprehensive up-to-date news coverage, aggregated from sources all over the world by Google News. This development represents an important milestone in the ongoing evolution of the sector. Stakeholders and industry observers are likely to monitor the situation closely for potential broader implications. Such developments often reflect larger trends and patterns that may influence future decisions and strategies. Further details and updates are expected to emerge as the situation develops and more information becomes available.",
+        "source": "Google News (India)",
+        "category": "indian_news",
+        "image_url": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
+        "detected_category": "general",
+        "content_priority": "low",
+        "source_id": "",
+        "source_credibility": "unrated"
+      },
+      {
+        "title": "Nepal Gen Z Protest Live: Nepal Army Chief addresses nation amid violent protests, appeals for peace - India Today",
+        "url": "https://access.workspace.google.com/remediate",
+        "published": "2025-09-09T17:31:53+00:00",
+        "description": "Nepal Gen Z Protest Live: Nepal Army Chief addresses nation amid violent protests, appeals for peace India Today Nepal parliament set on fire after PM resigns over anti-corruption protests BBC Nepal violence: Ex-PM Khanal’s wife … Further details and developments are expected to emerge as the situation continues to evolve.",
+        "source": "Google News (India)",
+        "category": "indian_news",
+        "image_url": "",
+        "detected_category": "indian_news",
+        "content_priority": "critical",
+        "source_id": "",
+        "source_credibility": "unrated"
+      },
+      {
+        "title": "Google News",
+        "url": "https://news.google.com/rss/articles/CBMi5wFBVV95cUxNaUIxaEkzV1JLbUpTUXVGOW9aSTI3N3FXM05hQkFUaHYwSmYwMm1ua0F1ejlCZXVjQ01ZTFZydGppUW9XeFBZeHp3WjBjdFUxRkg5bURPaTFhR2N4eHpFcWFVSUtlbFI2dHhBTzdLWmxvTkVOUHZBak10Qy1kdFBOUGJqVjUtSEdqSXFYWHl1RzlsVmNsTWt0MjB6TncwbDV5VFUtYTV2U1JHVXpCUTNNRlJMTER4VURZeWJSZDhudVNsQlAtRFlicEFXcmFIRTNjWWRGQ2pSM04wTkM0YjgxY3NkUWc1c2c",
+        "published": "2025-09-09T16:01:23+00:00",
+        "description": "This article discusses google news. Comprehensive up-to-date news coverage, aggregated from sources all over the world by Google News. This development represents an important milestone in the ongoing evolution of the sector. Stakeholders and industry observers are likely to monitor the situation closely for potential broader implications. Such developments often reflect larger trends and patterns that may influence future decisions and strategies. Further details and updates are expected to emerge as the situation develops and more information becomes available.",
+        "source": "Google News (India)",
+        "category": "indian_news",
+        "image_url": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
+        "detected_category": "general",
+        "content_priority": "low",
+        "source_id": "",
+        "source_credibility": "unrated"
+      },
+      {
+        "title": "Brand-new Thar crashes out of Delhi showroom after buyer accidentally hits the accelerator - The Indian Express",
+        "url": "https://accounts.google.com/v3/signin/confirmidentifier",
+        "published": "2025-09-09T14:25:00+00:00",
+        "description": "This article discusses brand-new thar crashes out of delhi showroom after buyer accidentally hits the accelerator - the indian express. Brand-new Thar crashes out of Delhi showroom after buyer accidentally hits the accelerator The Indian ExpressView Full coverage on Google News This development represents an important milestone in the ongoing evolution of the sector. Stakeholders and industry observers are likely to monitor the situation closely for potential broader implications. Such developments often reflect larger trends and patterns that may influence future decisions and strategies. Further details and updates are expected to emerge as the situation develops and more information becomes available.",
+        "source": "Google News (India)",
+        "category": "indian_news",
+        "image_url": "",
+        "detected_category": "indian_news",
+        "content_priority": "critical",
+        "source_id": "",
+        "source_credibility": "unrated"
+      },
+      {
+        "title": "Google News",
+        "url": "https://news.google.com/rss/articles/CBMi7gFBVV95cUxQanFROWxnb2FIRnpmLTVzV3dLTFNZMkpfeGFGMVh3RjYxUzA4a0xYYU9hUTFSNVlLX2owQ3prZ3BuRV9lZk9lZ0ZOVzZIOGhfcC1FNmU0V09DVXU2QWFtVEZSM0EzOHJIckJZZVpyU0pUUUxFUk1URnExMzBibkhJNkNtNTFabnNOWl9iR2gtYlpGTWFwdmtuV3FVd2pjQ2xKOC1ENjV1WVQwWFFpRGVua3BRbXBQRklrQ2RCaHZCQm9zUWdiU1Z0OFRxdWpkb1JNY25XZ1hyb2JKZmhwbW5PeGtLVnhLaWx6dzc4LWRn",
+        "published": "2025-09-09T13:28:00+00:00",
+        "description": "This article discusses google news. Comprehensive up-to-date news coverage, aggregated from sources all over the world by Google News. This development represents an important milestone in the ongoing evolution of the sector. Stakeholders and industry observers are likely to monitor the situation closely for potential broader implications. Such developments often reflect larger trends and patterns that may influence future decisions and strategies. Further details and updates are expected to emerge as the situation develops and more information becomes available.",
+        "source": "Google News (India)",
+        "category": "indian_news",
+        "image_url": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
+        "detected_category": "general",
+        "content_priority": "low",
+        "source_id": "",
+        "source_credibility": "unrated"
+      },
+      {
+        "title": "Google News",
+        "url": "https://news.google.com/rss/articles/CBMi5gFBVV95cUxNNDZtOFIxdFN1NFR2Zl96bENuWDd1WjFMMjBpX2pCMS0xODNqaFVvR1hxdklXUG1lcm5VamZ0LVVjMzR2OTVuNTRZTGVpb0R6WXFUY0RHQjJCT2lHTEVhX3BWYk1Eazdfbmh3ektaM0RNeHdLRVhTenV6aEp5dnl4U0NuRXJOa3ZaQzZhVE1BSlJMMmJBVmRsTGR4UkhXVWRaQmdScGZGczBKRHBORGI0UmthMXM5ZlVWOHN4OG1zM243Z01EblpUZHpiTUNSVHptS0lVSmJVam53aDhJV0hKckQyREIyQdIB8wFBVV95cUxPWEcwanNNYTE5Nm1BRHRwdFZxU1FLcV9majVab3h6ZlJPNG8yb3VtLVp3UkltUnRQSjdtV1hSTlNNejM0SDJYODNveDI3M19SOWVyaVZMeTFCTjZWZ2NmczJKVnRickE0LXY5Si1SVlV1OGQ3cHVLVTZ1a3BXOWlYbUpEMGl5dDdSc2M0NlMyeVdNM2EyS1ZkbWZOb0NSd0RxMUhtdXhGdnZsOEpkUG4tUFMzSFczYTVIdERSb1A1UXJ5N2c2akF4SFlnNVQzdk9URDZKNnBReThvZi1hY2JLQkRfZGVPOFV4UGUzTWRsdGZ1YVE",
+        "published": "2025-09-09T12:20:56+00:00",
+        "description": "This article discusses google news. Comprehensive up-to-date news coverage, aggregated from sources all over the world by Google News. This development represents an important milestone in the ongoing evolution of the sector. Stakeholders and industry observers are likely to monitor the situation closely for potential broader implications. Such developments often reflect larger trends and patterns that may influence future decisions and strategies. Further details and updates are expected to emerge as the situation develops and more information becomes available.",
+        "source": "Google News (India)",
+        "category": "indian_news",
+        "image_url": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
+        "detected_category": "general",
+        "content_priority": "low",
+        "source_id": "",
+        "source_credibility": "unrated"
+      },
+      {
+        "title": "Google News",
+        "url": "https://news.google.com/rss/articles/CBMizgFBVV95cUxOUERiSW5MVWEtdjM0OWtPYk9oNm5TSndTbTRKTkVPNDFsbzY1MUd6ZEtQQ3FSVWFfVjFsWjN4a1pCNi1PUXdEdUJodW10cDF2MlRuQ1poN09OQVctbVpyMFJiQjI0bkFFaVh3c1NjbWg4MXpBdWc2bmVyLVpiM2NnM3BsY21wMzFQRjdDdXRpQ1FrVzU4amxTNnVxQjUxdWt2dUQ4WnZScnRZbkl6WVFGcEtwVV9CV3dGbWZrYkVjVUJUZzZrbzR4Skd2Q3E1UQ",
+        "published": "2025-09-09T09:24:25+00:00",
+        "description": "This article discusses google news. Comprehensive up-to-date news coverage, aggregated from sources all over the world by Google News. This development represents an important milestone in the ongoing evolution of the sector. Stakeholders and industry observers are likely to monitor the situation closely for potential broader implications. Such developments often reflect larger trends and patterns that may influence future decisions and strategies. Further details and updates are expected to emerge as the situation develops and more information becomes available.",
+        "source": "Google News (India)",
+        "category": "indian_news",
+        "image_url": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
+        "detected_category": "general",
+        "content_priority": "low",
+        "source_id": "",
+        "source_credibility": "unrated"
+      },
+      {
+        "title": "Google News",
+        "url": "https://news.google.com/rss/articles/CBMi6wFBVV95cUxNRzQxRDdBWTlpN0RucTh2bk5TU2ZXRXRjTGpRSU50aVlpSUNPTFNQUlJWeHZIdFFaMzlFLWZXWTN5UzBEN2dpTkE0VzBaWktaanBmaVd1bW03dEFlZHJqQ2huVjIyUi1jWHZJem5Ic3F0ZjRtV3RjTU1tMExkb3FuMFREdkVZMzJIWk80eGJteFhkQjFQemhHMG5HbTkyRWRaNHowU2lzYTdwa0RaOTItb3ZFUk9veTRDNllON1FFSF9BU0lmdUdVM3NDdzM2SjNOUHZ3a2xFYXNRbDBPc0haX3d1a3pwRGlBeUhZ0gHwAUFVX3lxTE9QcW9CQVEtdDduTjBDWlZoV0dQSm1YUVZaUTRGU2x1SHA0N3V1anZlcGdwM3ZnTFgxS2otdWhzVEpSUEF5d19tNFN0WjhtQjhLSExsejNXMUE0TWlTWHIxdjNBNlFZZXZnZmMyVkJaaHFyc0wtZzF5WDQ5VnJrOEpqQUhQQzdScVJkX0dlMnR5VE5BTGNBVy1ZT1o5V3RyT2pJaENnVHR6MEVyODBkaWkxOWsyc056NWxpZ002NXFwVDgyVU45QWRXMjlFV3hiZW5abVdlc0FHaUxwcWpVODdPWnVmdFNYQmEydlJQUVNQaw",
+        "published": "2025-09-09T08:53:15+00:00",
+        "description": "This article discusses google news. Comprehensive up-to-date news coverage, aggregated from sources all over the world by Google News. This development represents an important milestone in the ongoing evolution of the sector. Stakeholders and industry observers are likely to monitor the situation closely for potential broader implications. Such developments often reflect larger trends and patterns that may influence future decisions and strategies. Further details and updates are expected to emerge as the situation develops and more information becomes available.",
+        "source": "Google News (India)",
+        "category": "indian_news",
+        "image_url": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
+        "detected_category": "general",
+        "content_priority": "low",
+        "source_id": "",
+        "source_credibility": "unrated"
+      },
+      {
+        "title": "Google News",
+        "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxNdnI4U08wcnNoX0hSdlRqMkw2NWdrN09QUnZJY0h2aGxIUWpNemU4VldPUWptejFVQ2lFTXVtTFJWYzMzcFI5NUJWbGVzNjUtUnNYaU10dXJLTGJ5VVRJMnRfQ1M2UU4zRVFWVGwwMnIxZVp5b1dQeVZmZzBCLWl0dHhicWljdnZtLXpNcVJMV3BsOXJBRTE5U0Z3OE1fdjh3Wk9EODZHaS1DSkIwOHZ3VlF4MkRlYWZKVHF6ZDZ3YVp3NkkzWlZj0gHMAUFVX3lxTE5jbC1FT2Y0SlFWZUtXSWpNaXE4X1hwWHVCUU16RWFrVVl5ZjRYTlJ1ZnBKYXZWR3J4VDk1ZUZSakkteHBfNW04cGNxajdyN2dvd2JOU3dBNzRIM3F3Slc2QmYxeVJQaXRFVFZ0YmNwb3lRcE93WngyMHRIb2NaM0VGTkhwd2RWYktJSVlSMGFoNHRwY2tYbHo5M3BVai1sMXBES1JTd0VSS0tRVnFvWmRfOEd6TEZZNVhhSjFUbjhmTWNRQWR1ZElfQ1gzbw",
+        "published": "2025-09-09T03:04:12+00:00",
+        "description": "This article discusses google news. Comprehensive up-to-date news coverage, aggregated from sources all over the world by Google News. This development represents an important milestone in the ongoing evolution of the sector. Stakeholders and industry observers are likely to monitor the situation closely for potential broader implications. Such developments often reflect larger trends and patterns that may influence future decisions and strategies. Further details and updates are expected to emerge as the situation develops and more information becomes available.",
+        "source": "Google News (India)",
+        "category": "indian_news",
+        "image_url": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
+        "detected_category": "general",
+        "content_priority": "low",
+        "source_id": "",
+        "source_credibility": "unrated"
+      },
+      {
+        "title": "Coronavirus live updates | Schools in Rajasthan to reopen from August 2",
+        "url": "https://www.thehindu.com/news/national/coronavirus-live-july-23-2021-updates/article35481907.ece",
+        "published": "2021-07-23T04:37:35.1474224Z",
+        "description": "People queue up for the COVID-19 test in Vijayawada on Wednesday. Given the robust and statute-based death registration system in the country, while some cases could go undetected as per the principles of infectious disease and its management,missing out on deaths was unlikely, said the Union Health Ministry in a release issued on Thursday in response to allegations of “missing COVID-19 deaths”. “This could also be seen in the case fatality rate, which, as on 31st December 2020, stood at 1.45% and even after an unexpected surge observed in the second wave in April-May 2021, the case fatality rate today stands at 1.34%,” it stated..",
+        "source": "The Hindu",
+        "category": "indian_news",
+        "image_url": "https://www.thehindu.com/news/national/andhra-pradesh/itrjr2/article35457972.ece/ALTERNATES/LANDSCAPE_615/22vjcovid",
+        "detected_category": "cricket_sports",
+        "content_priority": "critical",
+        "source_id": "",
+        "source_credibility": "unrated"
+      }
+    ],
+    "cricket_sports": [
+      {
+        "title": "PCB hands Umar Akmal three-year ban from all cricket | ESPNcricinfo.com",
+        "url": "http://www.espncricinfo.com/story/_/id/29103103/pcb-hands-umar-akmal-three-year-ban-all-cricket",
+        "published": "2020-04-27T11:41:47Z",
+        "description": "This article discusses pcb hands umar akmal three-year ban from all cricket | espncricinfo.com. Penalty after the batsman pleaded guilty to not reporting corrupt approaches | ESPNcricinfo.com The cricket industry continues to evolve with new talent emerging regularly. Performance statistics and career trajectories are closely monitored by selectors and fans alike. Such developments in domestic cricket often serve as stepping stones for players aspiring to represent their country at the international level. Further details and updates are expected to emerge as the situation develops and more information becomes available.",
+        "source": "ESPN Cric Info",
+        "category": "cricket_sports",
+        "image_url": "https://a4.espncdn.com/combiner/i?img=%2Fi%2Fcricket%2Fcricinfo%2F1099495_800x450.jpg",
+        "detected_category": "cricket_sports",
+        "content_priority": "critical",
+        "source_id": "",
+        "source_credibility": "unrated"
+      },
+      {
+        "title": "Akram's yorkers, Hegg's hits, and Chapple's 6 for 18 | ESPNcricinfo.com",
+        "url": "http://www.espncricinfo.com/story/_/id/29102935/o-my-akram-my-hegg-long-ago",
+        "published": "2020-04-27T10:24:08Z",
+        "description": "Lancashire won the NatWest Trophy and the Benson & Hedges Cup three times each in the '90s •PA Photos/Getty Images Andrew McGlashan is a deputy editor at ESPNcricinfo Lancashire won the NatWest Trophy and the Benson & Hedges Cup three times each in the '90s •PA Photos/Getty Images Andrew McGlashan is a deputy editor at ESPNcricinfo",
+        "source": "ESPN Cric Info",
+        "category": "cricket_sports",
+        "image_url": "https://a3.espncdn.com/combiner/i?img=%2Fi%2Fcricket%2Fcricinfo%2F1221634_1296x729.jpg",
+        "detected_category": "general",
+        "content_priority": "low",
+        "source_id": "",
+        "source_credibility": "unrated"
+      },
+      {
+        "title": "'It was the first time we realised we can also cry after winning a game'",
+        "url": "https://www.thecricketmonthly.com/story/1221473/-it-was-the-first-time-we-realised-we-can-also-cry-after-winning-a-game",
+        "published": "2020-04-27T09:37:16.8323585Z",
+        "description": "Habibul Bashar, Mohammad Ashraful, Tareq Aziz and Tatenda Taibu recall Bangladesh's first win since becoming a Test nation - in an ODI in Harare in 2004 Mushfiqur Rahman and his team-mates celebrate Tatenda Taibu's wicket. In the space of nine overs, Zimbabwe lost four wickets for 19 runs© AFP/Getty Images Mushfiqur Rahman and his team-mates celebrate Tatenda Taibu's wicket. In the space of nine overs, Zimbabwe lost four wickets for 19 runs© AFP/Getty Images From June 1999 to February 2004, Bangladesh had racked up some unwanted records - most consecutive defeats in international cricket, which included most consecutive Test defeats, the longest winless streak in that format, and the most consecutive ODI defeats. Now under a new captain, Bangladesh were hoping for better days. Habibul Bashar, Bangladesh captain:The Zimbabwe team was far ahead of us in those days, that too in their conditions. We had already lost the Test series. Imade a pair in my first Test as captain. While we waited for the rain to stop in Bulawayo [where the first two ODIs had to be abandoned], coachDav Whatmorewas trying to instil the mentality of trying to win rather than thinking about playing well and losing - he would tell us that there was no glory in that. Mohammad Ashraful, Bangladesh batsman:One day on the tour, I was telling Shuvrobhai[journalist Utpal Shuvro] that the Bangladesh public treats us as heroes even though we don't win any matches. We have such a wonderful following despite our results.",
+        "source": "ESPN Cric Info",
+        "category": "cricket_sports",
+        "image_url": "https://i.imgci.com/espncricinfo/cricket_monthly/og-the-cricket-monthly.jpg",
+        "detected_category": "cricket_sports",
+        "content_priority": "critical",
+        "source_id": "",
+        "source_credibility": "unrated"
+      },
+      {
+        "title": "Five famous people (and one cat) you didn't know have ESPNcricinfo profiles | ESPNcricinfo.com",
+        "url": "http://www.espncricinfo.com/story/_/id/29102695/five-famous-people-one-cat-know-espncricinfo-profiles",
+        "published": "2020-04-27T07:20:43Z",
+        "description": "Which famous novelist is depicted playing cricket in this painting? •Getty Images As it's#LoveYourPetDaywe thought we'd share this photo of Peter the Cat, who lived at Lord's from 1952 to 1964.️ Peter is the only animal to be given an obituary in the@WisdenAlmanack.#LoveLordspic.twitter.com/ToBPUql7fb",
+        "source": "ESPN Cric Info",
+        "category": "cricket_sports",
+        "image_url": "https://a.espncdn.com/i/cricket/cricinfo/1221668_1296x1296.gif",
+        "detected_category": "cricket_sports",
+        "content_priority": "critical",
+        "source_id": "",
+        "source_credibility": "unrated"
+      },
+      {
+        "title": "Sri Lanka don't win the 1996 World Cup | ESPNcricinfo.com",
+        "url": "http://www.espncricinfo.com/story/_/id/29101950/sri-lanka-had-not-won-1996-world-cup",
+        "published": "2020-04-27T01:00:01Z",
+        "description": "This article discusses sri lanka don't win the 1996 world cup | espncricinfo.com. Because fairy-tales only exist in story books | ESPNcricinfo.com This development represents an important milestone in the ongoing evolution of the sector. Stakeholders and industry observers are likely to monitor the situation closely for potential broader implications. Such developments often reflect larger trends and patterns that may influence future decisions and strategies. Further details and updates are expected to emerge as the situation develops and more information becomes available.",
+        "source": "ESPN Cric Info",
+        "category": "cricket_sports",
+        "image_url": "https://a4.espncdn.com/combiner/i?img=%2Fi%2Fcricket%2Fcricinfo%2F1219948_900x506.jpg",
+        "detected_category": "general",
+        "content_priority": "low",
+        "source_id": "",
+        "source_credibility": "unrated"
+      },
+      {
+        "title": "I'm fighting my own benchmarks - R Ashwin | ESPNcricinfo.com",
+        "url": "http://www.espncricinfo.com/story/_/id/29102228/fighting-my-own-benchmarks-r-ashwin",
+        "published": "2020-04-25T03:00:09Z",
+        "description": "This article discusses i'm fighting my own benchmarks - r ashwin | espncricinfo.com. India's No. 1 offspinner talks to Manjrekar on his form abroad, injuries and more | ESPNcricinfo.com This development represents an important milestone in the ongoing evolution of the sector. Stakeholders and industry observers are likely to monitor the situation closely for potential broader implications. Such developments often reflect larger trends and patterns that may influence future decisions and strategies. Further details and updates are expected to emerge as the situation develops and more information becomes available.",
+        "source": "ESPN Cric Info",
+        "category": "cricket_sports",
+        "image_url": "https://a4.espncdn.com/combiner/i?img=%2Fi%2Fcricket%2Fcricinfo%2F1219773_1296x729.jpg",
+        "detected_category": "indian_news",
+        "content_priority": "critical",
+        "source_id": "",
+        "source_credibility": "unrated"
+      },
+      {
+        "title": "The Coronavirus soap opera, starring KP, Warnie, Mahela | ESPNcricinfo.com",
+        "url": "http://www.espncricinfo.com/story/_/id/28979161/andrew-fernando-satirical-look-back-cricket-march-2020",
+        "published": "2020-04-01T10:15:40Z",
+        "description": "Home is that way: Mayor Mahela just wants people to follow the rules. No one will listen •AFP Andrew Fidel Fernando is ESPNcricinfo's Sri Lanka correspondent. @afidelf Home is that way: Mayor Mahela just wants people to follow the rules. No one will listen •AFP Andrew Fidel Fernando is ESPNcricinfo's Sri Lanka correspondent. @afidelf.",
+        "source": "ESPN Cric Info",
+        "category": "cricket_sports",
+        "image_url": "https://a3.espncdn.com/combiner/i?img=%2Fi%2Fcricket%2Fcricinfo%2F1219981_1296x1296.jpg",
+        "detected_category": "general",
+        "content_priority": "low",
+        "source_id": "",
+        "source_credibility": "unrated"
+      },
+      {
+        "title": "Five CSK games only hardcore fans will remember | ESPNcricinfo.com",
+        "url": "http://www.espncricinfo.com/story/_/id/28974528/five-csk-games-only-hardcore-fans-remember",
+        "published": "2020-03-31T10:23:03Z",
+        "description": "This article discusses five csk games only hardcore fans will remember | espncricinfo.com. From throwing a surprise in the batting order to smashing sixes after sixes, CSK have done it all | ESPNcricinfo.com This development represents an important milestone in the ongoing evolution of the sector. Stakeholders and industry observers are likely to monitor the situation closely for potential broader implications. Such developments often reflect larger trends and patterns that may influence future decisions and strategies. Further details and updates are expected to emerge as the situation develops and more information becomes available.",
+        "source": "ESPN Cric Info",
+        "category": "cricket_sports",
+        "image_url": "https://a2.espncdn.com/combiner/i?img=%2Fi%2Fcricket%2Fcricinfo%2F1219712_1296x729.jpg",
+        "detected_category": "general",
+        "content_priority": "low",
+        "source_id": "",
+        "source_credibility": "unrated"
+      },
+      {
+        "title": "'This is a ball the whole world will remember' - Saeed Ajmal v Sachin Tendulkar revisited | ESPNcricinfo.com",
+        "url": "http://www.espncricinfo.com/story/_/id/28973835/this-ball-whole-world-remember-saeed-ajmal-v-sachin-tendulkar-revisited",
+        "published": "2020-03-30T18:45:45Z",
+        "description": "This article discusses 'this is a ball the whole world will remember' - saeed ajmal v sachin tendulkar revisited | espncricinfo.com. We asked experts - and one participant - their considered view of the controversial Hawk-Eye projection | ESPNcricinfo.com This development represents an important milestone in the ongoing evolution of the sector. Stakeholders and industry observers are likely to monitor the situation closely for potential broader implications. Such developments often reflect larger trends and patterns that may influence future decisions and strategies. Further details and updates are expected to emerge as the situation develops and more information becomes available.",
+        "source": "ESPN Cric Info",
+        "category": "cricket_sports",
+        "image_url": "https://a4.espncdn.com/combiner/i?img=%2Fi%2Fcricket%2Fcricinfo%2F1219912_1296x729.jpg",
+        "detected_category": "general",
+        "content_priority": "low",
+        "source_id": "",
+        "source_credibility": "unrated"
+      },
+      {
+        "title": "What we learned from watching the 1992 World Cup final in full again | ESPNcricinfo.com",
+        "url": "http://www.espncricinfo.com/story/_/id/28970907/learned-watching-1992-world-cup-final-full-again",
+        "published": "2020-03-30T15:26:05Z",
+        "description": "Wides, lbw calls, swing - plenty of things were different in white-ball cricket back then | ESPNcricinfo.com This technological advancement reflects the ongoing innovation in the digital landscape and could influence industry standards. Further details and developments are expected to emerge as the situation continues to evolve.",
+        "source": "ESPN Cric Info",
+        "category": "cricket_sports",
+        "image_url": "https://a4.espncdn.com/combiner/i?img=%2Fi%2Fcricket%2Fcricinfo%2F1219926_1296x729.jpg",
+        "detected_category": "cricket_sports",
+        "content_priority": "critical",
+        "source_id": "",
+        "source_credibility": "unrated"
+      }
+    ],
+    "bengaluru_local": [
+      {
+        "title": "Google News",
+        "url": "https://news.google.com/rss/articles/CBMihgJBVV95cUxNdlNrOE1lWG5MWU5yb2hpQXByZERycEJnTzlDeHlyMkNuRjY2LTJoQnlZSlNVMUVEUkNoakhjc2VfX3pGWWNlSVpKX0VUQ0Z2dHctX0c2ZHFGQklGVHJIdzNYVkRfTGJVcVZqTlJFWmhlblRlakRYN0hyc1NvLWR3bzdwTWt3LWFSUVpZeTJOYk12WS1kd1BMcTZNQ0JUMEdMempMZVJYclUtSXpId1g4SWstYlh4NUF5aDl6bjVpbmpJcVVQVVVwWUNTNm1VWTc3M0w3cUdVNWlnWDFhMTlSc3N6T0g2VnFCNV9fV3BWcjNQVEFHQ05feGloT0Q3cks5X1E1NUZ30gGLAkFVX3lxTE5mMGZWeUFBZ0N2bjgxbUx2STNFZkxvMV9zU0V1cG82VFFrQ19nNENvZkx6RjdyVTk3ZW1MUTBpcDY5TWNMXzBPQnd2aFAyaEZDV1BFNFBPR2FrMFdFNDktNjdPaURNY1FxalduTFNPemxwUTBjV1l0ZnhGc29UNC1Ma3A5MmJ4YWxESnhsVk9GU2FNcUVWM2NMUGRYd19XbjZMb3ZrdGRCVUhjQ1Y3S2twNGZSSW9qU1JlT0RDaDAzNGxWaExMV3RxSXpDYlNaZVpkNVh5bnZjLXFIN3haSkp6Sjg3OWRCc1hwcVhET24wTlFWSWFSRE41QmxGZTY1RU5wR3pmeGlFYVJIOA",
+        "published": "2025-09-09T18:00:05+00:00",
+        "description": "This article discusses google news. Comprehensive up-to-date news coverage, aggregated from sources all over the world by Google News. This development represents an important milestone in the ongoing evolution of the sector. Stakeholders and industry observers are likely to monitor the situation closely for potential broader implications. Such developments often reflect larger trends and patterns that may influence future decisions and strategies. Further details and updates are expected to emerge as the situation develops and more information becomes available.",
+        "source": "Google News (India)",
+        "category": "bengaluru_local",
+        "image_url": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
+        "detected_category": "general",
+        "content_priority": "low",
+        "source_id": "",
+        "source_credibility": "unrated"
+      },
+      {
+        "title": "Nepal Gen Z Protest Live: Nepal Army Chief addresses nation amid violent protests, appeals for peace - India Today",
+        "url": "https://access.workspace.google.com/remediate",
+        "published": "2025-09-09T17:31:53+00:00",
+        "description": "Nepal Gen Z Protest Live: Nepal Army Chief addresses nation amid violent protests, appeals for peace India Today Nepal parliament set on fire after PM resigns over anti-corruption protests BBC Nepal violence: Ex-PM Khanal’s wife … Further details and developments are expected to emerge as the situation continues to evolve.",
+        "source": "Google News (India)",
+        "category": "bengaluru_local",
+        "image_url": "",
+        "detected_category": "indian_news",
+        "content_priority": "critical",
+        "source_id": "",
+        "source_credibility": "unrated"
+      },
+      {
+        "title": "Google News",
+        "url": "https://news.google.com/rss/articles/CBMi5wFBVV95cUxNaUIxaEkzV1JLbUpTUXVGOW9aSTI3N3FXM05hQkFUaHYwSmYwMm1ua0F1ejlCZXVjQ01ZTFZydGppUW9XeFBZeHp3WjBjdFUxRkg5bURPaTFhR2N4eHpFcWFVSUtlbFI2dHhBTzdLWmxvTkVOUHZBak10Qy1kdFBOUGJqVjUtSEdqSXFYWHl1RzlsVmNsTWt0MjB6TncwbDV5VFUtYTV2U1JHVXpCUTNNRlJMTER4VURZeWJSZDhudVNsQlAtRFlicEFXcmFIRTNjWWRGQ2pSM04wTkM0YjgxY3NkUWc1c2c",
+        "published": "2025-09-09T16:01:23+00:00",
+        "description": "This article discusses google news. Comprehensive up-to-date news coverage, aggregated from sources all over the world by Google News. This development represents an important milestone in the ongoing evolution of the sector. Stakeholders and industry observers are likely to monitor the situation closely for potential broader implications. Such developments often reflect larger trends and patterns that may influence future decisions and strategies. Further details and updates are expected to emerge as the situation develops and more information becomes available.",
+        "source": "Google News (India)",
+        "category": "bengaluru_local",
+        "image_url": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
+        "detected_category": "general",
+        "content_priority": "low",
+        "source_id": "",
+        "source_credibility": "unrated"
+      },
+      {
+        "title": "Brand-new Thar crashes out of Delhi showroom after buyer accidentally hits the accelerator - The Indian Express",
+        "url": "https://accounts.google.com/v3/signin/confirmidentifier",
+        "published": "2025-09-09T14:25:00+00:00",
+        "description": "This article discusses brand-new thar crashes out of delhi showroom after buyer accidentally hits the accelerator - the indian express. Brand-new Thar crashes out of Delhi showroom after buyer accidentally hits the accelerator The Indian ExpressView Full coverage on Google News This development represents an important milestone in the ongoing evolution of the sector. Stakeholders and industry observers are likely to monitor the situation closely for potential broader implications. Such developments often reflect larger trends and patterns that may influence future decisions and strategies. Further details and updates are expected to emerge as the situation develops and more information becomes available.",
+        "source": "Google News (India)",
+        "category": "bengaluru_local",
+        "image_url": "",
+        "detected_category": "indian_news",
+        "content_priority": "critical",
+        "source_id": "",
+        "source_credibility": "unrated"
+      },
+      {
+        "title": "Google News",
+        "url": "https://news.google.com/rss/articles/CBMi7gFBVV95cUxQanFROWxnb2FIRnpmLTVzV3dLTFNZMkpfeGFGMVh3RjYxUzA4a0xYYU9hUTFSNVlLX2owQ3prZ3BuRV9lZk9lZ0ZOVzZIOGhfcC1FNmU0V09DVXU2QWFtVEZSM0EzOHJIckJZZVpyU0pUUUxFUk1URnExMzBibkhJNkNtNTFabnNOWl9iR2gtYlpGTWFwdmtuV3FVd2pjQ2xKOC1ENjV1WVQwWFFpRGVua3BRbXBQRklrQ2RCaHZCQm9zUWdiU1Z0OFRxdWpkb1JNY25XZ1hyb2JKZmhwbW5PeGtLVnhLaWx6dzc4LWRn",
+        "published": "2025-09-09T13:28:00+00:00",
+        "description": "This article discusses google news. Comprehensive up-to-date news coverage, aggregated from sources all over the world by Google News. This development represents an important milestone in the ongoing evolution of the sector. Stakeholders and industry observers are likely to monitor the situation closely for potential broader implications. Such developments often reflect larger trends and patterns that may influence future decisions and strategies. Further details and updates are expected to emerge as the situation develops and more information becomes available.",
+        "source": "Google News (India)",
+        "category": "bengaluru_local",
+        "image_url": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
+        "detected_category": "general",
+        "content_priority": "low",
+        "source_id": "",
+        "source_credibility": "unrated"
+      },
+      {
+        "title": "Google News",
+        "url": "https://news.google.com/rss/articles/CBMi5gFBVV95cUxNNDZtOFIxdFN1NFR2Zl96bENuWDd1WjFMMjBpX2pCMS0xODNqaFVvR1hxdklXUG1lcm5VamZ0LVVjMzR2OTVuNTRZTGVpb0R6WXFUY0RHQjJCT2lHTEVhX3BWYk1Eazdfbmh3ektaM0RNeHdLRVhTenV6aEp5dnl4U0NuRXJOa3ZaQzZhVE1BSlJMMmJBVmRsTGR4UkhXVWRaQmdScGZGczBKRHBORGI0UmthMXM5ZlVWOHN4OG1zM243Z01EblpUZHpiTUNSVHptS0lVSmJVam53aDhJV0hKckQyREIyQdIB8wFBVV95cUxPWEcwanNNYTE5Nm1BRHRwdFZxU1FLcV9majVab3h6ZlJPNG8yb3VtLVp3UkltUnRQSjdtV1hSTlNNejM0SDJYODNveDI3M19SOWVyaVZMeTFCTjZWZ2NmczJKVnRickE0LXY5Si1SVlV1OGQ3cHVLVTZ1a3BXOWlYbUpEMGl5dDdSc2M0NlMyeVdNM2EyS1ZkbWZOb0NSd0RxMUhtdXhGdnZsOEpkUG4tUFMzSFczYTVIdERSb1A1UXJ5N2c2akF4SFlnNVQzdk9URDZKNnBReThvZi1hY2JLQkRfZGVPOFV4UGUzTWRsdGZ1YVE",
+        "published": "2025-09-09T12:20:56+00:00",
+        "description": "This article discusses google news. Comprehensive up-to-date news coverage, aggregated from sources all over the world by Google News. This development represents an important milestone in the ongoing evolution of the sector. Stakeholders and industry observers are likely to monitor the situation closely for potential broader implications. Such developments often reflect larger trends and patterns that may influence future decisions and strategies. Further details and updates are expected to emerge as the situation develops and more information becomes available.",
+        "source": "Google News (India)",
+        "category": "bengaluru_local",
+        "image_url": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
+        "detected_category": "general",
+        "content_priority": "low",
+        "source_id": "",
+        "source_credibility": "unrated"
+      },
+      {
+        "title": "Google News",
+        "url": "https://news.google.com/rss/articles/CBMizgFBVV95cUxOUERiSW5MVWEtdjM0OWtPYk9oNm5TSndTbTRKTkVPNDFsbzY1MUd6ZEtQQ3FSVWFfVjFsWjN4a1pCNi1PUXdEdUJodW10cDF2MlRuQ1poN09OQVctbVpyMFJiQjI0bkFFaVh3c1NjbWg4MXpBdWc2bmVyLVpiM2NnM3BsY21wMzFQRjdDdXRpQ1FrVzU4amxTNnVxQjUxdWt2dUQ4WnZScnRZbkl6WVFGcEtwVV9CV3dGbWZrYkVjVUJUZzZrbzR4Skd2Q3E1UQ",
+        "published": "2025-09-09T09:24:25+00:00",
+        "description": "This article discusses google news. Comprehensive up-to-date news coverage, aggregated from sources all over the world by Google News. This development represents an important milestone in the ongoing evolution of the sector. Stakeholders and industry observers are likely to monitor the situation closely for potential broader implications. Such developments often reflect larger trends and patterns that may influence future decisions and strategies. Further details and updates are expected to emerge as the situation develops and more information becomes available.",
+        "source": "Google News (India)",
+        "category": "bengaluru_local",
+        "image_url": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
+        "detected_category": "general",
+        "content_priority": "low",
+        "source_id": "",
+        "source_credibility": "unrated"
+      },
+      {
+        "title": "Google News",
+        "url": "https://news.google.com/rss/articles/CBMi6wFBVV95cUxNRzQxRDdBWTlpN0RucTh2bk5TU2ZXRXRjTGpRSU50aVlpSUNPTFNQUlJWeHZIdFFaMzlFLWZXWTN5UzBEN2dpTkE0VzBaWktaanBmaVd1bW03dEFlZHJqQ2huVjIyUi1jWHZJem5Ic3F0ZjRtV3RjTU1tMExkb3FuMFREdkVZMzJIWk80eGJteFhkQjFQemhHMG5HbTkyRWRaNHowU2lzYTdwa0RaOTItb3ZFUk9veTRDNllON1FFSF9BU0lmdUdVM3NDdzM2SjNOUHZ3a2xFYXNRbDBPc0haX3d1a3pwRGlBeUhZ0gHwAUFVX3lxTE9QcW9CQVEtdDduTjBDWlZoV0dQSm1YUVZaUTRGU2x1SHA0N3V1anZlcGdwM3ZnTFgxS2otdWhzVEpSUEF5d19tNFN0WjhtQjhLSExsejNXMUE0TWlTWHIxdjNBNlFZZXZnZmMyVkJaaHFyc0wtZzF5WDQ5VnJrOEpqQUhQQzdScVJkX0dlMnR5VE5BTGNBVy1ZT1o5V3RyT2pJaENnVHR6MEVyODBkaWkxOWsyc056NWxpZ002NXFwVDgyVU45QWRXMjlFV3hiZW5abVdlc0FHaUxwcWpVODdPWnVmdFNYQmEydlJQUVNQaw",
+        "published": "2025-09-09T08:53:15+00:00",
+        "description": "This article discusses google news. Comprehensive up-to-date news coverage, aggregated from sources all over the world by Google News. This development represents an important milestone in the ongoing evolution of the sector. Stakeholders and industry observers are likely to monitor the situation closely for potential broader implications. Such developments often reflect larger trends and patterns that may influence future decisions and strategies. Further details and updates are expected to emerge as the situation develops and more information becomes available.",
+        "source": "Google News (India)",
+        "category": "bengaluru_local",
+        "image_url": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
+        "detected_category": "general",
+        "content_priority": "low",
+        "source_id": "",
+        "source_credibility": "unrated"
+      },
+      {
+        "title": "Google News",
+        "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxNdnI4U08wcnNoX0hSdlRqMkw2NWdrN09QUnZJY0h2aGxIUWpNemU4VldPUWptejFVQ2lFTXVtTFJWYzMzcFI5NUJWbGVzNjUtUnNYaU10dXJLTGJ5VVRJMnRfQ1M2UU4zRVFWVGwwMnIxZVp5b1dQeVZmZzBCLWl0dHhicWljdnZtLXpNcVJMV3BsOXJBRTE5U0Z3OE1fdjh3Wk9EODZHaS1DSkIwOHZ3VlF4MkRlYWZKVHF6ZDZ3YVp3NkkzWlZj0gHMAUFVX3lxTE5jbC1FT2Y0SlFWZUtXSWpNaXE4X1hwWHVCUU16RWFrVVl5ZjRYTlJ1ZnBKYXZWR3J4VDk1ZUZSakkteHBfNW04cGNxajdyN2dvd2JOU3dBNzRIM3F3Slc2QmYxeVJQaXRFVFZ0YmNwb3lRcE93WngyMHRIb2NaM0VGTkhwd2RWYktJSVlSMGFoNHRwY2tYbHo5M3BVai1sMXBES1JTd0VSS0tRVnFvWmRfOEd6TEZZNVhhSjFUbjhmTWNRQWR1ZElfQ1gzbw",
+        "published": "2025-09-09T03:04:12+00:00",
+        "description": "This article discusses google news. Comprehensive up-to-date news coverage, aggregated from sources all over the world by Google News. This development represents an important milestone in the ongoing evolution of the sector. Stakeholders and industry observers are likely to monitor the situation closely for potential broader implications. Such developments often reflect larger trends and patterns that may influence future decisions and strategies. Further details and updates are expected to emerge as the situation develops and more information becomes available.",
+        "source": "Google News (India)",
+        "category": "bengaluru_local",
+        "image_url": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
+        "detected_category": "general",
+        "content_priority": "low",
+        "source_id": "",
+        "source_credibility": "unrated"
+      },
+      {
+        "title": "Coronavirus live updates | Schools in Rajasthan to reopen from August 2",
+        "url": "https://www.thehindu.com/news/national/coronavirus-live-july-23-2021-updates/article35481907.ece",
+        "published": "2021-07-23T04:37:35.1474224Z",
+        "description": "People queue up for the COVID-19 test in Vijayawada on Wednesday. Given the robust and statute-based death registration system in the country, while some cases could go undetected as per the principles of infectious disease and its management,missing out on deaths was unlikely, said the Union Health Ministry in a release issued on Thursday in response to allegations of “missing COVID-19 deaths”. “This could also be seen in the case fatality rate, which, as on 31st December 2020, stood at 1.45% and even after an unexpected surge observed in the second wave in April-May 2021, the case fatality rate today stands at 1.34%,” it stated..",
+        "source": "The Hindu",
+        "category": "bengaluru_local",
+        "image_url": "https://www.thehindu.com/news/national/andhra-pradesh/itrjr2/article35457972.ece/ALTERNATES/LANDSCAPE_615/22vjcovid",
+        "detected_category": "cricket_sports",
+        "content_priority": "critical",
+        "source_id": "",
+        "source_credibility": "unrated"
+      }
+    ],
+    "bollywood_entertainment": [],
+    "technology_india": [],
+    "government_schemes": [],
+    "trending": [
+      {
+        "title": "BREAKING: iPhone 17 Pro revealed – here's what you need to know",
+        "url": "https://www.techradar.com/phones/iphone/breaking-iphone-17-pro-revealed-heres-what-you-need-to-know",
+        "published": "2025-09-09T18:04:49Z",
+        "description": "The iPhone 17 Pro and iPhone 17 Pro Max are official, withApplehaving unveiled both devices at its hardware-heavy'Awe Dropping' launch event. The two new phones are undoubtedly the premium models in Apple's iPhone 17 lineup (which also features the standardiPhone 17and the wafer-thiniPhone Air), and are set to top our rankings of thebest iPhones.But what, specifically, makes them so special? In this guide, we've rounded up some of the key upgrades introduced with the iPhone 17 Pro and iPhone 17 Pro Max – from their new chipsets and camera hardware to their refreshingly different designs. The most immediately obvious upgrade – or at least change – for Apple's Pro-level iPhones is their new designs. Both the iPhone 17 Pro and iPhone 17 Pro Max sport a large camera block that runs horizontally across their respective rear panels, which Apple is calling a \"full-width camera plateau.\" This is a marked change from Apple's square-shaped, corner-positioned camera block, which has been a feature of every Pro-level iPhone since theiPhone 11 Pro(though it's worth noting that the cameras themselves are still arranged in the same triangular orientation). It's clear, then, that the iPhone 17 Pro needed a facelift, but this new, larger camera block also has a practical purpose: it houses bigger sensors and more advanced imaging technology (more on this later). Additionally, the iPhone 17 Pro and iPhone 17 Pro Max have a brushed aluminum unibody design, whereas theiPhone 16 ProandiPhone 15 Prouse a titanium frame. Sign up for breaking news, reviews, opinion, top tech deals, and more. Apple has made this change to deliver \"the best-ever thermal performance in an iPhone,\" and the company's Ceramic Shield technology now protects both the front and back sides of its flagship iPhone. Both the iPhone 17 Pro and iPhone 17 Pro Max feature a 48MP telephoto camera with 8x optical zoom. Yes, you read that right: an 8x optical zoom.",
+        "source": "TechRadar",
+        "category": "trending",
+        "image_url": "https://cdn.mos.cms.futurecdn.net/2tCcVZ6i36VTz2i4RzosHe.jpg"
+      },
+      {
+        "title": "Taiga Unveils Next-Generation Electric Watercraft Lineup with New Model, Breakthrough Connectivity, and Vehicle-to-Grid Power",
+        "url": "https://financialpost.com/globe-newswire/taiga-unveils-next-generation-electric-watercraft-lineup-with-new-model-breakthrough-connectivity-and-vehicle-to-grid-power",
+        "published": "2025-09-09T18:01:48Z",
+        "description": "MONTREAL, Sept. 09, 2025 (GLOBE NEWSWIRE) — Taiga Motors Inc. (Taiga), a leader in electrification beyond the road, today unveiled its next-generation Orca watercraft lineup at the Monaco Yacht Club. While the updated 2-seat Orca P2 continues to push the boundaries of on-water performance, the brand-new 3-seat Orca WX3 marks a major evolution in accessible electric watercraft for touring, tow-sports and more. Get the latest headlines, breaking news and columns. By signing up you consent to receive the above newsletter from Postmedia Network Inc. A welcome email is on its way. If you don't see it, please check your junk folder. The next issue of Top Stories will soon be in your inbox. We encountered an issue signing you up.",
+        "source": "Financial Post",
+        "category": "trending",
+        "image_url": "https://smartcdn.gprod.postmedia.digital/financialpost/wp-content/uploads/2025/09/geofencing.png"
+      },
+      {
+        "title": "Bitget Wallet Partners With Aave to Launch Stablecoin Earn Plus, A Long-term Flexible 10% Yield Product",
+        "url": "https://financialpost.com/globe-newswire/bitget-wallet-partners-with-aave-to-launch-stablecoin-earn-plus-a-long-term-flexible-10-yield-product",
+        "published": "2025-09-09T18:01:38Z",
+        "description": "Bitget Wallet’s USDC income product, Stablecoin Earn Plus powered by Aave, offers 10% APY — the highest among self-custodial wallets and above exchange rates — via Aave integration with flexible, instant access SAN SALVADOR, El Salvador, Sept. 10, 2025 (GLOBE NEWSWIRE) —Bitget Wallet, the leading non-custodial crypto wallet, has selected to partner with Aave, the largest and most trusted decentralized lending protocol, to launchStablecoin Earn Plus, delivering a long-term base annual percentage yield (APY) of 10%, higher than yields currently available from other self-custodial wallets and major exchanges. The initiative combines Aave’s onchain lending markets with Bitget Wallet’s proprietary yield subsidies, enabling users worldwide to earn dollar-denominated income with instant access to funds. The product channels user-supplied USDC into Aave’s overcollateralized lending pools on the Base network, where interest from borrowers is supplemented by Bitget Wallet to guarantee a minimum return of 10% APY on deposits up to US$10,000. Participation starts from as little as US$1, with earnings accruing in real time and withdrawals processed in seconds. This ensures deposits remain liquid for transfers, trading, or payments — a stark contrast to traditional banking products, which can take days to release funds and offer rates below 2% annually. Get the latest headlines, breaking news and columns. By signing up you consent to receive the above newsletter from Postmedia Network Inc. A welcome email is on its way. If you don't see it, please check your junk folder.",
+        "source": "Financial Post",
+        "category": "trending",
+        "image_url": "https://smartcdn.gprod.postmedia.digital/financialpost/wp-content/uploads/2025/09/bitget-wallet-partners-with-aave-to-launch-stablecoin-earn-p.png"
+      },
+      {
+        "title": "Enter To Win This FREE Disney World Vacation Worth $28K RIGHT NOW!",
+        "url": "https://allears.net/2025/09/09/enter-to-win-this-free-disney-world-vacation-worth-28k-right-now/",
+        "published": "2025-09-09T18:01:05Z",
+        "description": "Many people don’t enter sweepstakes because they think they have no chance of winning, but you’ll never know if you don’t try! You COULD be the lucky winner! Disney World vacations are expensive, so when we seesweepstakes to enter and win a FREE vacation, not only do we jump on it immediately, but we also encourage you to do the same! Right now, you canenter a sweepstakes to win a FREE week-long Disney World vacation, and it’ll also show you what being aDVC Memberis really like! DVC stands forDisney Vacation Club, which isDisney’s version of a timeshare program (not exactly, but it’s the closest comparison). It costs an arm and a leg, that’s for sure, but for many people who visit the parks regularly, prefer to stay on-property, and know that their family/extended family will also use their perks or take vacations, it can be a great investment. For Disney’s newMagic of Membership Sweepstakes, there’s no need to be a DVC member —anyone can enter to win this 7-day, 6-night vacation! You’ll get Park Hopper tickets for you and up to SEVEN guests, and all week long, you’ll stay atDisney’s Riviera Resortin a spacious 2-Bedroom Villa. The purpose of this sweepstakes is not only to give one lucky person and their family/friends the trip of a lifetime, but also to show them what being a DVC member could get them. While you’re on your vacation,you’ll get special access to the Member Lounges in Magic Kingdom and EPCOT, as well as potentially get access to an After Hours event(depending on the winner’s travel dates). You’ll also get round-trip coach airfare and ground transportation to and from Disney World and Riviera Resort. No purchase is necessary to win, and your status as a DVC member doesn’t matter for entry (meaning if you are one, great, if you aren’t, you can still enter!).You’ve got until 11:59:59 PM ET on September 14thto enter, and you’ll earn one entry for completing registration. We’re telling you, it’s absolutely worth it just to enter for the chance to win this...",
+        "source": "allears.net",
+        "category": "trending",
+        "image_url": "https://allears.net/wp-content/uploads/2023/04/wdw-2023-disneys-riviera-resort-atmosphere-exterior-hotel-2.jpg"
+      },
+      {
+        "title": "Decrease your storage costs with Amazon OpenSearch Service index rollups",
+        "url": "https://aws.amazon.com/blogs/big-data/decrease-your-storage-costs-with-amazon-opensearch-service-index-rollups/",
+        "published": "2025-09-09T18:03:00Z",
+        "description": "Amazon OpenSearch Serviceis a fully managed service to support search, log analytics, and generative AI Retrieval Augment Generation (RAG) workloads in the AWS Cloud. It simplifies the deployment, security, and scaling of OpenSearch clusters. As organizations scale their log analytics workloads by continuously collecting and analyzing vast amounts of data, they often struggle to maintain quick access to historical information while managing costs effectively. OpenSearch Service addresses these challenges through its tiered storage options: hot, UltraWarm, and cold storage. These storage tiers are great options to help optimize costs and offer a balance between performance and affordability, so organizations can manage their data more efficiently. Organizations canchoose between these different storage tiersby keeping data in expensive hot storage for quick access or moving it to cheaper cold storage with limited accessibility. This trade-off becomes particularly challenging when organizations need to analyze both recent and historical data for compliance, trend analysis, or business intelligence. In this post, we explore how to use index rollups in Amazon OpenSearch Service to address this challenge. This feature helps organizations efficiently manage their historical data by automatically summarizing and compressing older data while maintaining its analytical value, significantly reducing storage costs in any storage tier without sacrificing the ability to query historical information effectively. Index rollups provide a mechanism to aggregate historical data into summarized indexes at specified time intervals.",
+        "source": "Amazon.com",
+        "category": "trending",
+        "image_url": "https://d2908q01vomqb2.cloudfront.net/b6692ea5df920cad691c20319a6fffd7a4a766b8/2025/09/09/BDB-5075-featured-images-1120x630.png"
+      },
+      {
+        "title": "'Artificial super astronauts': How AI and robotics could help humanity settle Mars",
+        "url": "https://www.space.com/astronomy/mars/artificial-super-astronauts-how-ai-and-robotics-could-help-humanity-settle-mars",
+        "published": "2025-09-09T18:00:00Z",
+        "description": "\"Artificial astronauts\" could fly as actual crew members on human missions to Mars, and elsewhere in space. These rugged, space-rated artificial humans offer great advantages, advocates say. For example, they would not require the large amounts of consumables needed to support humans. They could also performspacewalkswithout a life-support system. While not everyone will agree on the predicted rate of development of robotics andartificial intelligence(AI), the idea is that progress will be fast, commensurate with timescales over whichMarscampaigns are planned and implemented, unlike in the past. \"This is forcing careful strategic thinking about what planetary exploration capabilities and systems to develop and include on missions, versus those that will mature anyway via broader societal advancements in robotics and AI,\" explained Pascal Lee, a planetary scientist at the SETI Institute in California. Lee is also chairman of the Mars Institute and director of the NASA Haughton-Mars Project at NASA'sAmes Research Centerin Silicon Valley. \"As we enter the 'Age of AI,' robotics and AI are making strides to achieve the first artificial humans,\" Lee said, \"androids given the same physical traits and mobility as humans and equipped with artificial general intelligence (AGI).\" Lee broached the topic at a Space Robotics Workshop held in late July, labeling his talk \"Humans To Mars in the Age of AI.\" Breaking space news, the latest updates on rocket launches, skywatching events and more! Further down the road, Lee told Space.com, as we achieve the creation of \"artificial super humans\" (artificial humans animated with artificial super intelligence (ASI) — we could have \"artificial super astronauts\" who would be better in all respects than humans at the exploration of space, including journeys toTitan, a moon ofSaturn, and outward to the stars. \"It is important to realize that once we achieve artificial humans, let alone artificial super humans, our relationship with androids w...",
+        "source": "Space.com",
+        "category": "trending",
+        "image_url": "https://cdn.mos.cms.futurecdn.net/s4Tst6PR3Nr6BzYiXs4MFg.jpg"
+      },
+      {
+        "title": "Apple launches slimmer iPhone Air, new iPhone 17",
+        "url": "https://economictimes.indiatimes.com/tech/technology/apple-launches-slimmer-iphone-air-new-iphone-17/articleshow/123792296.cms",
+        "published": "2025-09-09T17:58:45Z",
+        "description": "Apple unveiled the new iPhone Air and iPhone 17 at its annual event. The iPhone Air boasts a durable design and high-density battery. The iPhone 17 features a brighter screen and A19 processor. New AirPods Pro 3 offer live translation. A blood pressure monito… This announcement marks an important milestone in the ongoing developments. This technological advancement reflects the ongoing innovation in the digital landscape and could influence industry standards.",
+        "source": "The Times of India",
+        "category": "trending",
+        "image_url": "https://img.etimg.com/thumb/width-1200,height-900,imgsize-49546,resizemode-75,msid-123792296/tech/technology/apple-launches-slimmer-iphone-air-new-iphone-17.jpg"
+      },
+      {
+        "title": "iPhone 17 Pro Max is official with camera and battery improvements: is that all we care for?",
+        "url": "https://www.phonearena.com/news/iphone-17-pro-max-is-official_id173885",
+        "published": "2025-09-09T17:56:39Z",
+        "description": "Plus, the new Pro duo looks (way) different from its predecessor. To help keep our community safe and free from spam, we apply temporary limits to newly created accounts: Plus, the new Pro duo looks (way) different from its predecessor. To help keep our community safe and free from spam, we apply temporary limits to newly created accounts:.",
+        "source": "PhoneArena",
+        "category": "trending",
+        "image_url": "https://m-cdn.phonearena.com/images/article/173885-wide-two_1200/iPhone-17-Pro-Max-is-official-with-camera-and-battery-improvements-is-that-all-we-care-for.jpg"
+      },
+      {
+        "title": "American science is screwed",
+        "url": "https://freethoughtblogs.com/pharyngula/2025/09/09/american-science-is-screwed/",
+        "published": "2025-09-09T18:01:58Z",
+        "description": "There was an interesting op-ed in the NY Times today (it’s been a long time since I could say that):We Are Watching a Scientific Superpower Destroy Itself, by Stephen Greenblatt. Can you guess which scientific superpower he’s writing about? According to the latest annual Nature Index, which tracks research institutions by their contributions to leading science journals, the single remaining U.S. institution among the top 10 is Harvard, in second place, far behind the Chinese Academy of Sciences. The others are:The University of Science and Technology of ChinaZhejiang UniversityPeking UniversityThe University of Chinese Academy of SciencesTsinghua UniversityNanjing UniversityGermany’s Max Planck SocietyShanghai Jiao Tong UniversityA decade ago, C.A.S. was the only Chinese institution to figure in the top 10. Now eight of the 10 leaders are in China. If this does not constitute a Sputnik moment, it is hard to imagine what would. Given Trump’s mantra ofChina, China, Chinato blame that country, it’s amusing and depressing that he has completely handed over leadership in science to China. OK, and Germany. He is responsible for the abrupt change in status.",
+        "source": "Freethoughtblogs.com",
+        "category": "trending",
+        "image_url": "https://freethoughtblogs.com/pharyngula/wp-content/themes/ftb2-theme/images/logo.gif"
+      },
+      {
+        "title": "If the US government is a neofascist regime run by a sociopath, should we shut it down?",
+        "url": "https://www.rawstory.com/government-shutdown-2673975264/",
+        "published": "2025-09-09T18:01:58Z",
+        "description": "Under ordinary circumstances, I would see that as a huge problem. I was Secretary of Labor when the government closed down, and I vowed then that I’d do everything possible to avoid a similar calamity in the future. Under ordinary circumstances, people like you and me — who believe that government is essential for the common good — would fight like hell to keep the government funded beyond Sept. 30. But we are not in ordinary circumstances. The U.S. government has become a neofascist regime run by a sociopath. That sociopath is using the government to punish his enemies. He’s using the government to rake in billions of dollars for himself and his family. He’s using the government to force the leaders of every institution in our society — universities, media companies, law firms, even museums — to become fawning supplicants: pleading with him, praising him, and silencing criticism of him.",
+        "source": "Raw Story",
+        "category": "trending",
+        "image_url": "https://www.rawstory.com/media-library/national-guard-near-the-department-of-labor.jpg?id=61575372&width=1200&height=600&coordinates=0%2C416%2C0%2C417"
+      },
+      {
+        "title": "How cosmic events may have influenced hominin evolution",
+        "url": "https://www.newscientist.com/article/2495599-how-cosmic-events-may-have-influenced-hominin-evolution/",
+        "published": "2025-09-09T18:00:06Z",
+        "description": "Has an asteroid impact influenced the course of human evolution?Anna Ivanova/Alamy Has an asteroid impact influenced the course of human evolution? This is an extract from Our Human Story, our newsletter about the revolution in archaeology.Sign up to receive it in your inbox every month. I am old enough to remember when the idea an asteroid impact wiped out the dinosaurs was new and exciting. When Luis Alvarez and his colleaguesfirst suggested this in 1980– the year before I was born – it was a big, dramatic claim. They didn’t even have an impact crater, just a layer of anomalous rock. It took decades, and the realisation in the 1990s that theChicxulub impact craterin Mexico wasthe right age and size, tofirm up the idea. Even now, palaeontologists are divided on whether the impact wasthe main cause of the mass extinction, or whetherdinosaurs were already in declinebefore the big rock hit. Read moreSurvival of the friendliest? Why Homo sapiens outlived other humans Survival of the friendliest? Why Homo sapiens outlived other humans Obviously, nothing so earth-shattering happened during the period when humans evolved. The Chicxulub impactor was unusually large and exceptionally deadly. However, life on Earth is subject to a whole host of other space-related threats. One idea doing the rounds is Earth’s magnetic field did something weird about 42,000 years ago.",
+        "source": "New Scientist",
+        "category": "trending",
+        "image_url": "https://images.newscientist.com/wp-content/uploads/2025/09/09121444/SEI_264621683.jpg"
+      },
+      {
+        "title": "'Paying for Climate Chaos': Report Exposes $35 Billion a Year in US Handouts to Big Oil",
+        "url": "https://www.commondreams.org/news/us-fossil-fuel-subsidies-2673975546",
+        "published": "2025-09-09T17:58:52Z",
+        "description": "Daily news & progressive opinion—funded by the people, not the corporations—delivered straight to your inbox. In an aerial view, natural gas is flared off during an oil-drilling operation in the Permian Basin oil field on March 12, 2022 in Stanton, Texas. \"It's time to stop paying polluters to wreck our planet,\" said one environmental advocate. Research and advocacy organizationOil Change Internationalon Tuesdayreleaseda new report documenting the massive subsidies that fossil fuel companies receive from the US government every year. Thereport, titled \"Paying for Climate Chaos,\" found that the government will hand out $34.8 billion to big oil and gas companies this year, and that these companies are set to get almost an additional $4 billion in subsidies thanks to the so-called \"One Big Beautiful Bill Act\" passed by congressional Republicans and signed into law by US PresidentDonald Trumpearlier this year. Among the added benefits fossil fuel companies receive from the GOP's budget law are $1.2 billion in the form of reduced royalty rates for extracting oil and gas on public lands; $720 million from a delay in the implementation of a per-ton methane emissions fee; and $359 million from the expansion of a corporate tax exemption to include categories such as carbon capture and hydrogen storage. The report found that total subsidies to fossil fuel companies had grown significantly since Oil Change International first began studying the issue back in 2017 when subsidies totaled a comparatively modest $20 billion. What's more, it noted that the price tag for these subsidies only looks set to increase over the next decade. \"Many subsidies identified are projected to soar over the next decade and beyond,\" Oil Change Internationalwrites. \"If federal leaders fail to act, fossil fuel production subsidies could skyrocket to hundreds of billions of dollars per year.",
+        "source": "Common Dreams",
+        "category": "trending",
+        "image_url": "https://www.commondreams.org/media-library/image.jpg?id=56526539&width=1200&height=600&coordinates=0%2C247%2C0%2C247"
+      }
+    ],
+    "regional": [
+      {
+        "title": "99% railway network electrified",
+        "url": "https://timesofindia.indiatimes.com/india/99-railway-network-electrified/articleshow/123792449.cms",
+        "published": "2025-09-09T18:03:58Z",
+        "description": "Bigg Boss Telugu 9 contestant Tanuja Gowdaâs top traditional picks âThe Ba***ds of Bollywoodâ: Shah Rukh Khan, Salman, Aamir, Ranveer and more in cameo 10 unique baby names from mythology around the world Loud and clear: 10 animals with super hearing powers! Karishma Tannaâs journey through elegance and charm 10 beautiful tropical aquarium fish suitable for Indian climate",
+        "source": "The Times of India",
+        "category": "regional",
+        "image_url": "https://static.toiimg.com/thumb/msid-123792449,width-1070,height-580,imgsize-null,resizemode-75,overlay-toi_sw,pt-32,y_pad-40/photo.jpg"
+      },
+      {
+        "title": "PM Modi to flag off Aizawl Rajdhani on Saturday",
+        "url": "https://timesofindia.indiatimes.com/india/pm-modi-to-flag-off-aizawl-rajdhani-on-saturday/articleshow/123792345.cms",
+        "published": "2025-09-09T18:03:06Z",
+        "description": "This article discusses pm modi to flag off aizawl rajdhani on saturday. India News: NEW DELHI: The North East will get its fourth Rajdhani train on Saturday with PM Narendra Modi flagging off the inaugural train between Aizawl and Del. The technology sector remains one of the fastest-growing industries globally, with continuous innovations shaping how we work and live. These technological advancements often have far-reaching implications for businesses, consumers, and the broader economy. Further details and updates are expected to emerge as the situation develops and more information becomes available.",
+        "source": "The Times of India",
+        "category": "regional",
+        "image_url": "https://static.toiimg.com/thumb/msid-123792417,width-1070,height-580,imgsize-52980,resizemode-75,overlay-toi_sw,pt-32,y_pad-40/photo.jpg"
+      },
+      {
+        "title": "PM Modi appeals for peace as India treads cautiously on Nepal crisis",
+        "url": "https://timesofindia.indiatimes.com/india/pm-modi-appeals-for-peace-as-india-treads-cautiously-on-nepal-crisis/articleshow/123791987.cms",
+        "published": "2025-09-09T17:47:51Z",
+        "description": "Bigg Boss Telugu 9 contestant Tanuja Gowdaâs top traditional picks âThe Ba***ds of Bollywoodâ: Shah Rukh Khan, Salman, Aamir, Ranveer and more in cameo 10 unique baby names from mythology around the world Loud and clear: 10 animals with super hearing powers! Karishma Tannaâs journey through elegance and charm 10 beautiful tropical aquarium fish suitable for Indian climate",
+        "source": "The Times of India",
+        "category": "regional",
+        "image_url": "https://static.toiimg.com/thumb/msid-123791979,width-1070,height-580,imgsize-906384,resizemode-75,overlay-toi_sw,pt-32,y_pad-40/photo.jpg"
+      },
+      {
+        "title": "What's driven UK's astounding immigration levels - including some unprecedented highs",
+        "url": "https://news.sky.com/story/whats-driven-uks-astounding-immigration-levels-including-some-unprecedented-highs-13427778",
+        "published": "2025-09-09T17:44:00Z",
+        "description": "Government policy post-Brexit has been the driving force behind the number of people moving to Britain in recent years - and while the numbers crossing on small boats are relatively small, those too are at record highs. Please use Chrome browser for a more accessible video player One of the great tragedies of the way immigration policy has been debated in this country for years, if not decades, is that the conversation is mostly voiced in emotive rather than rational terms. Those who air fears about the flows of foreign-born people into the UK are dismissed as bigots (most famously by Gordon Brown). Those who argue that immigrants are good for the economy are dismissed as being deluded or blind to a mounting crisis. So what's actually going on? Well, let's take a deep breath, try if we can to ignore all the emotions, and focus instead on the numbers. What do those numbers tell us? Well, the big picture is… big. The total flows of migrants coming into the country in recent years have been nothing short of astounding. While the figures have plateaued in the past 18 months or so, as of late 2023, immigration (which is to say, people coming to live here) was running at roughly 1.3 million people a year. Subtract those emigrating in that period (roughly 400,000), and that leaves you with net migration of nearly 900,000 people. This is such a large number it's actually quite hard to get your head around it, but here's one way.",
+        "source": "Sky.com",
+        "category": "regional",
+        "image_url": "https://e3.365dm.com/25/09/1600x900/skynews-boris-johnson-ed-conway_7015664.jpg?20250910012757"
+      },
+      {
+        "title": "LeBron James writes op-ed for Chinese state media as NBA aims to rebuild in China",
+        "url": "https://www.bostonherald.com/2025/09/09/lebron-james-nba-china-diplomacy/",
+        "published": "2025-09-09T17:58:29Z",
+        "description": "HONG KONG (AP) — NBA greatLeBron Jameswrote a rare op-ed in Chinese state media this week, pointing to basketball as an avenue for diplomacy amid tensions with the U.S. Writing in Monday’s edition of the People’s Daily newspaper, the 40-year-old Los Angeles Lakers star said “basketball is not only a sport, but also a bridge that connects us.” The piece was published as James was in China ahead of twoNBA pre-season games next month in Macaobetween the Phoenix Suns and the Brooklyn Nets. And it comes as leaders in China and the U.S. seek options to avert a potential trade showdown between the world’s two biggest economies. U.S. President Donald Trump has threatened to impose steep tariffs on China, which has said it would respond with retaliatory levies of its own. Trump said last month that he woulddelay the tariffsfor 90 days as negotiators from both countries work on a potential deal, which could ultimately lead to a summit later this year or early next year between the U.S. leader and Chinese PresidentXi Jinping. As the standoff unfolds, James’ comments caught the attention of the Hong Kong-based South China Morning Post, which reported: “It is rare for the mouthpiece of China’s ruling Communist Party to run articles carrying the byline of foreign sports stars. It is more common for international sporting heroes to connect with fans in China via Chinese social media.” The NBA is working to rebuild its brand in greater China, where basketball has long been popular.",
+        "source": "Boston Herald",
+        "category": "regional",
+        "image_url": "https://www.bostonherald.com/wp-content/uploads/2025/09/Hall_of_Fame_Basketball_73077-1.jpg?w=1024&h=683"
+      },
+      {
+        "title": "U.S. economy is worse than thought with 1.2 million fewer jobs — what that means for the Fed",
+        "url": "https://www.cnbc.com/2025/09/09/us-economy-is-worse-than-thought-with-1point2-million-fewer-jobs-what-that-means-for-the-fed.html",
+        "published": "2025-09-09T17:56:25Z",
+        "description": "With job growth tanking and the economy wobbling, pressure is on for the Federal Reserve to start lowering interest rates, with markets now expecting a cut at each of the three remaining meetings this year. The Bureau of Labor Statistics reported Tuesday that theeconomy added 911,000 fewer jobsthan previously reported for the year preceding March 2025. Downward revisions since the cutoff date in that report suggest that the reduction in payroll growth has been actually around 1.2 million for the past 16 months. That's a number sure to get the Federal Open Market Committee's attention when it meets next week and could add fire to President Donald Trump's repeated assertions that the central bank has been \"too late\" in making policy adjustments. \"Had Fed officials had that data available in real time, policy rates would be lower today,\" wrote Citigroup economist Andrew Hollenhorst, referencing the BLS \"benchmark\" payrolls revisions. Hollenhorst said the data actually \"could justify\" a jumbo half percentage point cut when the FOMC releases its decision Sept. 17. However, he expects ChairJerome Powell\"will have an easier time building consensus around a [quarter-point] rate cut next week, with signals that rate cuts will continue at upcoming meetings, including potentially in October.\" Market expectations have shifted notably as trouble signs have built around employment. Traders now are not only pricing in a 100% chance that the Fed lowers by a quarter point next week, they also are allowing for a slight chance of a half-point reduction. They now firmly see cuts at each of the three remaining meetings, according to the CME Group'sFedWatchtool.",
+        "source": "CNBC",
+        "category": "regional",
+        "image_url": "https://image.cnbcfm.com/api/v1/image/108178031-17537341092025-07-28t202016z_1710776992_rc2uvfa35on8_rtrmadp_0_usa-economy.jpeg?v=1753734167&w=1920&h=1080"
+      },
+      {
+        "title": "What's driven UK's astounding immigration levels - including some unprecedented highs",
+        "url": "https://news.sky.com/story/whats-driven-uks-astounding-immigration-levels-including-some-unprecedented-highs-13427778",
+        "published": "2025-09-09T17:44:00Z",
+        "description": "Government policy post-Brexit has been the driving force behind the number of people moving to Britain in recent years - and while the numbers crossing on small boats are relatively small, those too are at record highs. Please use Chrome browser for a more accessible video player One of the great tragedies of the way immigration policy has been debated in this country for years, if not decades, is that the conversation is mostly voiced in emotive rather than rational terms. Those who air fears about the flows of foreign-born people into the UK are dismissed as bigots (most famously by Gordon Brown). Those who argue that immigrants are good for the economy are dismissed as being deluded or blind to a mounting crisis. So what's actually going on? Well, let's take a deep breath, try if we can to ignore all the emotions, and focus instead on the numbers. What do those numbers tell us? Well, the big picture is… big. The total flows of migrants coming into the country in recent years have been nothing short of astounding. While the figures have plateaued in the past 18 months or so, as of late 2023, immigration (which is to say, people coming to live here) was running at roughly 1.3 million people a year. Subtract those emigrating in that period (roughly 400,000), and that leaves you with net migration of nearly 900,000 people. This is such a large number it's actually quite hard to get your head around it, but here's one way.",
+        "source": "Sky.com",
+        "category": "regional",
+        "image_url": "https://e3.365dm.com/25/09/1600x900/skynews-boris-johnson-ed-conway_7015664.jpg?20250910012757"
+      },
+      {
+        "title": "Sports Park Promoters Get Prison for $280 Million Bond Fraud",
+        "url": "https://biztoc.com/x/3fc74ef50eb4b5b2",
+        "published": "2025-09-09T17:43:34Z",
+        "description": "{ window.open(this.href, '_blank'); }, 200); return false;\">Why did U.S. job growth get revised down sharply? { window.open(this.href, '_blank'); }, 200); return false;\">How will Nvidia's AI ch… [+765 chars] Further details and developments are expected to emerge as the situation continues to evolve.",
+        "source": "Biztoc.com",
+        "category": "regional",
+        "image_url": "https://biztoc.com/cdn/3fc74ef50eb4b5b2_s.webp"
+      }
+    ],
+    "economy": [
+      {
+        "title": "How non-farm primary activities sustain livelihoods in rural India",
+        "url": "https://indianexpress.com/article/upsc-current-affairs/upsc-essentials/how-non-farm-primary-activities-sustain-livelihoods-in-rural-india-10239847/",
+        "published": "2025-09-09T13:22:11Z",
+        "description": "The primary sector in India provides employment to 44 per cent of the labour force while contributing less than 20 per cent to the country’s GDP. The primary sector is defined as the economic sector that produces goods by exploiting natural resources like land, water, forests, mines, etc. Agriculture is one of the most important primary sectors. However, while agriculture’s share in employment has fallen slowly, its share in GDP has declined relatively faster. It underlinesthe slow nature of structural transformation of the Indian economy. As a result, agriculture is no longer the primary driving force of the economy. What remains hidden, though, is theroleof the non-agricultural primary sector in most discussions on the Indian economy..",
+        "source": "The Indian Express",
+        "category": "indian_news",
+        "image_url": "https://images.indianexpress.com/2025/09/Non-farm-primary-activities-2.jpg",
+        "indian_topic": "India economy",
+        "region": "India"
+      },
+      {
+        "title": "GST Reforms To Touch All Indians, Assures Sitharaman; Calls For Efficiency To Bridge Revenue Gap",
+        "url": "https://www.ndtvprofit.com/economy-finance/gst-reforms-to-touch-all-indians-assures-sitharaman-calls-for-efficiency-to-bridge-revenue-gap",
+        "published": "2025-09-09T12:46:33Z",
+        "description": "Finance Minister Nirmala Sitharaman said that she is confident of GST rate cuts passing through to the end consumers, and has trust in the industry and traders. Speaking at the NDTV Profit GST Conclave, Sitharaman said that taxable items were viewed from the lens of daily consumption, aspirational items for the middle class, for farmers, and items which are important to the Indian economy at large. All 140 crore Indians will have something or the other where the tax reduction will come through, she assured. GST 2.0 was in the making for almost 1.5 years, Sitharaman said, adding that she was waiting for a worthy pack of reforms before presenting the overhaul. While thanking ministers from multiple parties and states who acceded to the reforms, she noted that the GST Council meeting was not at all acrimonious. The council is accustomed to discussion of this nature, she said, but clarified that the decision to bring down the rates saw no opposition from anyone. The difference was on the path of revenue falling, the finance minister said. On that, she said that Centre and states are together, with both seeing the impact. As such, efficiency will have to increase to offset the fall, she added..",
+        "source": "Ndtvprofit.com",
+        "category": "indian_news",
+        "image_url": "https://media.assettype.com/bloombergquint%2F2025-09-09%2F7hbylkex%2FScreenshot-2025-09-09-181312.png?w=1200&auto=format%2Ccompress&ogImage=true",
+        "indian_topic": "India economy",
+        "region": "India"
+      },
+      {
+        "title": "Tackling the scourge of agricultural indebtedness",
+        "url": "https://www.thehindubusinessline.com/opinion/tackling-the-scourge-of-agricultural-indebtedness/article70029541.ece",
+        "published": "2025-09-09T12:23:56Z",
+        "description": "The rising farm indebtedness needs urgent policy attention Indian agricultural indebtedness has remained a cause for concern over the decades, despite the remarkable growth in agricultural production. But, its surge in recent years, particularly post Covid-19, calls for immediate measures to safeguard the livelihoods of agricultural households, amid growing tariff pressures threatening to disrupt supply chains, in addition to the existing myriad problems affecting the farm sector. Unlike the farmers in US with an average farm size of about 189 hectares, Indian farmers with an average farm size of 0.74 hectares, produce crops under extremely unfavourable conditions with low scale of economies and fragile incomes and hence end up incurring debt..",
+        "source": "BusinessLine",
+        "category": "indian_news",
+        "image_url": "https://bl-i.thgim.com/public/incoming/7c6xr0/article70029566.ece/alternates/LANDSCAPE_1200/PTI08_31_2025_000062A.jpg",
+        "indian_topic": "India economy",
+        "region": "India"
+      },
+      {
+        "title": "Anurag Singh sees US tariffs as non-issue for India, calls markets a domestic game",
+        "url": "https://economictimes.indiatimes.com/markets/stocks/news/anurag-singh-sees-us-tariffs-as-non-issue-for-india-calls-markets-a-domestic-game/articleshow/123780191.cms",
+        "published": "2025-09-09T06:40:40Z",
+        "description": "(What's movingSensexandNiftyTracklatest market news,stock tips,Budget 2025,Share Market on Budget 2025andexpert advice, onETMarkets. Also, ETMarkets.com is now on Telegram. For fastest news alerts on financial markets, investment strategies and stocks alerts,subscribe to our Telegram feeds.) Subscribe toET Primeand read theEconomic Times ePaperOnline.andSensex Today. Top Trending Stocks:SBI Share Price,Axis Bank Share Price,HDFC Bank Share Price,Infosys Share Price,Wipro Share Price,NTPC Share Price (What's movingSensexandNiftyTracklatest market news,stock tips,Budget 2025,Share Market on Budget 2025andexpert advice, onETMarkets. Also, ETMarkets.com is now on Telegram. For fastest news alerts on financial markets, investment strategies and stocks alerts,subscribe to our Telegram feeds.) Subscribe toET Primeand read theEconomic Times ePaperOnline.andSensex Today. Top Trending Stocks:SBI Share Price,Axis Bank Share Price,HDFC Bank Share Price,Infosys Share Price,Wipro Share Price,NTPC Share Price New questions staring at IndiGo as Gangwal’s latest stake sale gets cold response Sonata Software exposes the flip side of mid-tier IT bets What is helping India's oil eco? EU sanctions or Ukraine pounding Russian refineries? The secret army that Asian Paints, Nerolac rely on to recover from Birla, JSW blows Stock Radar: This tyre stock breaks out from falling trendline resistance; what should investors do – buy or sell? F&O Radar | Deploy Bull Call Spread in Nifty to benefit from moderate upside potential.",
+        "source": "The Times of India",
+        "category": "indian_news",
+        "image_url": "https://img.etimg.com/thumb/msid-123780171,width-1200,height-630,imgsize-8542,overlay-etmarkets/articleshow.jpg",
+        "indian_topic": "India economy",
+        "region": "India"
+      }
+    ],
+    "politics": [
+      {
+        "title": "Sankarshan Thakur, reporter, writer & editor, passes away",
+        "url": "https://timesofindia.indiatimes.com/india/sankarshan-thakur-reporter-writer-editor-passes-away/articleshow/123776574.cms",
+        "published": "2025-09-09T02:28:12Z",
+        "description": "Smrity Sinha sets trends through radiant charm in elegant style 8 traditional blouse designs from different states of India Bigg Boss Telugu 9: Contestants' stunning premiere looks Karishma Tanna Stuns in Every Frame: From Bold Black to Breezy Blue Soulmates of the animal kingdom: 8 creatures who never let âloveâ fade",
+        "source": "The Times of India",
+        "category": "indian_news",
+        "image_url": "https://static.toiimg.com/thumb/msid-123776642,width-1070,height-580,imgsize-5166,resizemode-75,overlay-toi_sw,pt-32,y_pad-40/photo.jpg",
+        "indian_topic": "India politics",
+        "region": "India"
+      }
+    ]
+  },
+  "by_source": {
+    "Google News (India)": [
+      {
+        "title": "Google News",
+        "url": "https://news.google.com/rss/articles/CBMihgJBVV95cUxNdlNrOE1lWG5MWU5yb2hpQXByZERycEJnTzlDeHlyMkNuRjY2LTJoQnlZSlNVMUVEUkNoakhjc2VfX3pGWWNlSVpKX0VUQ0Z2dHctX0c2ZHFGQklGVHJIdzNYVkRfTGJVcVZqTlJFWmhlblRlakRYN0hyc1NvLWR3bzdwTWt3LWFSUVpZeTJOYk12WS1kd1BMcTZNQ0JUMEdMempMZVJYclUtSXpId1g4SWstYlh4NUF5aDl6bjVpbmpJcVVQVVVwWUNTNm1VWTc3M0w3cUdVNWlnWDFhMTlSc3N6T0g2VnFCNV9fV3BWcjNQVEFHQ05feGloT0Q3cks5X1E1NUZ30gGLAkFVX3lxTE5mMGZWeUFBZ0N2bjgxbUx2STNFZkxvMV9zU0V1cG82VFFrQ19nNENvZkx6RjdyVTk3ZW1MUTBpcDY5TWNMXzBPQnd2aFAyaEZDV1BFNFBPR2FrMFdFNDktNjdPaURNY1FxalduTFNPemxwUTBjV1l0ZnhGc29UNC1Ma3A5MmJ4YWxESnhsVk9GU2FNcUVWM2NMUGRYd19XbjZMb3ZrdGRCVUhjQ1Y3S2twNGZSSW9qU1JlT0RDaDAzNGxWaExMV3RxSXpDYlNaZVpkNVh5bnZjLXFIN3haSkp6Sjg3OWRCc1hwcVhET24wTlFWSWFSRE41QmxGZTY1RU5wR3pmeGlFYVJIOA",
+        "published": "2025-09-09T18:00:05+00:00",
+        "description": "This article discusses google news. Comprehensive up-to-date news coverage, aggregated from sources all over the world by Google News. This development represents an important milestone in the ongoing evolution of the sector. Stakeholders and industry observers are likely to monitor the situation closely for potential broader implications. Such developments often reflect larger trends and patterns that may influence future decisions and strategies. Further details and updates are expected to emerge as the situation develops and more information becomes available.",
+        "source": "Google News (India)",
+        "category": "indian_news",
+        "image_url": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
+        "detected_category": "general",
+        "content_priority": "low",
+        "source_id": "",
+        "source_credibility": "unrated"
+      },
+      {
+        "title": "Nepal Gen Z Protest Live: Nepal Army Chief addresses nation amid violent protests, appeals for peace - India Today",
+        "url": "https://access.workspace.google.com/remediate",
+        "published": "2025-09-09T17:31:53+00:00",
+        "description": "Nepal Gen Z Protest Live: Nepal Army Chief addresses nation amid violent protests, appeals for peace India Today Nepal parliament set on fire after PM resigns over anti-corruption protests BBC Nepal violence: Ex-PM Khanal’s wife … Further details and developments are expected to emerge as the situation continues to evolve.",
+        "source": "Google News (India)",
+        "category": "indian_news",
+        "image_url": "",
+        "detected_category": "indian_news",
+        "content_priority": "critical",
+        "source_id": "",
+        "source_credibility": "unrated"
+      },
+      {
+        "title": "Google News",
+        "url": "https://news.google.com/rss/articles/CBMi5wFBVV95cUxNaUIxaEkzV1JLbUpTUXVGOW9aSTI3N3FXM05hQkFUaHYwSmYwMm1ua0F1ejlCZXVjQ01ZTFZydGppUW9XeFBZeHp3WjBjdFUxRkg5bURPaTFhR2N4eHpFcWFVSUtlbFI2dHhBTzdLWmxvTkVOUHZBak10Qy1kdFBOUGJqVjUtSEdqSXFYWHl1RzlsVmNsTWt0MjB6TncwbDV5VFUtYTV2U1JHVXpCUTNNRlJMTER4VURZeWJSZDhudVNsQlAtRFlicEFXcmFIRTNjWWRGQ2pSM04wTkM0YjgxY3NkUWc1c2c",
+        "published": "2025-09-09T16:01:23+00:00",
+        "description": "This article discusses google news. Comprehensive up-to-date news coverage, aggregated from sources all over the world by Google News. This development represents an important milestone in the ongoing evolution of the sector. Stakeholders and industry observers are likely to monitor the situation closely for potential broader implications. Such developments often reflect larger trends and patterns that may influence future decisions and strategies. Further details and updates are expected to emerge as the situation develops and more information becomes available.",
+        "source": "Google News (India)",
+        "category": "indian_news",
+        "image_url": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
+        "detected_category": "general",
+        "content_priority": "low",
+        "source_id": "",
+        "source_credibility": "unrated"
+      },
+      {
+        "title": "Brand-new Thar crashes out of Delhi showroom after buyer accidentally hits the accelerator - The Indian Express",
+        "url": "https://accounts.google.com/v3/signin/confirmidentifier",
+        "published": "2025-09-09T14:25:00+00:00",
+        "description": "This article discusses brand-new thar crashes out of delhi showroom after buyer accidentally hits the accelerator - the indian express. Brand-new Thar crashes out of Delhi showroom after buyer accidentally hits the accelerator The Indian ExpressView Full coverage on Google News This development represents an important milestone in the ongoing evolution of the sector. Stakeholders and industry observers are likely to monitor the situation closely for potential broader implications. Such developments often reflect larger trends and patterns that may influence future decisions and strategies. Further details and updates are expected to emerge as the situation develops and more information becomes available.",
+        "source": "Google News (India)",
+        "category": "indian_news",
+        "image_url": "",
+        "detected_category": "indian_news",
+        "content_priority": "critical",
+        "source_id": "",
+        "source_credibility": "unrated"
+      },
+      {
+        "title": "Google News",
+        "url": "https://news.google.com/rss/articles/CBMi7gFBVV95cUxQanFROWxnb2FIRnpmLTVzV3dLTFNZMkpfeGFGMVh3RjYxUzA4a0xYYU9hUTFSNVlLX2owQ3prZ3BuRV9lZk9lZ0ZOVzZIOGhfcC1FNmU0V09DVXU2QWFtVEZSM0EzOHJIckJZZVpyU0pUUUxFUk1URnExMzBibkhJNkNtNTFabnNOWl9iR2gtYlpGTWFwdmtuV3FVd2pjQ2xKOC1ENjV1WVQwWFFpRGVua3BRbXBQRklrQ2RCaHZCQm9zUWdiU1Z0OFRxdWpkb1JNY25XZ1hyb2JKZmhwbW5PeGtLVnhLaWx6dzc4LWRn",
+        "published": "2025-09-09T13:28:00+00:00",
+        "description": "This article discusses google news. Comprehensive up-to-date news coverage, aggregated from sources all over the world by Google News. This development represents an important milestone in the ongoing evolution of the sector. Stakeholders and industry observers are likely to monitor the situation closely for potential broader implications. Such developments often reflect larger trends and patterns that may influence future decisions and strategies. Further details and updates are expected to emerge as the situation develops and more information becomes available.",
+        "source": "Google News (India)",
+        "category": "indian_news",
+        "image_url": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
+        "detected_category": "general",
+        "content_priority": "low",
+        "source_id": "",
+        "source_credibility": "unrated"
+      },
+      {
+        "title": "Google News",
+        "url": "https://news.google.com/rss/articles/CBMi5gFBVV95cUxNNDZtOFIxdFN1NFR2Zl96bENuWDd1WjFMMjBpX2pCMS0xODNqaFVvR1hxdklXUG1lcm5VamZ0LVVjMzR2OTVuNTRZTGVpb0R6WXFUY0RHQjJCT2lHTEVhX3BWYk1Eazdfbmh3ektaM0RNeHdLRVhTenV6aEp5dnl4U0NuRXJOa3ZaQzZhVE1BSlJMMmJBVmRsTGR4UkhXVWRaQmdScGZGczBKRHBORGI0UmthMXM5ZlVWOHN4OG1zM243Z01EblpUZHpiTUNSVHptS0lVSmJVam53aDhJV0hKckQyREIyQdIB8wFBVV95cUxPWEcwanNNYTE5Nm1BRHRwdFZxU1FLcV9majVab3h6ZlJPNG8yb3VtLVp3UkltUnRQSjdtV1hSTlNNejM0SDJYODNveDI3M19SOWVyaVZMeTFCTjZWZ2NmczJKVnRickE0LXY5Si1SVlV1OGQ3cHVLVTZ1a3BXOWlYbUpEMGl5dDdSc2M0NlMyeVdNM2EyS1ZkbWZOb0NSd0RxMUhtdXhGdnZsOEpkUG4tUFMzSFczYTVIdERSb1A1UXJ5N2c2akF4SFlnNVQzdk9URDZKNnBReThvZi1hY2JLQkRfZGVPOFV4UGUzTWRsdGZ1YVE",
+        "published": "2025-09-09T12:20:56+00:00",
+        "description": "This article discusses google news. Comprehensive up-to-date news coverage, aggregated from sources all over the world by Google News. This development represents an important milestone in the ongoing evolution of the sector. Stakeholders and industry observers are likely to monitor the situation closely for potential broader implications. Such developments often reflect larger trends and patterns that may influence future decisions and strategies. Further details and updates are expected to emerge as the situation develops and more information becomes available.",
+        "source": "Google News (India)",
+        "category": "indian_news",
+        "image_url": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
+        "detected_category": "general",
+        "content_priority": "low",
+        "source_id": "",
+        "source_credibility": "unrated"
+      },
+      {
+        "title": "Google News",
+        "url": "https://news.google.com/rss/articles/CBMizgFBVV95cUxOUERiSW5MVWEtdjM0OWtPYk9oNm5TSndTbTRKTkVPNDFsbzY1MUd6ZEtQQ3FSVWFfVjFsWjN4a1pCNi1PUXdEdUJodW10cDF2MlRuQ1poN09OQVctbVpyMFJiQjI0bkFFaVh3c1NjbWg4MXpBdWc2bmVyLVpiM2NnM3BsY21wMzFQRjdDdXRpQ1FrVzU4amxTNnVxQjUxdWt2dUQ4WnZScnRZbkl6WVFGcEtwVV9CV3dGbWZrYkVjVUJUZzZrbzR4Skd2Q3E1UQ",
+        "published": "2025-09-09T09:24:25+00:00",
+        "description": "This article discusses google news. Comprehensive up-to-date news coverage, aggregated from sources all over the world by Google News. This development represents an important milestone in the ongoing evolution of the sector. Stakeholders and industry observers are likely to monitor the situation closely for potential broader implications. Such developments often reflect larger trends and patterns that may influence future decisions and strategies. Further details and updates are expected to emerge as the situation develops and more information becomes available.",
+        "source": "Google News (India)",
+        "category": "indian_news",
+        "image_url": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
+        "detected_category": "general",
+        "content_priority": "low",
+        "source_id": "",
+        "source_credibility": "unrated"
+      },
+      {
+        "title": "Google News",
+        "url": "https://news.google.com/rss/articles/CBMi6wFBVV95cUxNRzQxRDdBWTlpN0RucTh2bk5TU2ZXRXRjTGpRSU50aVlpSUNPTFNQUlJWeHZIdFFaMzlFLWZXWTN5UzBEN2dpTkE0VzBaWktaanBmaVd1bW03dEFlZHJqQ2huVjIyUi1jWHZJem5Ic3F0ZjRtV3RjTU1tMExkb3FuMFREdkVZMzJIWk80eGJteFhkQjFQemhHMG5HbTkyRWRaNHowU2lzYTdwa0RaOTItb3ZFUk9veTRDNllON1FFSF9BU0lmdUdVM3NDdzM2SjNOUHZ3a2xFYXNRbDBPc0haX3d1a3pwRGlBeUhZ0gHwAUFVX3lxTE9QcW9CQVEtdDduTjBDWlZoV0dQSm1YUVZaUTRGU2x1SHA0N3V1anZlcGdwM3ZnTFgxS2otdWhzVEpSUEF5d19tNFN0WjhtQjhLSExsejNXMUE0TWlTWHIxdjNBNlFZZXZnZmMyVkJaaHFyc0wtZzF5WDQ5VnJrOEpqQUhQQzdScVJkX0dlMnR5VE5BTGNBVy1ZT1o5V3RyT2pJaENnVHR6MEVyODBkaWkxOWsyc056NWxpZ002NXFwVDgyVU45QWRXMjlFV3hiZW5abVdlc0FHaUxwcWpVODdPWnVmdFNYQmEydlJQUVNQaw",
+        "published": "2025-09-09T08:53:15+00:00",
+        "description": "This article discusses google news. Comprehensive up-to-date news coverage, aggregated from sources all over the world by Google News. This development represents an important milestone in the ongoing evolution of the sector. Stakeholders and industry observers are likely to monitor the situation closely for potential broader implications. Such developments often reflect larger trends and patterns that may influence future decisions and strategies. Further details and updates are expected to emerge as the situation develops and more information becomes available.",
+        "source": "Google News (India)",
+        "category": "indian_news",
+        "image_url": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
+        "detected_category": "general",
+        "content_priority": "low",
+        "source_id": "",
+        "source_credibility": "unrated"
+      },
+      {
+        "title": "Google News",
+        "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxNdnI4U08wcnNoX0hSdlRqMkw2NWdrN09QUnZJY0h2aGxIUWpNemU4VldPUWptejFVQ2lFTXVtTFJWYzMzcFI5NUJWbGVzNjUtUnNYaU10dXJLTGJ5VVRJMnRfQ1M2UU4zRVFWVGwwMnIxZVp5b1dQeVZmZzBCLWl0dHhicWljdnZtLXpNcVJMV3BsOXJBRTE5U0Z3OE1fdjh3Wk9EODZHaS1DSkIwOHZ3VlF4MkRlYWZKVHF6ZDZ3YVp3NkkzWlZj0gHMAUFVX3lxTE5jbC1FT2Y0SlFWZUtXSWpNaXE4X1hwWHVCUU16RWFrVVl5ZjRYTlJ1ZnBKYXZWR3J4VDk1ZUZSakkteHBfNW04cGNxajdyN2dvd2JOU3dBNzRIM3F3Slc2QmYxeVJQaXRFVFZ0YmNwb3lRcE93WngyMHRIb2NaM0VGTkhwd2RWYktJSVlSMGFoNHRwY2tYbHo5M3BVai1sMXBES1JTd0VSS0tRVnFvWmRfOEd6TEZZNVhhSjFUbjhmTWNRQWR1ZElfQ1gzbw",
+        "published": "2025-09-09T03:04:12+00:00",
+        "description": "This article discusses google news. Comprehensive up-to-date news coverage, aggregated from sources all over the world by Google News. This development represents an important milestone in the ongoing evolution of the sector. Stakeholders and industry observers are likely to monitor the situation closely for potential broader implications. Such developments often reflect larger trends and patterns that may influence future decisions and strategies. Further details and updates are expected to emerge as the situation develops and more information becomes available.",
+        "source": "Google News (India)",
+        "category": "indian_news",
+        "image_url": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
+        "detected_category": "general",
+        "content_priority": "low",
+        "source_id": "",
+        "source_credibility": "unrated"
+      },
+      {
+        "title": "Google News",
+        "url": "https://news.google.com/rss/articles/CBMihgJBVV95cUxNdlNrOE1lWG5MWU5yb2hpQXByZERycEJnTzlDeHlyMkNuRjY2LTJoQnlZSlNVMUVEUkNoakhjc2VfX3pGWWNlSVpKX0VUQ0Z2dHctX0c2ZHFGQklGVHJIdzNYVkRfTGJVcVZqTlJFWmhlblRlakRYN0hyc1NvLWR3bzdwTWt3LWFSUVpZeTJOYk12WS1kd1BMcTZNQ0JUMEdMempMZVJYclUtSXpId1g4SWstYlh4NUF5aDl6bjVpbmpJcVVQVVVwWUNTNm1VWTc3M0w3cUdVNWlnWDFhMTlSc3N6T0g2VnFCNV9fV3BWcjNQVEFHQ05feGloT0Q3cks5X1E1NUZ30gGLAkFVX3lxTE5mMGZWeUFBZ0N2bjgxbUx2STNFZkxvMV9zU0V1cG82VFFrQ19nNENvZkx6RjdyVTk3ZW1MUTBpcDY5TWNMXzBPQnd2aFAyaEZDV1BFNFBPR2FrMFdFNDktNjdPaURNY1FxalduTFNPemxwUTBjV1l0ZnhGc29UNC1Ma3A5MmJ4YWxESnhsVk9GU2FNcUVWM2NMUGRYd19XbjZMb3ZrdGRCVUhjQ1Y3S2twNGZSSW9qU1JlT0RDaDAzNGxWaExMV3RxSXpDYlNaZVpkNVh5bnZjLXFIN3haSkp6Sjg3OWRCc1hwcVhET24wTlFWSWFSRE41QmxGZTY1RU5wR3pmeGlFYVJIOA",
+        "published": "2025-09-09T18:00:05+00:00",
+        "description": "This article discusses google news. Comprehensive up-to-date news coverage, aggregated from sources all over the world by Google News. This development represents an important milestone in the ongoing evolution of the sector. Stakeholders and industry observers are likely to monitor the situation closely for potential broader implications. Such developments often reflect larger trends and patterns that may influence future decisions and strategies. Further details and updates are expected to emerge as the situation develops and more information becomes available.",
+        "source": "Google News (India)",
+        "category": "bengaluru_local",
+        "image_url": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
+        "detected_category": "general",
+        "content_priority": "low",
+        "source_id": "",
+        "source_credibility": "unrated"
+      },
+      {
+        "title": "Nepal Gen Z Protest Live: Nepal Army Chief addresses nation amid violent protests, appeals for peace - India Today",
+        "url": "https://access.workspace.google.com/remediate",
+        "published": "2025-09-09T17:31:53+00:00",
+        "description": "Nepal Gen Z Protest Live: Nepal Army Chief addresses nation amid violent protests, appeals for peace India Today Nepal parliament set on fire after PM resigns over anti-corruption protests BBC Nepal violence: Ex-PM Khanal’s wife … Further details and developments are expected to emerge as the situation continues to evolve.",
+        "source": "Google News (India)",
+        "category": "bengaluru_local",
+        "image_url": "",
+        "detected_category": "indian_news",
+        "content_priority": "critical",
+        "source_id": "",
+        "source_credibility": "unrated"
+      },
+      {
+        "title": "Google News",
+        "url": "https://news.google.com/rss/articles/CBMi5wFBVV95cUxNaUIxaEkzV1JLbUpTUXVGOW9aSTI3N3FXM05hQkFUaHYwSmYwMm1ua0F1ejlCZXVjQ01ZTFZydGppUW9XeFBZeHp3WjBjdFUxRkg5bURPaTFhR2N4eHpFcWFVSUtlbFI2dHhBTzdLWmxvTkVOUHZBak10Qy1kdFBOUGJqVjUtSEdqSXFYWHl1RzlsVmNsTWt0MjB6TncwbDV5VFUtYTV2U1JHVXpCUTNNRlJMTER4VURZeWJSZDhudVNsQlAtRFlicEFXcmFIRTNjWWRGQ2pSM04wTkM0YjgxY3NkUWc1c2c",
+        "published": "2025-09-09T16:01:23+00:00",
+        "description": "This article discusses google news. Comprehensive up-to-date news coverage, aggregated from sources all over the world by Google News. This development represents an important milestone in the ongoing evolution of the sector. Stakeholders and industry observers are likely to monitor the situation closely for potential broader implications. Such developments often reflect larger trends and patterns that may influence future decisions and strategies. Further details and updates are expected to emerge as the situation develops and more information becomes available.",
+        "source": "Google News (India)",
+        "category": "bengaluru_local",
+        "image_url": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
+        "detected_category": "general",
+        "content_priority": "low",
+        "source_id": "",
+        "source_credibility": "unrated"
+      },
+      {
+        "title": "Brand-new Thar crashes out of Delhi showroom after buyer accidentally hits the accelerator - The Indian Express",
+        "url": "https://accounts.google.com/v3/signin/confirmidentifier",
+        "published": "2025-09-09T14:25:00+00:00",
+        "description": "This article discusses brand-new thar crashes out of delhi showroom after buyer accidentally hits the accelerator - the indian express. Brand-new Thar crashes out of Delhi showroom after buyer accidentally hits the accelerator The Indian ExpressView Full coverage on Google News This development represents an important milestone in the ongoing evolution of the sector. Stakeholders and industry observers are likely to monitor the situation closely for potential broader implications. Such developments often reflect larger trends and patterns that may influence future decisions and strategies. Further details and updates are expected to emerge as the situation develops and more information becomes available.",
+        "source": "Google News (India)",
+        "category": "bengaluru_local",
+        "image_url": "",
+        "detected_category": "indian_news",
+        "content_priority": "critical",
+        "source_id": "",
+        "source_credibility": "unrated"
+      },
+      {
+        "title": "Google News",
+        "url": "https://news.google.com/rss/articles/CBMi7gFBVV95cUxQanFROWxnb2FIRnpmLTVzV3dLTFNZMkpfeGFGMVh3RjYxUzA4a0xYYU9hUTFSNVlLX2owQ3prZ3BuRV9lZk9lZ0ZOVzZIOGhfcC1FNmU0V09DVXU2QWFtVEZSM0EzOHJIckJZZVpyU0pUUUxFUk1URnExMzBibkhJNkNtNTFabnNOWl9iR2gtYlpGTWFwdmtuV3FVd2pjQ2xKOC1ENjV1WVQwWFFpRGVua3BRbXBQRklrQ2RCaHZCQm9zUWdiU1Z0OFRxdWpkb1JNY25XZ1hyb2JKZmhwbW5PeGtLVnhLaWx6dzc4LWRn",
+        "published": "2025-09-09T13:28:00+00:00",
+        "description": "This article discusses google news. Comprehensive up-to-date news coverage, aggregated from sources all over the world by Google News. This development represents an important milestone in the ongoing evolution of the sector. Stakeholders and industry observers are likely to monitor the situation closely for potential broader implications. Such developments often reflect larger trends and patterns that may influence future decisions and strategies. Further details and updates are expected to emerge as the situation develops and more information becomes available.",
+        "source": "Google News (India)",
+        "category": "bengaluru_local",
+        "image_url": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
+        "detected_category": "general",
+        "content_priority": "low",
+        "source_id": "",
+        "source_credibility": "unrated"
+      },
+      {
+        "title": "Google News",
+        "url": "https://news.google.com/rss/articles/CBMi5gFBVV95cUxNNDZtOFIxdFN1NFR2Zl96bENuWDd1WjFMMjBpX2pCMS0xODNqaFVvR1hxdklXUG1lcm5VamZ0LVVjMzR2OTVuNTRZTGVpb0R6WXFUY0RHQjJCT2lHTEVhX3BWYk1Eazdfbmh3ektaM0RNeHdLRVhTenV6aEp5dnl4U0NuRXJOa3ZaQzZhVE1BSlJMMmJBVmRsTGR4UkhXVWRaQmdScGZGczBKRHBORGI0UmthMXM5ZlVWOHN4OG1zM243Z01EblpUZHpiTUNSVHptS0lVSmJVam53aDhJV0hKckQyREIyQdIB8wFBVV95cUxPWEcwanNNYTE5Nm1BRHRwdFZxU1FLcV9majVab3h6ZlJPNG8yb3VtLVp3UkltUnRQSjdtV1hSTlNNejM0SDJYODNveDI3M19SOWVyaVZMeTFCTjZWZ2NmczJKVnRickE0LXY5Si1SVlV1OGQ3cHVLVTZ1a3BXOWlYbUpEMGl5dDdSc2M0NlMyeVdNM2EyS1ZkbWZOb0NSd0RxMUhtdXhGdnZsOEpkUG4tUFMzSFczYTVIdERSb1A1UXJ5N2c2akF4SFlnNVQzdk9URDZKNnBReThvZi1hY2JLQkRfZGVPOFV4UGUzTWRsdGZ1YVE",
+        "published": "2025-09-09T12:20:56+00:00",
+        "description": "This article discusses google news. Comprehensive up-to-date news coverage, aggregated from sources all over the world by Google News. This development represents an important milestone in the ongoing evolution of the sector. Stakeholders and industry observers are likely to monitor the situation closely for potential broader implications. Such developments often reflect larger trends and patterns that may influence future decisions and strategies. Further details and updates are expected to emerge as the situation develops and more information becomes available.",
+        "source": "Google News (India)",
+        "category": "bengaluru_local",
+        "image_url": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
+        "detected_category": "general",
+        "content_priority": "low",
+        "source_id": "",
+        "source_credibility": "unrated"
+      },
+      {
+        "title": "Google News",
+        "url": "https://news.google.com/rss/articles/CBMizgFBVV95cUxOUERiSW5MVWEtdjM0OWtPYk9oNm5TSndTbTRKTkVPNDFsbzY1MUd6ZEtQQ3FSVWFfVjFsWjN4a1pCNi1PUXdEdUJodW10cDF2MlRuQ1poN09OQVctbVpyMFJiQjI0bkFFaVh3c1NjbWg4MXpBdWc2bmVyLVpiM2NnM3BsY21wMzFQRjdDdXRpQ1FrVzU4amxTNnVxQjUxdWt2dUQ4WnZScnRZbkl6WVFGcEtwVV9CV3dGbWZrYkVjVUJUZzZrbzR4Skd2Q3E1UQ",
+        "published": "2025-09-09T09:24:25+00:00",
+        "description": "This article discusses google news. Comprehensive up-to-date news coverage, aggregated from sources all over the world by Google News. This development represents an important milestone in the ongoing evolution of the sector. Stakeholders and industry observers are likely to monitor the situation closely for potential broader implications. Such developments often reflect larger trends and patterns that may influence future decisions and strategies. Further details and updates are expected to emerge as the situation develops and more information becomes available.",
+        "source": "Google News (India)",
+        "category": "bengaluru_local",
+        "image_url": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
+        "detected_category": "general",
+        "content_priority": "low",
+        "source_id": "",
+        "source_credibility": "unrated"
+      },
+      {
+        "title": "Google News",
+        "url": "https://news.google.com/rss/articles/CBMi6wFBVV95cUxNRzQxRDdBWTlpN0RucTh2bk5TU2ZXRXRjTGpRSU50aVlpSUNPTFNQUlJWeHZIdFFaMzlFLWZXWTN5UzBEN2dpTkE0VzBaWktaanBmaVd1bW03dEFlZHJqQ2huVjIyUi1jWHZJem5Ic3F0ZjRtV3RjTU1tMExkb3FuMFREdkVZMzJIWk80eGJteFhkQjFQemhHMG5HbTkyRWRaNHowU2lzYTdwa0RaOTItb3ZFUk9veTRDNllON1FFSF9BU0lmdUdVM3NDdzM2SjNOUHZ3a2xFYXNRbDBPc0haX3d1a3pwRGlBeUhZ0gHwAUFVX3lxTE9QcW9CQVEtdDduTjBDWlZoV0dQSm1YUVZaUTRGU2x1SHA0N3V1anZlcGdwM3ZnTFgxS2otdWhzVEpSUEF5d19tNFN0WjhtQjhLSExsejNXMUE0TWlTWHIxdjNBNlFZZXZnZmMyVkJaaHFyc0wtZzF5WDQ5VnJrOEpqQUhQQzdScVJkX0dlMnR5VE5BTGNBVy1ZT1o5V3RyT2pJaENnVHR6MEVyODBkaWkxOWsyc056NWxpZ002NXFwVDgyVU45QWRXMjlFV3hiZW5abVdlc0FHaUxwcWpVODdPWnVmdFNYQmEydlJQUVNQaw",
+        "published": "2025-09-09T08:53:15+00:00",
+        "description": "This article discusses google news. Comprehensive up-to-date news coverage, aggregated from sources all over the world by Google News. This development represents an important milestone in the ongoing evolution of the sector. Stakeholders and industry observers are likely to monitor the situation closely for potential broader implications. Such developments often reflect larger trends and patterns that may influence future decisions and strategies. Further details and updates are expected to emerge as the situation develops and more information becomes available.",
+        "source": "Google News (India)",
+        "category": "bengaluru_local",
+        "image_url": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
+        "detected_category": "general",
+        "content_priority": "low",
+        "source_id": "",
+        "source_credibility": "unrated"
+      },
+      {
+        "title": "Google News",
+        "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxNdnI4U08wcnNoX0hSdlRqMkw2NWdrN09QUnZJY0h2aGxIUWpNemU4VldPUWptejFVQ2lFTXVtTFJWYzMzcFI5NUJWbGVzNjUtUnNYaU10dXJLTGJ5VVRJMnRfQ1M2UU4zRVFWVGwwMnIxZVp5b1dQeVZmZzBCLWl0dHhicWljdnZtLXpNcVJMV3BsOXJBRTE5U0Z3OE1fdjh3Wk9EODZHaS1DSkIwOHZ3VlF4MkRlYWZKVHF6ZDZ3YVp3NkkzWlZj0gHMAUFVX3lxTE5jbC1FT2Y0SlFWZUtXSWpNaXE4X1hwWHVCUU16RWFrVVl5ZjRYTlJ1ZnBKYXZWR3J4VDk1ZUZSakkteHBfNW04cGNxajdyN2dvd2JOU3dBNzRIM3F3Slc2QmYxeVJQaXRFVFZ0YmNwb3lRcE93WngyMHRIb2NaM0VGTkhwd2RWYktJSVlSMGFoNHRwY2tYbHo5M3BVai1sMXBES1JTd0VSS0tRVnFvWmRfOEd6TEZZNVhhSjFUbjhmTWNRQWR1ZElfQ1gzbw",
+        "published": "2025-09-09T03:04:12+00:00",
+        "description": "This article discusses google news. Comprehensive up-to-date news coverage, aggregated from sources all over the world by Google News. This development represents an important milestone in the ongoing evolution of the sector. Stakeholders and industry observers are likely to monitor the situation closely for potential broader implications. Such developments often reflect larger trends and patterns that may influence future decisions and strategies. Further details and updates are expected to emerge as the situation develops and more information becomes available.",
+        "source": "Google News (India)",
+        "category": "bengaluru_local",
+        "image_url": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300-rw",
+        "detected_category": "general",
+        "content_priority": "low",
+        "source_id": "",
+        "source_credibility": "unrated"
+      }
+    ],
+    "The Hindu": [
+      {
+        "title": "Coronavirus live updates | Schools in Rajasthan to reopen from August 2",
+        "url": "https://www.thehindu.com/news/national/coronavirus-live-july-23-2021-updates/article35481907.ece",
+        "published": "2021-07-23T04:37:35.1474224Z",
+        "description": "People queue up for the COVID-19 test in Vijayawada on Wednesday. Given the robust and statute-based death registration system in the country, while some cases could go undetected as per the principles of infectious disease and its management,missing out on deaths was unlikely, said the Union Health Ministry in a release issued on Thursday in response to allegations of “missing COVID-19 deaths”. “This could also be seen in the case fatality rate, which, as on 31st December 2020, stood at 1.45% and even after an unexpected surge observed in the second wave in April-May 2021, the case fatality rate today stands at 1.34%,” it stated..",
+        "source": "The Hindu",
+        "category": "indian_news",
+        "image_url": "https://www.thehindu.com/news/national/andhra-pradesh/itrjr2/article35457972.ece/ALTERNATES/LANDSCAPE_615/22vjcovid",
+        "detected_category": "cricket_sports",
+        "content_priority": "critical",
+        "source_id": "",
+        "source_credibility": "unrated"
+      },
+      {
+        "title": "Coronavirus live updates | Schools in Rajasthan to reopen from August 2",
+        "url": "https://www.thehindu.com/news/national/coronavirus-live-july-23-2021-updates/article35481907.ece",
+        "published": "2021-07-23T04:37:35.1474224Z",
+        "description": "People queue up for the COVID-19 test in Vijayawada on Wednesday. Given the robust and statute-based death registration system in the country, while some cases could go undetected as per the principles of infectious disease and its management,missing out on deaths was unlikely, said the Union Health Ministry in a release issued on Thursday in response to allegations of “missing COVID-19 deaths”. “This could also be seen in the case fatality rate, which, as on 31st December 2020, stood at 1.45% and even after an unexpected surge observed in the second wave in April-May 2021, the case fatality rate today stands at 1.34%,” it stated..",
+        "source": "The Hindu",
+        "category": "bengaluru_local",
+        "image_url": "https://www.thehindu.com/news/national/andhra-pradesh/itrjr2/article35457972.ece/ALTERNATES/LANDSCAPE_615/22vjcovid",
+        "detected_category": "cricket_sports",
+        "content_priority": "critical",
+        "source_id": "",
+        "source_credibility": "unrated"
+      }
+    ],
+    "ESPN Cric Info": [
+      {
+        "title": "PCB hands Umar Akmal three-year ban from all cricket | ESPNcricinfo.com",
+        "url": "http://www.espncricinfo.com/story/_/id/29103103/pcb-hands-umar-akmal-three-year-ban-all-cricket",
+        "published": "2020-04-27T11:41:47Z",
+        "description": "This article discusses pcb hands umar akmal three-year ban from all cricket | espncricinfo.com. Penalty after the batsman pleaded guilty to not reporting corrupt approaches | ESPNcricinfo.com The cricket industry continues to evolve with new talent emerging regularly. Performance statistics and career trajectories are closely monitored by selectors and fans alike. Such developments in domestic cricket often serve as stepping stones for players aspiring to represent their country at the international level. Further details and updates are expected to emerge as the situation develops and more information becomes available.",
+        "source": "ESPN Cric Info",
+        "category": "cricket_sports",
+        "image_url": "https://a4.espncdn.com/combiner/i?img=%2Fi%2Fcricket%2Fcricinfo%2F1099495_800x450.jpg",
+        "detected_category": "cricket_sports",
+        "content_priority": "critical",
+        "source_id": "",
+        "source_credibility": "unrated"
+      },
+      {
+        "title": "Akram's yorkers, Hegg's hits, and Chapple's 6 for 18 | ESPNcricinfo.com",
+        "url": "http://www.espncricinfo.com/story/_/id/29102935/o-my-akram-my-hegg-long-ago",
+        "published": "2020-04-27T10:24:08Z",
+        "description": "Lancashire won the NatWest Trophy and the Benson & Hedges Cup three times each in the '90s •PA Photos/Getty Images Andrew McGlashan is a deputy editor at ESPNcricinfo Lancashire won the NatWest Trophy and the Benson & Hedges Cup three times each in the '90s •PA Photos/Getty Images Andrew McGlashan is a deputy editor at ESPNcricinfo",
+        "source": "ESPN Cric Info",
+        "category": "cricket_sports",
+        "image_url": "https://a3.espncdn.com/combiner/i?img=%2Fi%2Fcricket%2Fcricinfo%2F1221634_1296x729.jpg",
+        "detected_category": "general",
+        "content_priority": "low",
+        "source_id": "",
+        "source_credibility": "unrated"
+      },
+      {
+        "title": "'It was the first time we realised we can also cry after winning a game'",
+        "url": "https://www.thecricketmonthly.com/story/1221473/-it-was-the-first-time-we-realised-we-can-also-cry-after-winning-a-game",
+        "published": "2020-04-27T09:37:16.8323585Z",
+        "description": "Habibul Bashar, Mohammad Ashraful, Tareq Aziz and Tatenda Taibu recall Bangladesh's first win since becoming a Test nation - in an ODI in Harare in 2004 Mushfiqur Rahman and his team-mates celebrate Tatenda Taibu's wicket. In the space of nine overs, Zimbabwe lost four wickets for 19 runs© AFP/Getty Images Mushfiqur Rahman and his team-mates celebrate Tatenda Taibu's wicket. In the space of nine overs, Zimbabwe lost four wickets for 19 runs© AFP/Getty Images From June 1999 to February 2004, Bangladesh had racked up some unwanted records - most consecutive defeats in international cricket, which included most consecutive Test defeats, the longest winless streak in that format, and the most consecutive ODI defeats. Now under a new captain, Bangladesh were hoping for better days. Habibul Bashar, Bangladesh captain:The Zimbabwe team was far ahead of us in those days, that too in their conditions. We had already lost the Test series. Imade a pair in my first Test as captain. While we waited for the rain to stop in Bulawayo [where the first two ODIs had to be abandoned], coachDav Whatmorewas trying to instil the mentality of trying to win rather than thinking about playing well and losing - he would tell us that there was no glory in that. Mohammad Ashraful, Bangladesh batsman:One day on the tour, I was telling Shuvrobhai[journalist Utpal Shuvro] that the Bangladesh public treats us as heroes even though we don't win any matches. We have such a wonderful following despite our results.",
+        "source": "ESPN Cric Info",
+        "category": "cricket_sports",
+        "image_url": "https://i.imgci.com/espncricinfo/cricket_monthly/og-the-cricket-monthly.jpg",
+        "detected_category": "cricket_sports",
+        "content_priority": "critical",
+        "source_id": "",
+        "source_credibility": "unrated"
+      },
+      {
+        "title": "Five famous people (and one cat) you didn't know have ESPNcricinfo profiles | ESPNcricinfo.com",
+        "url": "http://www.espncricinfo.com/story/_/id/29102695/five-famous-people-one-cat-know-espncricinfo-profiles",
+        "published": "2020-04-27T07:20:43Z",
+        "description": "Which famous novelist is depicted playing cricket in this painting? •Getty Images As it's#LoveYourPetDaywe thought we'd share this photo of Peter the Cat, who lived at Lord's from 1952 to 1964.️ Peter is the only animal to be given an obituary in the@WisdenAlmanack.#LoveLordspic.twitter.com/ToBPUql7fb",
+        "source": "ESPN Cric Info",
+        "category": "cricket_sports",
+        "image_url": "https://a.espncdn.com/i/cricket/cricinfo/1221668_1296x1296.gif",
+        "detected_category": "cricket_sports",
+        "content_priority": "critical",
+        "source_id": "",
+        "source_credibility": "unrated"
+      },
+      {
+        "title": "Sri Lanka don't win the 1996 World Cup | ESPNcricinfo.com",
+        "url": "http://www.espncricinfo.com/story/_/id/29101950/sri-lanka-had-not-won-1996-world-cup",
+        "published": "2020-04-27T01:00:01Z",
+        "description": "This article discusses sri lanka don't win the 1996 world cup | espncricinfo.com. Because fairy-tales only exist in story books | ESPNcricinfo.com This development represents an important milestone in the ongoing evolution of the sector. Stakeholders and industry observers are likely to monitor the situation closely for potential broader implications. Such developments often reflect larger trends and patterns that may influence future decisions and strategies. Further details and updates are expected to emerge as the situation develops and more information becomes available.",
+        "source": "ESPN Cric Info",
+        "category": "cricket_sports",
+        "image_url": "https://a4.espncdn.com/combiner/i?img=%2Fi%2Fcricket%2Fcricinfo%2F1219948_900x506.jpg",
+        "detected_category": "general",
+        "content_priority": "low",
+        "source_id": "",
+        "source_credibility": "unrated"
+      },
+      {
+        "title": "I'm fighting my own benchmarks - R Ashwin | ESPNcricinfo.com",
+        "url": "http://www.espncricinfo.com/story/_/id/29102228/fighting-my-own-benchmarks-r-ashwin",
+        "published": "2020-04-25T03:00:09Z",
+        "description": "This article discusses i'm fighting my own benchmarks - r ashwin | espncricinfo.com. India's No. 1 offspinner talks to Manjrekar on his form abroad, injuries and more | ESPNcricinfo.com This development represents an important milestone in the ongoing evolution of the sector. Stakeholders and industry observers are likely to monitor the situation closely for potential broader implications. Such developments often reflect larger trends and patterns that may influence future decisions and strategies. Further details and updates are expected to emerge as the situation develops and more information becomes available.",
+        "source": "ESPN Cric Info",
+        "category": "cricket_sports",
+        "image_url": "https://a4.espncdn.com/combiner/i?img=%2Fi%2Fcricket%2Fcricinfo%2F1219773_1296x729.jpg",
+        "detected_category": "indian_news",
+        "content_priority": "critical",
+        "source_id": "",
+        "source_credibility": "unrated"
+      },
+      {
+        "title": "The Coronavirus soap opera, starring KP, Warnie, Mahela | ESPNcricinfo.com",
+        "url": "http://www.espncricinfo.com/story/_/id/28979161/andrew-fernando-satirical-look-back-cricket-march-2020",
+        "published": "2020-04-01T10:15:40Z",
+        "description": "Home is that way: Mayor Mahela just wants people to follow the rules. No one will listen •AFP Andrew Fidel Fernando is ESPNcricinfo's Sri Lanka correspondent. @afidelf Home is that way: Mayor Mahela just wants people to follow the rules. No one will listen •AFP Andrew Fidel Fernando is ESPNcricinfo's Sri Lanka correspondent. @afidelf.",
+        "source": "ESPN Cric Info",
+        "category": "cricket_sports",
+        "image_url": "https://a3.espncdn.com/combiner/i?img=%2Fi%2Fcricket%2Fcricinfo%2F1219981_1296x1296.jpg",
+        "detected_category": "general",
+        "content_priority": "low",
+        "source_id": "",
+        "source_credibility": "unrated"
+      },
+      {
+        "title": "Five CSK games only hardcore fans will remember | ESPNcricinfo.com",
+        "url": "http://www.espncricinfo.com/story/_/id/28974528/five-csk-games-only-hardcore-fans-remember",
+        "published": "2020-03-31T10:23:03Z",
+        "description": "This article discusses five csk games only hardcore fans will remember | espncricinfo.com. From throwing a surprise in the batting order to smashing sixes after sixes, CSK have done it all | ESPNcricinfo.com This development represents an important milestone in the ongoing evolution of the sector. Stakeholders and industry observers are likely to monitor the situation closely for potential broader implications. Such developments often reflect larger trends and patterns that may influence future decisions and strategies. Further details and updates are expected to emerge as the situation develops and more information becomes available.",
+        "source": "ESPN Cric Info",
+        "category": "cricket_sports",
+        "image_url": "https://a2.espncdn.com/combiner/i?img=%2Fi%2Fcricket%2Fcricinfo%2F1219712_1296x729.jpg",
+        "detected_category": "general",
+        "content_priority": "low",
+        "source_id": "",
+        "source_credibility": "unrated"
+      },
+      {
+        "title": "'This is a ball the whole world will remember' - Saeed Ajmal v Sachin Tendulkar revisited | ESPNcricinfo.com",
+        "url": "http://www.espncricinfo.com/story/_/id/28973835/this-ball-whole-world-remember-saeed-ajmal-v-sachin-tendulkar-revisited",
+        "published": "2020-03-30T18:45:45Z",
+        "description": "This article discusses 'this is a ball the whole world will remember' - saeed ajmal v sachin tendulkar revisited | espncricinfo.com. We asked experts - and one participant - their considered view of the controversial Hawk-Eye projection | ESPNcricinfo.com This development represents an important milestone in the ongoing evolution of the sector. Stakeholders and industry observers are likely to monitor the situation closely for potential broader implications. Such developments often reflect larger trends and patterns that may influence future decisions and strategies. Further details and updates are expected to emerge as the situation develops and more information becomes available.",
+        "source": "ESPN Cric Info",
+        "category": "cricket_sports",
+        "image_url": "https://a4.espncdn.com/combiner/i?img=%2Fi%2Fcricket%2Fcricinfo%2F1219912_1296x729.jpg",
+        "detected_category": "general",
+        "content_priority": "low",
+        "source_id": "",
+        "source_credibility": "unrated"
+      },
+      {
+        "title": "What we learned from watching the 1992 World Cup final in full again | ESPNcricinfo.com",
+        "url": "http://www.espncricinfo.com/story/_/id/28970907/learned-watching-1992-world-cup-final-full-again",
+        "published": "2020-03-30T15:26:05Z",
+        "description": "Wides, lbw calls, swing - plenty of things were different in white-ball cricket back then | ESPNcricinfo.com This technological advancement reflects the ongoing innovation in the digital landscape and could influence industry standards. Further details and developments are expected to emerge as the situation continues to evolve.",
+        "source": "ESPN Cric Info",
+        "category": "cricket_sports",
+        "image_url": "https://a4.espncdn.com/combiner/i?img=%2Fi%2Fcricket%2Fcricinfo%2F1219926_1296x729.jpg",
+        "detected_category": "cricket_sports",
+        "content_priority": "critical",
+        "source_id": "",
+        "source_credibility": "unrated"
+      }
+    ],
+    "The Indian Express": [
+      {
+        "title": "How non-farm primary activities sustain livelihoods in rural India",
+        "url": "https://indianexpress.com/article/upsc-current-affairs/upsc-essentials/how-non-farm-primary-activities-sustain-livelihoods-in-rural-india-10239847/",
+        "published": "2025-09-09T13:22:11Z",
+        "description": "The primary sector in India provides employment to 44 per cent of the labour force while contributing less than 20 per cent to the country’s GDP. The primary sector is defined as the economic sector that produces goods by exploiting natural resources like land, water, forests, mines, etc. Agriculture is one of the most important primary sectors. However, while agriculture’s share in employment has fallen slowly, its share in GDP has declined relatively faster. It underlinesthe slow nature of structural transformation of the Indian economy. As a result, agriculture is no longer the primary driving force of the economy. What remains hidden, though, is theroleof the non-agricultural primary sector in most discussions on the Indian economy..",
+        "source": "The Indian Express",
+        "category": "indian_news",
+        "image_url": "https://images.indianexpress.com/2025/09/Non-farm-primary-activities-2.jpg",
+        "indian_topic": "India economy",
+        "region": "India"
+      }
+    ],
+    "Ndtvprofit.com": [
+      {
+        "title": "GST Reforms To Touch All Indians, Assures Sitharaman; Calls For Efficiency To Bridge Revenue Gap",
+        "url": "https://www.ndtvprofit.com/economy-finance/gst-reforms-to-touch-all-indians-assures-sitharaman-calls-for-efficiency-to-bridge-revenue-gap",
+        "published": "2025-09-09T12:46:33Z",
+        "description": "Finance Minister Nirmala Sitharaman said that she is confident of GST rate cuts passing through to the end consumers, and has trust in the industry and traders. Speaking at the NDTV Profit GST Conclave, Sitharaman said that taxable items were viewed from the lens of daily consumption, aspirational items for the middle class, for farmers, and items which are important to the Indian economy at large. All 140 crore Indians will have something or the other where the tax reduction will come through, she assured. GST 2.0 was in the making for almost 1.5 years, Sitharaman said, adding that she was waiting for a worthy pack of reforms before presenting the overhaul. While thanking ministers from multiple parties and states who acceded to the reforms, she noted that the GST Council meeting was not at all acrimonious. The council is accustomed to discussion of this nature, she said, but clarified that the decision to bring down the rates saw no opposition from anyone. The difference was on the path of revenue falling, the finance minister said. On that, she said that Centre and states are together, with both seeing the impact. As such, efficiency will have to increase to offset the fall, she added..",
+        "source": "Ndtvprofit.com",
+        "category": "indian_news",
+        "image_url": "https://media.assettype.com/bloombergquint%2F2025-09-09%2F7hbylkex%2FScreenshot-2025-09-09-181312.png?w=1200&auto=format%2Ccompress&ogImage=true",
+        "indian_topic": "India economy",
+        "region": "India"
+      }
+    ],
+    "BusinessLine": [
+      {
+        "title": "Tackling the scourge of agricultural indebtedness",
+        "url": "https://www.thehindubusinessline.com/opinion/tackling-the-scourge-of-agricultural-indebtedness/article70029541.ece",
+        "published": "2025-09-09T12:23:56Z",
+        "description": "The rising farm indebtedness needs urgent policy attention Indian agricultural indebtedness has remained a cause for concern over the decades, despite the remarkable growth in agricultural production. But, its surge in recent years, particularly post Covid-19, calls for immediate measures to safeguard the livelihoods of agricultural households, amid growing tariff pressures threatening to disrupt supply chains, in addition to the existing myriad problems affecting the farm sector. Unlike the farmers in US with an average farm size of about 189 hectares, Indian farmers with an average farm size of 0.74 hectares, produce crops under extremely unfavourable conditions with low scale of economies and fragile incomes and hence end up incurring debt..",
+        "source": "BusinessLine",
+        "category": "indian_news",
+        "image_url": "https://bl-i.thgim.com/public/incoming/7c6xr0/article70029566.ece/alternates/LANDSCAPE_1200/PTI08_31_2025_000062A.jpg",
+        "indian_topic": "India economy",
+        "region": "India"
+      }
+    ],
+    "The Times of India": [
+      {
+        "title": "Anurag Singh sees US tariffs as non-issue for India, calls markets a domestic game",
+        "url": "https://economictimes.indiatimes.com/markets/stocks/news/anurag-singh-sees-us-tariffs-as-non-issue-for-india-calls-markets-a-domestic-game/articleshow/123780191.cms",
+        "published": "2025-09-09T06:40:40Z",
+        "description": "(What's movingSensexandNiftyTracklatest market news,stock tips,Budget 2025,Share Market on Budget 2025andexpert advice, onETMarkets. Also, ETMarkets.com is now on Telegram. For fastest news alerts on financial markets, investment strategies and stocks alerts,subscribe to our Telegram feeds.) Subscribe toET Primeand read theEconomic Times ePaperOnline.andSensex Today. Top Trending Stocks:SBI Share Price,Axis Bank Share Price,HDFC Bank Share Price,Infosys Share Price,Wipro Share Price,NTPC Share Price (What's movingSensexandNiftyTracklatest market news,stock tips,Budget 2025,Share Market on Budget 2025andexpert advice, onETMarkets. Also, ETMarkets.com is now on Telegram. For fastest news alerts on financial markets, investment strategies and stocks alerts,subscribe to our Telegram feeds.) Subscribe toET Primeand read theEconomic Times ePaperOnline.andSensex Today. Top Trending Stocks:SBI Share Price,Axis Bank Share Price,HDFC Bank Share Price,Infosys Share Price,Wipro Share Price,NTPC Share Price New questions staring at IndiGo as Gangwal’s latest stake sale gets cold response Sonata Software exposes the flip side of mid-tier IT bets What is helping India's oil eco? EU sanctions or Ukraine pounding Russian refineries? The secret army that Asian Paints, Nerolac rely on to recover from Birla, JSW blows Stock Radar: This tyre stock breaks out from falling trendline resistance; what should investors do – buy or sell? F&O Radar | Deploy Bull Call Spread in Nifty to benefit from moderate upside potential.",
+        "source": "The Times of India",
+        "category": "indian_news",
+        "image_url": "https://img.etimg.com/thumb/msid-123780171,width-1200,height-630,imgsize-8542,overlay-etmarkets/articleshow.jpg",
+        "indian_topic": "India economy",
+        "region": "India"
+      },
+      {
+        "title": "Sankarshan Thakur, reporter, writer & editor, passes away",
+        "url": "https://timesofindia.indiatimes.com/india/sankarshan-thakur-reporter-writer-editor-passes-away/articleshow/123776574.cms",
+        "published": "2025-09-09T02:28:12Z",
+        "description": "Smrity Sinha sets trends through radiant charm in elegant style 8 traditional blouse designs from different states of India Bigg Boss Telugu 9: Contestants' stunning premiere looks Karishma Tanna Stuns in Every Frame: From Bold Black to Breezy Blue Soulmates of the animal kingdom: 8 creatures who never let âloveâ fade",
+        "source": "The Times of India",
+        "category": "indian_news",
+        "image_url": "https://static.toiimg.com/thumb/msid-123776642,width-1070,height-580,imgsize-5166,resizemode-75,overlay-toi_sw,pt-32,y_pad-40/photo.jpg",
+        "indian_topic": "India politics",
+        "region": "India"
+      }
+    ]
+  },
+  "api_status": {
+    "indian_news": {
+      "status": "success",
+      "articles_count": 10,
+      "sources_used": [
+        "the-times-of-india",
+        "the-hindu",
+        "google-news-in"
+      ],
+      "coverage_percentage": 42.857142857142854,
+      "credibility_breakdown": {
+        "tier1": 0,
+        "tier2": 0,
+        "tier3": 0,
+        "tier4": 0
+      }
+    },
+    "cricket_sports": {
+      "status": "success",
+      "articles_count": 10,
+      "sources_used": [
+        "espn-cric-info"
+      ],
+      "coverage_percentage": 100.0,
+      "credibility_breakdown": {
+        "tier1": 0,
+        "tier2": 0,
+        "tier3": 0,
+        "tier4": 0
+      }
+    },
+    "bengaluru_local": {
+      "status": "success",
+      "articles_count": 10,
+      "sources_used": [
+        "the-times-of-india",
+        "the-hindu",
+        "google-news-in"
+      ],
+      "coverage_percentage": 75.0,
+      "credibility_breakdown": {
+        "tier1": 0,
+        "tier2": 0,
+        "tier3": 0,
+        "tier4": 0
+      }
+    },
+    "bollywood_entertainment": {
+      "status": "skipped",
+      "reason": "No available sources"
+    },
+    "technology_india": {
+      "status": "skipped",
+      "reason": "No available sources"
+    },
+    "india_topics": {
+      "status": "success",
+      "articles_count": 5,
+      "topics_covered": 2
+    }
+  },
+  "newsapi_duplicate_detection": {
+    "enabled": true,
+    "method": "shared_database",
+    "total_checked": 55,
+    "duplicates_found": 37,
+    "new_articles": 18,
+    "cross_source_prevention": true
+  },
+  "api_usage": {
+    "primary_key_requests": 11,
+    "secondary_key_requests": 0,
+    "tertiary_key_requests": 0,
+    "quaternary_key_requests": 0,
+    "total_requests": 11,
+    "available_keys": 3,
+    "exhausted_keys": 0,
+    "current_key": "primary",
+    "remaining_quota": 289
+  }
+}

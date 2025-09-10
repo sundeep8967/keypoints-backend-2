@@ -204,8 +204,9 @@ class SpaceOptimizer:
         return stored_count, duplicate_count
     
     def create_minimal_json_output(self, articles: List[Dict], filename: str) -> str:
-        """Create minimal JSON output with only essential data"""
+        """Create minimal JSON output with AI enhancement compatibility"""
         minimal_articles = []
+        by_category = {}
         
         for article in articles:
             minimal_article = {
@@ -223,14 +224,20 @@ class SpaceOptimizer:
                 minimal_article['image_url'] = image_url
             
             minimal_articles.append(minimal_article)
+            
+            # Group by category for AI enhancement compatibility
+            category = article.get('category', 'general')
+            if category not in by_category:
+                by_category[category] = []
+            by_category[category].append(minimal_article)
         
-        # Create minimal output
+        # Create AI-compatible output structure
         output_data = {
-            'timestamp': datetime.datetime.now().isoformat(),
+            'aggregation_timestamp': datetime.datetime.now().isoformat(),
             'total_articles': len(minimal_articles),
-            'articles': minimal_articles,
+            'by_category_deduplicated': by_category,  # AI enhancement expects this!
             'space_optimized': True,
-            'note': 'Minimal output - full data in database'
+            'note': 'Space-optimized output compatible with AI enhancement'
         }
         
         output_path = self.data_dir / filename
@@ -309,15 +316,152 @@ class SpaceOptimizer:
         
         return stats
 
+    def migrate_and_cleanup_history_dirs(self):
+        """Migrate individual history files to database and remove directories"""
+        print("\n🔄 MIGRATING INDIVIDUAL HISTORY FILES TO DATABASE")
+        print("-" * 50)
+        
+        migrated_articles = 0
+        
+        # Migrate RSS history
+        rss_dir = self.data_dir / "rss_history"
+        if rss_dir.exists():
+            print("📦 Migrating RSS history files...")
+            for rss_file in rss_dir.glob("*.json"):
+                try:
+                    with open(rss_file, 'r', encoding='utf-8') as f:
+                        data = json.load(f)
+                    
+                    articles = data.get('articles', [])
+                    stored, _ = self.store_articles_efficiently(articles, f"rss_{rss_file.stem}")
+                    migrated_articles += stored
+                    print(f"   ✅ Migrated {stored} articles from {rss_file.name}")
+                
+                except Exception as e:
+                    print(f"   ⚠️  Error migrating {rss_file.name}: {e}")
+            
+            # Remove RSS history directory
+            import shutil
+            shutil.rmtree(rss_dir)
+            print(f"   🗑️  Removed RSS history directory")
+        
+        # Migrate NewsAPI history
+        newsapi_dir = self.data_dir / "newsapi_history"
+        if newsapi_dir.exists():
+            print("📦 Migrating NewsAPI history files...")
+            for newsapi_file in newsapi_dir.glob("*.json"):
+                try:
+                    with open(newsapi_file, 'r', encoding='utf-8') as f:
+                        data = json.load(f)
+                    
+                    articles = data.get('articles', [])
+                    stored, _ = self.store_articles_efficiently(articles, f"newsapi_{newsapi_file.stem}")
+                    migrated_articles += stored
+                    print(f"   ✅ Migrated {stored} articles from {newsapi_file.name}")
+                
+                except Exception as e:
+                    print(f"   ⚠️  Error migrating {newsapi_file.name}: {e}")
+            
+            # Remove NewsAPI history directory
+            import shutil
+            shutil.rmtree(newsapi_dir)
+            print(f"   🗑️  Removed NewsAPI history directory")
+        
+        print(f"💾 Total migrated: {migrated_articles} articles to database")
+        return migrated_articles
+
+    def fix_ai_compatibility(self):
+        """Fix combined_news_data.json for AI enhancement compatibility"""
+        print("\n🤖 FIXING AI ENHANCEMENT COMPATIBILITY")
+        print("-" * 40)
+        
+        combined_file = self.data_dir / "combined_news_data.json"
+        if not combined_file.exists():
+            print("❌ combined_news_data.json not found")
+            return False
+        
+        # Load current data
+        with open(combined_file, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        
+        # Check if already compatible
+        if 'by_category_deduplicated' in data:
+            print("✅ Already AI-compatible")
+            return True
+        
+        # Convert structure
+        if 'articles' not in data:
+            print("❌ No articles found in data")
+            return False
+        
+        print("🔄 Converting to AI-compatible structure...")
+        
+        articles = data['articles']
+        by_category = {}
+        
+        # Group by category
+        for article in articles:
+            category = article.get('category', 'general')
+            if category not in by_category:
+                by_category[category] = []
+            by_category[category].append(article)
+        
+        # Create AI-compatible structure
+        fixed_data = {
+            'aggregation_timestamp': data.get('timestamp', datetime.datetime.now().isoformat()),
+            'total_articles': len(articles),
+            'by_category_deduplicated': by_category,
+            'space_optimized': True,
+            'note': 'Optimized for AI enhancement compatibility'
+        }
+        
+        # Preserve important fields
+        for key in ['deduplication_info', 'bulletproof_filter_info', 'category_summary']:
+            if key in data:
+                fixed_data[key] = data[key]
+        
+        # Save fixed structure
+        with open(combined_file, 'w', encoding='utf-8') as f:
+            json.dump(fixed_data, f, indent=2, ensure_ascii=False)
+        
+        print(f"✅ Fixed structure: {len(by_category)} categories, {len(articles)} articles")
+        return True
+
 def main():
-    """Test the space optimizer"""
+    """Complete space optimization with history migration"""
+    print("🗜️  COMPLETE SPACE OPTIMIZATION")
+    print("=" * 50)
+    print("This tool will:")
+    print("✅ Eliminate ALL individual history files")
+    print("✅ Migrate data to efficient database storage") 
+    print("✅ Fix AI enhancement compatibility")
+    print("✅ Compress old files")
+    print("✅ Achieve maximum space savings")
+    print("=" * 50)
+    
     optimizer = SpaceOptimizer()
     
-    # Run optimization
+    # Step 1: Migrate individual history files
+    migrated = optimizer.migrate_and_cleanup_history_dirs()
+    
+    # Step 2: Fix AI compatibility
+    ai_fixed = optimizer.fix_ai_compatibility()
+    
+    # Step 3: Run standard optimization
     stats = optimizer.optimize_all()
     
-    print(f"\n✅ Space optimization completed!")
-    print(f"📊 Final storage usage: {stats}")
+    print(f"\n🎉 COMPLETE OPTIMIZATION FINISHED!")
+    print(f"📊 Summary:")
+    print(f"   🔄 Migrated: {migrated} articles from individual files")
+    print(f"   🤖 AI compatibility: {'✅ Fixed' if ai_fixed else '❌ Failed'}")
+    print(f"   💾 Database: {stats['database_size_mb']:.2f}MB ({stats['total_articles_in_db']} articles)")
+    print(f"   📄 JSON files: {stats['json_files_count']} files ({stats['json_files_size_mb']:.2f}MB)")
+    print(f"   🗜️  Compressed: {stats['compressed_files_count']} files")
+    
+    print(f"\n🚀 NEXT STEPS:")
+    print(f"   1. Run: python3 main.py (now optimized)")
+    print(f"   2. Test: node enhance_news_with_ai.js")
+    print(f"   3. Verify: Check data/ directory size")
 
 if __name__ == "__main__":
     main()

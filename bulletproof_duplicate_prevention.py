@@ -214,7 +214,9 @@ class BulletproofDuplicateFilter:
                 'combined_match': 0,
                 'url_similarity': 0,
                 'title_similarity': 0,
-                'content_similarity': 0
+                'content_similarity': 0,
+                'compact_hash_match': 0,
+                'unique': 0
             },
             'duplicate_details': []
         }

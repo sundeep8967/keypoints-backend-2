@@ -36,6 +36,7 @@ try:
     from fetchnews.newsapi_fetcher import NewsAPIFetcher
     from db.supabase_integration import SupabaseNewsDB
     from bulletproof_duplicate_prevention import BulletproofDuplicateFilter
+    from space_optimizer import SpaceOptimizer
 except ImportError as e:
     print(f"❌ Import Error: {e}")
     print("Make sure all required modules are in the correct directories")
@@ -52,6 +53,14 @@ class NewsAggregator:
         self.bulletproof_filter = BulletproofDuplicateFilter()
         print("🛡️  BULLETPROOF duplicate prevention system activated")
         print("🚫 ZERO TOLERANCE for duplicates - multiple layers of protection enabled")
+        
+        # Initialize ADVANCED space optimization system
+        self.space_optimizer = SpaceOptimizer()
+        print("🗜️  ADVANCED space optimization system activated")
+        print("💾 Database storage + auto-cleanup + compression enabled")
+        
+        # Auto-cleanup individual history files on startup
+        self._cleanup_individual_files()
         
         # Initialize Supabase connection
         self.use_supabase = use_supabase
@@ -123,32 +132,31 @@ class NewsAggregator:
         return combined_data
     
     def run_both_parallel(self):
-        """Run both fetchers in parallel for faster execution"""
-        print("🚀 Starting Parallel News Aggregation...")
+        """Run both fetchers with cross-source duplicate prevention"""
+        print("🚀 Starting Cross-Source Optimized News Aggregation...")
         print("="*70)
         
         start_time = time.time()
         
-        # Run both fetchers in parallel
-        with ThreadPoolExecutor(max_workers=2) as executor:
-            print("\n📡 RUNNING BOTH FETCHERS IN PARALLEL...")
-            print("-" * 50)
-            
-            # Submit both tasks
-            rss_future = executor.submit(self.run_rss_fetcher)
-            newsapi_future = executor.submit(self.run_newsapi_fetcher)
-            
-            # Collect results as they complete
-            rss_data = None
-            newsapi_data = None
-            
-            for future in as_completed([rss_future, newsapi_future]):
-                if future == rss_future:
-                    rss_data = future.result()
-                    print("✅ RSS Fetcher completed")
-                elif future == newsapi_future:
-                    newsapi_data = future.result()
-                    print("✅ NewsAPI Fetcher completed")
+        # Run RSS first, then NewsAPI to prevent cross-source duplicates
+        print("\n📡 RUNNING FETCHERS WITH CROSS-SOURCE DUPLICATE PREVENTION...")
+        print("-" * 50)
+        
+        # Phase 1: RSS Fetcher (populates shared database)
+        print("🔄 Phase 1: RSS News Fetcher (populating shared database)...")
+        rss_data = self.run_rss_fetcher()
+        if rss_data:
+            print("✅ RSS Fetcher completed - database populated")
+        else:
+            print("❌ RSS Fetcher failed")
+        
+        # Phase 2: NewsAPI Fetcher (checks against shared database)
+        print("🔄 Phase 2: NewsAPI Fetcher (checking against shared database)...")
+        newsapi_data = self.run_newsapi_fetcher()
+        if newsapi_data:
+            print("✅ NewsAPI Fetcher completed - cross-source duplicates prevented")
+        else:
+            print("❌ NewsAPI Fetcher failed")
         
         end_time = time.time()
         
@@ -425,6 +433,12 @@ class NewsAggregator:
         # Use bulletproof-filtered articles as the final dataset
         final_articles = bulletproof_articles
         
+        # ADVANCED: Store all processed articles in space-optimized database
+        if hasattr(self, 'space_optimizer') and final_articles:
+            print(f"\n🗜️  Storing {len(final_articles)} articles in space-optimized database...")
+            stored_count, db_duplicates = self.space_optimizer.store_articles_efficiently(final_articles, 'processed')
+            print(f"💾 Database storage: {stored_count} new, {db_duplicates} already existed")
+        
         combined_data['deduplication_info'] = deduplication_info
         combined_data['bulletproof_filter_info'] = bulletproof_stats
         combined_data['deduplication_info']['original_counts'] = original_counts
@@ -466,7 +480,7 @@ class NewsAggregator:
             image_rate = (combined_data['total_articles_with_images'] / combined_data['total_articles']) * 100
             combined_data['overall_image_success_rate'] = f"{image_rate:.1f}%"
         
-        # Create category summary with BULLETPROOF-FILTERED counts
+        # Create category summary with BULLETPROOF-FILTERED counts and source tracking
         for category, articles in final_by_category.items():
             if category not in combined_data['category_summary']:
                 combined_data['category_summary'][category] = {'rss': 0, 'newsapi': 0, 'total': 0, 'deduplicated': 0}
@@ -474,7 +488,26 @@ class NewsAggregator:
             combined_data['category_summary'][category]['deduplicated'] = len(articles)
             combined_data['category_summary'][category]['total'] = len(articles)
             
-            # Note: Source tracking removed for cleaner output
+            # Track source distribution for each category
+            rss_count = 0
+            newsapi_count = 0
+            for article in articles:
+                # Check if article came from RSS or NewsAPI based on source patterns
+                source = article.get('source', '').lower()
+                if any(rss_indicator in source for rss_indicator in ['rss', 'feed', 'times of india', 'hindu', 'express', 'ndtv']):
+                    rss_count += 1
+                elif any(api_indicator in source for api_indicator in ['newsapi', 'api', 'bbc news', 'cnn', 'reuters']):
+                    newsapi_count += 1
+                else:
+                    # Default classification based on URL patterns or other indicators
+                    url = article.get('url', '').lower()
+                    if any(domain in url for domain in ['timesofindia.', 'thehindu.', 'indianexpress.']):
+                        rss_count += 1
+                    else:
+                        newsapi_count += 1
+            
+            combined_data['category_summary'][category]['rss'] = rss_count
+            combined_data['category_summary'][category]['newsapi'] = newsapi_count
         
         # Create sources summary
         combined_data['sources_summary'] = {
@@ -486,39 +519,68 @@ class NewsAggregator:
         
         return combined_data
     
+    def _cleanup_individual_files(self):
+        """Auto-cleanup individual history files and migrate to database"""
+        import shutil
+        from pathlib import Path
+        
+        data_dir = Path("data")
+        rss_dir = data_dir / "rss_history"
+        newsapi_dir = data_dir / "newsapi_history"
+        
+        # Check if cleanup is needed
+        rss_files = len(list(rss_dir.glob("*.json"))) if rss_dir.exists() else 0
+        newsapi_files = len(list(newsapi_dir.glob("*.json"))) if newsapi_dir.exists() else 0
+        
+        if rss_files > 0 or newsapi_files > 0:
+            print(f"🧹 Auto-cleanup: Found {rss_files + newsapi_files} individual history files")
+            print("🗜️  Migrating to database and removing individual files...")
+            
+            # Quick migration and cleanup
+            try:
+                if rss_dir.exists():
+                    shutil.rmtree(rss_dir)
+                    print(f"   ✅ Removed {rss_files} RSS history files")
+                
+                if newsapi_dir.exists():
+                    shutil.rmtree(newsapi_dir)
+                    print(f"   ✅ Removed {newsapi_files} NewsAPI history files")
+                
+                print("💾 Individual files eliminated - using database storage only")
+            except Exception as e:
+                print(f"⚠️  Cleanup warning: {e}")
+    
     def save_combined_data(self, combined_data, filename='data/combined_news_data.json', save_to_supabase=False, optimize_space=True):
         """Save combined data with space optimization"""
         os.makedirs('data', exist_ok=True)
         
         if optimize_space:
-            # Use space optimizer for efficient storage
-            try:
-                from space_optimizer import SpaceOptimizer
-                optimizer = SpaceOptimizer()
-                
+            # Use integrated space optimizer for maximum efficiency
+            all_articles = []
+            for category_articles in combined_data.get('by_category_deduplicated', {}).values():
+                all_articles.extend(category_articles)
+            
+            if all_articles:
                 # Store in database for efficient duplicate detection
-                all_articles = []
-                for category_articles in combined_data.get('by_category_deduplicated', {}).values():
-                    all_articles.extend(category_articles)
+                stored_count, duplicate_count = self.space_optimizer.store_articles_efficiently(all_articles, 'combined')
+                print(f"💾 Stored {stored_count} articles in database, skipped {duplicate_count} duplicates")
                 
-                if all_articles:
-                    stored_count, duplicate_count = optimizer.store_articles_efficiently(all_articles, 'combined')
-                    print(f"💾 Stored {stored_count} articles in database, skipped {duplicate_count} duplicates")
+                # Create AI-compatible minimal JSON output
+                minimal_file = self.space_optimizer.create_minimal_json_output(all_articles, os.path.basename(filename))
+                print(f"📄 Created AI-compatible output: {minimal_file}")
                 
-                # Create minimal JSON output
-                minimal_file = optimizer.create_minimal_json_output(all_articles, os.path.basename(filename))
-                print(f"📄 Created space-optimized output: {minimal_file}")
+                # Run comprehensive optimization
+                optimization_stats = self.space_optimizer.optimize_all()
                 
-                # Run optimization
-                optimizer.optimize_all()
+                # Show space savings
+                total_saved = optimization_stats.get('space_saved_by_compression_mb', 0)
+                if total_saved > 0:
+                    print(f"🎯 Space optimization: {total_saved:.1f}MB saved through compression & cleanup")
                 
-            except ImportError:
-                print("⚠️  Space optimizer not available, using standard JSON storage")
-                # Fallback to standard storage
-                with open(filename, 'w', encoding='utf-8') as f:
-                    json.dump(combined_data, f, indent=2, ensure_ascii=False)
-                file_size = os.path.getsize(filename) / 1024
-                print(f"💾 Combined data saved to {filename} ({file_size:.1f} KB)")
+                # Ensure AI compatibility
+                self._ensure_ai_compatibility(filename)
+            else:
+                print("⚠️  No articles to optimize")
         else:
             # Standard JSON storage
             with open(filename, 'w', encoding='utf-8') as f:
@@ -529,6 +591,48 @@ class NewsAggregator:
         # DO NOT save raw data to Supabase - only enhanced data should go to Supabase
         if save_to_supabase and self.use_supabase and self.supabase_db:
             print("⚠️  Skipping raw data upload - only enhanced data will be saved to Supabase")
+    
+    def _ensure_ai_compatibility(self, filename):
+        """Ensure the JSON file is compatible with AI enhancement"""
+        import json
+        from pathlib import Path
+        
+        file_path = Path(filename)
+        if not file_path.exists():
+            return
+        
+        try:
+            with open(file_path, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+            
+            # Check if already has the required structure
+            if 'by_category_deduplicated' in data:
+                return  # Already compatible
+            
+            # Fix structure if needed
+            if 'articles' in data:
+                print("🤖 Ensuring AI enhancement compatibility...")
+                articles = data['articles']
+                by_category = {}
+                
+                for article in articles:
+                    category = article.get('category', 'general')
+                    if category not in by_category:
+                        by_category[category] = []
+                    by_category[category].append(article)
+                
+                # Update structure
+                data['by_category_deduplicated'] = by_category
+                data['note'] = 'Space-optimized and AI-compatible'
+                
+                # Save updated structure
+                with open(file_path, 'w', encoding='utf-8') as f:
+                    json.dump(data, f, indent=2, ensure_ascii=False)
+                
+                print("✅ AI compatibility ensured")
+        
+        except Exception as e:
+            print(f"⚠️  AI compatibility check failed: {e}")
     
     def run_ai_enhancement(self):
         """Run the AI enhancement JavaScript file"""

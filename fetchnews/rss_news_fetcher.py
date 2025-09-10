@@ -28,7 +28,7 @@ import_error_details = []
 
 # Strategy 1: Direct import (works when run from project root)
 try:
-    from rss_history_manager import RSSHistoryManager
+    from history.rss_history_manager import RSSHistoryManager
 except ImportError as e:
     import_error_details.append(f"Direct import failed: {e}")
 
@@ -38,7 +38,7 @@ if RSSHistoryManager is None:
         current_dir = Path(__file__).parent.parent
         if str(current_dir) not in sys.path:
             sys.path.insert(0, str(current_dir))
-        from rss_history_manager import RSSHistoryManager
+        from history.rss_history_manager import RSSHistoryManager
     except ImportError as e:
         import_error_details.append(f"Current dir import failed: {e}")
 
@@ -48,7 +48,7 @@ if RSSHistoryManager is None:
         work_dir = Path.cwd()
         if str(work_dir) not in sys.path:
             sys.path.insert(0, str(work_dir))
-        from rss_history_manager import RSSHistoryManager
+        from history.rss_history_manager import RSSHistoryManager
     except ImportError as e:
         import_error_details.append(f"Working dir import failed: {e}")
 
@@ -62,11 +62,11 @@ if RSSHistoryManager is None:
     ]
     
     for path in common_paths:
-        if path and (path / "rss_history_manager.py").exists():
+        if path and (path / "history" / "rss_history_manager.py").exists():
             try:
                 if str(path) not in sys.path:
                     sys.path.insert(0, str(path))
-                from rss_history_manager import RSSHistoryManager
+                from history.rss_history_manager import RSSHistoryManager
                 break
             except ImportError as e:
                 import_error_details.append(f"Path {path} import failed: {e}")
@@ -90,12 +90,20 @@ class RSSNewsFetcher:
         })
         self.lock = Lock()
         
-        # Initialize RSS History Manager for advanced duplicate detection
-        self.history_manager = RSSHistoryManager() if RSSHistoryManager else None
-        if self.history_manager:
-            print("🧠 Advanced RSS duplicate detection enabled (file-based)")
-        else:
-            print("⚠️  Basic duplicate detection only (RSS History Manager not available)")
+        # Initialize SPACE-OPTIMIZED history management
+        try:
+            from space_optimizer import SpaceOptimizer
+            self.space_optimizer = SpaceOptimizer()
+            self.use_space_optimization = True
+            print("🗜️  Advanced RSS duplicate detection enabled (database-based)")
+        except ImportError:
+            # Fallback to file-based system
+            self.history_manager = RSSHistoryManager() if RSSHistoryManager else None
+            self.use_space_optimization = False
+            if self.history_manager:
+                print("🧠 Advanced RSS duplicate detection enabled (file-based)")
+            else:
+                print("⚠️  Basic duplicate detection only (RSS History Manager not available)")
         
         # RSS feeds organized by category - OPTIMIZED: Most Important Sources Only
         self.rss_feeds = {
@@ -724,23 +732,38 @@ class RSSNewsFetcher:
                 
                 raw_articles.append(article)
             
-            # Apply advanced duplicate detection using RSS History Manager
-            if self.history_manager and raw_articles:
-                print(f"  🧠 Applying advanced duplicate detection for {source_name}...")
+            # Apply SHARED DATABASE duplicate detection
+            if self.use_space_optimization and raw_articles:
+                print(f"  🗜️  Applying shared database duplicate detection for {source_name}...")
+                stored_count, duplicate_count = self.space_optimizer.store_articles_efficiently(raw_articles, 'all_sources')
+                
+                print(f"  📊 {source_name} shared database detection:")
+                print(f"    📰 Raw articles: {len(raw_articles)}")
+                print(f"    🆕 New articles stored: {stored_count}")
+                print(f"    🔄 Duplicates skipped (including cross-source): {duplicate_count}")
+                
+                if duplicate_count > 0:
+                    print(f"    🎯 Cross-source duplicates prevented")
+                
+                # Return all articles (database already handled duplicates)
+                articles = raw_articles
+                
+            elif hasattr(self, 'history_manager') and self.history_manager and raw_articles:
+                # Fallback to file-based duplicate detection
+                print(f"  🧠 Applying file-based duplicate detection for {source_name}...")
                 unique_articles, duplicate_stats = self.history_manager.check_duplicates_advanced(
                     raw_articles, source_name
                 )
                 articles = unique_articles
                 
-                print(f"  📊 {source_name} duplicate detection:")
+                print(f"  📊 {source_name} file-based detection:")
                 print(f"    📰 Raw articles: {len(raw_articles)}")
                 print(f"    🆕 Unique articles: {len(unique_articles)}")
                 print(f"    🔄 Duplicates filtered: {duplicate_stats['duplicates_found']}")
             else:
-                # Fallback: use all articles if history manager not available
+                # No duplicate detection available
                 articles = raw_articles
-                if not self.history_manager:
-                    print(f"  ⚠️  No duplicate detection for {source_name} (history manager disabled)")
+                print(f"  ⚠️  No duplicate detection for {source_name} (no system available)")
                 
         except Exception as e:
             print(f"Error processing feed {source_name}: {e}")
@@ -824,7 +847,7 @@ class RSSNewsFetcher:
             news_data['image_success_rate'] = f"{image_success_rate:.1f}%"
         
         # Add RSS history statistics if available
-        if self.history_manager:
+        if hasattr(self, 'history_manager') and self.history_manager:
             print("\n📊 RSS History Statistics:")
             total_historical = 0
             for category, feeds in self.rss_feeds.items():
@@ -837,6 +860,13 @@ class RSSNewsFetcher:
                 'total_articles_ever_seen': total_historical,
                 'duplicate_detection_enabled': True,
                 'history_files_count': len([f for f in os.listdir(self.history_manager.history_dir) if f.endswith('_history.json')])
+            }
+        elif self.use_space_optimization:
+            # Using space optimizer instead of history manager
+            news_data['rss_history_stats'] = {
+                'duplicate_detection_enabled': True,
+                'detection_method': 'database_based',
+                'space_optimized': True
             }
         else:
             news_data['rss_history_stats'] = {
@@ -854,14 +884,14 @@ class RSSNewsFetcher:
     
     def cleanup_old_rss_history(self, days_to_keep=30):
         """Clean up old RSS history files"""
-        if self.history_manager:
+        if hasattr(self, 'history_manager') and self.history_manager:
             self.history_manager.cleanup_old_history(days_to_keep)
         else:
             print("⚠️  RSS History Manager not available for cleanup")
     
     def get_rss_history_summary(self):
         """Get summary of RSS history across all feeds"""
-        if not self.history_manager:
+        if not hasattr(self, 'history_manager') or not self.history_manager:
             return {"error": "RSS History Manager not available"}
         
         summary = {

@@ -97,19 +97,28 @@ MAX_ARTICLES_TO_ENHANCE=999999   # Set to specific number to limit processing
 news-aggregator/
 ├── main.py                     # Main orchestration script
 ├── enhance_news_with_ai.js     # AI enhancement engine
+├── bulletproof_duplicate_prevention.py # Cross-source deduplication
+├── space_optimizer.py         # Storage optimization (consolidated)
 ├── requirements.txt            # Python dependencies
 ├── package.json               # Node.js dependencies
 ├── .env.example               # Environment template
+├── DEV_GUIDE.md               # This documentation
+├── TODO.md                    # Project cleanup tasks
 ├── fetchnews/                 # News fetching modules
 │   ├── rss_news_fetcher.py    # RSS feed processor
-│   ├── newsapi_fetcher.py     # NewsAPI integration
-│   ├── async_rss_fetcher.py   # Optimized async RSS
-│   └── async_newsapi_fetcher.py # Optimized async NewsAPI
+│   └── newsapi_fetcher.py     # NewsAPI integration
+├── history/                   # History management (organized)
+│   ├── rss_history_manager.py # RSS duplicate tracking
+│   └── newsapi_history_manager.py # NewsAPI duplicate tracking
+├── utils/                     # Utilities (organized)
+│   ├── cleanup_invalid_titles.py # Data cleaning utilities
+│   └── allrssfeeds.txt        # RSS feed sources
 ├── db/                        # Database integration
 │   └── supabase_integration.py # Supabase operations
 ├── data/                      # Output files
 │   ├── combined_news_data.json # Raw aggregated data
-│   └── combined_news_data_enhanced.json # AI-enhanced data
+│   ├── news_history.db        # SQLite history database
+│   └── rss_history/           # Individual RSS histories
 └── .github/workflows/         # Automation
     └── daily-news-aggregation.yml # Daily pipeline
 ```

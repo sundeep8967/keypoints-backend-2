@@ -27,7 +27,7 @@ import_error_details = []
 
 # Strategy 1: Direct import (works when run from project root)
 try:
-    from newsapi_history_manager import NewsAPIHistoryManager
+    from history.newsapi_history_manager import NewsAPIHistoryManager
 except ImportError as e:
     import_error_details.append(f"Direct import failed: {e}")
 
@@ -37,7 +37,7 @@ if NewsAPIHistoryManager is None:
         current_dir = Path(__file__).parent.parent
         if str(current_dir) not in sys.path:
             sys.path.insert(0, str(current_dir))
-        from newsapi_history_manager import NewsAPIHistoryManager
+        from history.newsapi_history_manager import NewsAPIHistoryManager
     except ImportError as e:
         import_error_details.append(f"Current dir import failed: {e}")
 
@@ -47,7 +47,7 @@ if NewsAPIHistoryManager is None:
         work_dir = Path.cwd()
         if str(work_dir) not in sys.path:
             sys.path.insert(0, str(work_dir))
-        from newsapi_history_manager import NewsAPIHistoryManager
+        from history.newsapi_history_manager import NewsAPIHistoryManager
     except ImportError as e:
         import_error_details.append(f"Working dir import failed: {e}")
 
@@ -61,11 +61,11 @@ if NewsAPIHistoryManager is None:
     ]
     
     for path in common_paths:
-        if path and (path / "newsapi_history_manager.py").exists():
+        if path and (path / "history" / "newsapi_history_manager.py").exists():
             try:
                 if str(path) not in sys.path:
                     sys.path.insert(0, str(path))
-                from newsapi_history_manager import NewsAPIHistoryManager
+                from history.newsapi_history_manager import NewsAPIHistoryManager
                 break
             except ImportError as e:
                 import_error_details.append(f"Path {path} import failed: {e}")
@@ -90,6 +90,7 @@ class NewsAPIFetcher:
         self.primary_key = api_key or os.getenv('NEWSAPI_KEY_PRIMARY') or os.getenv('NEWSAPI_KEY')
         self.secondary_key = os.getenv('NEWSAPI_KEY_SECONDARY')
         self.tertiary_key = os.getenv('NEWSAPI_KEY_TERTIARY')
+        self.quaternary_key = os.getenv('NEWSAPI_KEY_QUATERNARY')
         
         if not self.primary_key:
             print("❌ Error: No NewsAPI key found!")
@@ -105,6 +106,8 @@ class NewsAPIFetcher:
             self.available_keys.append(self.secondary_key)
         if self.tertiary_key:
             self.available_keys.append(self.tertiary_key)
+        if self.quaternary_key:
+            self.available_keys.append(self.quaternary_key)
         
         self.current_key_index = 0
         self.current_key = self.available_keys[0]
@@ -113,19 +116,27 @@ class NewsAPIFetcher:
         self._update_session_headers()
         
         # Track API usage for better management
-        self.requests_made = {'primary': 0, 'secondary': 0, 'tertiary': 0}
+        self.requests_made = {'primary': 0, 'secondary': 0, 'tertiary': 0, 'quaternary': 0}
         self.exhausted_keys = set()
         
         key_count = len(self.available_keys)
         total_requests = key_count * 100
         print(f"🔑 NewsAPI initialized with {key_count} API keys ({total_requests} requests/day total)")
         
-        # Initialize NewsAPI History Manager for advanced duplicate detection
-        self.history_manager = NewsAPIHistoryManager() if NewsAPIHistoryManager else None
-        if self.history_manager:
-            print("🧠 Advanced NewsAPI duplicate detection enabled (file-based)")
-        else:
-            print("⚠️  Basic duplicate detection only (NewsAPI History Manager not available)")
+        # Initialize SPACE-OPTIMIZED history management
+        try:
+            from space_optimizer import SpaceOptimizer
+            self.space_optimizer = SpaceOptimizer()
+            self.use_space_optimization = True
+            print("🗜️  Advanced NewsAPI duplicate detection enabled (database-based)")
+        except ImportError:
+            # Fallback to file-based system
+            self.history_manager = NewsAPIHistoryManager() if NewsAPIHistoryManager else None
+            self.use_space_optimization = False
+            if self.history_manager:
+                print("🧠 Advanced NewsAPI duplicate detection enabled (file-based)")
+            else:
+                print("⚠️  Basic duplicate detection only (NewsAPI History Manager not available)")
         
         # Indian-centric NewsAPI source categorization system
         self.source_categories = {
@@ -221,7 +232,7 @@ class NewsAPIFetcher:
                 self.current_key = self.available_keys[i]
                 self._update_session_headers()
                 
-                key_names = ['primary', 'secondary', 'tertiary']
+                key_names = ['primary', 'secondary', 'tertiary', 'quaternary']
                 key_name = key_names[i] if i < len(key_names) else f'key_{i+1}'
                 print(f"🔄 Switching to {key_name} API key due to rate limit...")
                 return True
@@ -243,7 +254,7 @@ class NewsAPIFetcher:
     
     def _track_request(self):
         """Track API requests for monitoring"""
-        key_names = ['primary', 'secondary', 'tertiary']
+        key_names = ['primary', 'secondary', 'tertiary', 'quaternary']
         if self.current_key_index < len(key_names):
             key_name = key_names[self.current_key_index]
             self.requests_made[key_name] += 1
@@ -317,17 +328,17 @@ class NewsAPIFetcher:
         prioritized_sources = []
         
         # Add tier 1 sources first
-        tier1_sources = [s for s in valid_sources if s in self.source_credibility['tier_1_premium']]
+        tier1_sources = [s for s in valid_sources if s in self.source_credibility['tier_1_premium_indian']]
         prioritized_sources.extend(tier1_sources[:2])  # Max 2 tier 1 sources
         
         # Add tier 2 sources
-        tier2_sources = [s for s in valid_sources if s in self.source_credibility['tier_2_reliable'] 
+        tier2_sources = [s for s in valid_sources if s in self.source_credibility['tier_2_reliable_indian'] 
                         and s not in prioritized_sources]
         prioritized_sources.extend(tier2_sources[:2])  # Max 2 tier 2 sources
         
         # Add tier 3 sources if needed
         if len(prioritized_sources) < max_sources:
-            tier3_sources = [s for s in valid_sources if s in self.source_credibility['tier_3_specialized'] 
+            tier3_sources = [s for s in valid_sources if s in self.source_credibility['tier_3_entertainment_indian'] 
                             and s not in prioritized_sources]
             remaining_slots = max_sources - len(prioritized_sources)
             prioritized_sources.extend(tier3_sources[:remaining_slots])
@@ -346,11 +357,11 @@ class NewsAPIFetcher:
             
             # Get credibility breakdown
             tier1_available = sum(1 for source in category_sources 
-                                if source in available_sources and source in self.source_credibility['tier_1_premium'])
+                                if source in available_sources and source in self.source_credibility['tier_1_premium_indian'])
             tier2_available = sum(1 for source in category_sources 
-                                if source in available_sources and source in self.source_credibility['tier_2_reliable'])
+                                if source in available_sources and source in self.source_credibility['tier_2_reliable_indian'])
             tier3_available = sum(1 for source in category_sources 
-                                if source in available_sources and source in self.source_credibility['tier_3_specialized'])
+                                if source in available_sources and source in self.source_credibility['tier_3_entertainment_indian'])
             
             coverage_report[category] = {
                 'available_sources': available_count,
@@ -392,15 +403,16 @@ class NewsAPIFetcher:
             
             # Calculate credibility distribution
             credibility_counts = {}
-            for tier in ['tier_1_premium', 'tier_2_reliable', 'tier_3_specialized', 'unrated']:
+            for tier in ['tier_1_premium_indian', 'tier_2_reliable_indian', 'tier_3_entertainment_indian', 'tier_4_global_relevant', 'unrated']:
                 credibility_counts[tier] = sum(1 for a in articles if a.get('source_credibility') == tier)
             
             print(f"  📁 {category.title()} ({priority} priority):")
             print(f"     📰 Articles: {len(articles)}")
             print(f"     🎯 Content Accuracy: {accuracy_rate:.1f}%")
-            print(f"     🏆 Credibility: T1:{credibility_counts['tier_1_premium']} | "
-                  f"T2:{credibility_counts['tier_2_reliable']} | "
-                  f"T3:{credibility_counts['tier_3_specialized']} | "
+            print(f"     🏆 Credibility: T1:{credibility_counts['tier_1_premium_indian']} | "
+                  f"T2:{credibility_counts['tier_2_reliable_indian']} | "
+                  f"T3:{credibility_counts['tier_3_entertainment_indian']} | "
+                  f"T4:{credibility_counts['tier_4_global_relevant']} | "
                   f"Unrated:{credibility_counts['unrated']}")
             
             # Special metrics for specific categories
@@ -441,14 +453,15 @@ class NewsAPIFetcher:
             all_articles.extend(articles)
         
         total_credibility = {}
-        for tier in ['tier_1_premium', 'tier_2_reliable', 'tier_3_specialized', 'unrated']:
+        for tier in ['tier_1_premium_indian', 'tier_2_reliable_indian', 'tier_3_entertainment_indian', 'tier_4_global_relevant', 'unrated']:
             count = sum(1 for a in all_articles if a.get('source_credibility') == tier)
             percentage = (count / len(all_articles)) * 100 if all_articles else 0
             total_credibility[tier] = {'count': count, 'percentage': percentage}
         
-        print(f"  🥇 Tier 1 Premium: {total_credibility['tier_1_premium']['count']} articles ({total_credibility['tier_1_premium']['percentage']:.1f}%)")
-        print(f"  🥈 Tier 2 Reliable: {total_credibility['tier_2_reliable']['count']} articles ({total_credibility['tier_2_reliable']['percentage']:.1f}%)")
-        print(f"  🥉 Tier 3 Specialized: {total_credibility['tier_3_specialized']['count']} articles ({total_credibility['tier_3_specialized']['percentage']:.1f}%)")
+        print(f"  🥇 Tier 1 Premium Indian: {total_credibility['tier_1_premium_indian']['count']} articles ({total_credibility['tier_1_premium_indian']['percentage']:.1f}%)")
+        print(f"  🥈 Tier 2 Reliable Indian: {total_credibility['tier_2_reliable_indian']['count']} articles ({total_credibility['tier_2_reliable_indian']['percentage']:.1f}%)")
+        print(f"  🥉 Tier 3 Entertainment Indian: {total_credibility['tier_3_entertainment_indian']['count']} articles ({total_credibility['tier_3_entertainment_indian']['percentage']:.1f}%)")
+        print(f"  🌍 Tier 4 Global Relevant: {total_credibility['tier_4_global_relevant']['count']} articles ({total_credibility['tier_4_global_relevant']['percentage']:.1f}%)")
         print(f"  ❓ Unrated: {total_credibility['unrated']['count']} articles ({total_credibility['unrated']['percentage']:.1f}%)")
 
         # Indian news category breakdown
@@ -1296,9 +1309,10 @@ class NewsAPIFetcher:
                             'sources_used': optimal_sources,
                             'coverage_percentage': coverage_report[category]['coverage_percentage'],
                             'credibility_breakdown': {
-                                'tier1': sum(1 for a in enhanced_articles if a.get('source_credibility') == 'tier_1_premium'),
-                                'tier2': sum(1 for a in enhanced_articles if a.get('source_credibility') == 'tier_2_reliable'),
-                                'tier3': sum(1 for a in enhanced_articles if a.get('source_credibility') == 'tier_3_specialized')
+                                'tier1': sum(1 for a in enhanced_articles if a.get('source_credibility') == 'tier_1_premium_indian'),
+                                'tier2': sum(1 for a in enhanced_articles if a.get('source_credibility') == 'tier_2_reliable_indian'),
+                                'tier3': sum(1 for a in enhanced_articles if a.get('source_credibility') == 'tier_3_entertainment_indian'),
+                                'tier4': sum(1 for a in enhanced_articles if a.get('source_credibility') == 'tier_4_global_relevant')
                             }
                         }
                         
@@ -1512,11 +1526,33 @@ class NewsAPIFetcher:
         for category, articles in news_data['by_category'].items():
             all_articles.extend(articles)
         
-        if self.history_manager and all_articles:
-            print(f"\n🧠 Applying NewsAPI duplicate detection to {len(all_articles)} articles...")
+        if self.use_space_optimization and all_articles:
+            print(f"\n🗜️  Applying SHARED DATABASE duplicate detection to {len(all_articles)} articles...")
+            stored_count, duplicate_count = self.space_optimizer.store_articles_efficiently(all_articles, 'all_sources')
+            
+            print(f"📊 Shared Database Duplicate Detection Results:")
+            print(f"  📰 Total articles processed: {len(all_articles)}")
+            print(f"  🆕 New articles stored: {stored_count}")
+            print(f"  🔄 Duplicates skipped (including cross-source): {duplicate_count}")
+            
+            if duplicate_count > 0:
+                print(f"  🎯 Cross-source duplicates prevented: RSS vs NewsAPI conflicts avoided")
+            
+            # For space optimization, we keep all articles but mark duplicates
+            news_data['newsapi_duplicate_detection'] = {
+                'enabled': True,
+                'method': 'shared_database',
+                'total_checked': len(all_articles),
+                'duplicates_found': duplicate_count,
+                'new_articles': stored_count,
+                'cross_source_prevention': True
+            }
+            
+        elif hasattr(self, 'history_manager') and self.history_manager and all_articles:
+            print(f"\n🧠 Applying FILE-BASED duplicate detection to {len(all_articles)} articles...")
             unique_articles, duplicate_stats = self.history_manager.check_newsapi_duplicates(all_articles)
             
-            print(f"📊 NewsAPI Duplicate Detection Results:")
+            print(f"📊 File-Based Duplicate Detection Results:")
             print(f"  📰 Total articles collected: {len(all_articles)}")
             print(f"  🆕 Unique articles after filtering: {len(unique_articles)}")
             print(f"  🔄 Duplicates removed: {duplicate_stats['duplicates_found']}")
@@ -1551,6 +1587,7 @@ class NewsAPIFetcher:
             # Add duplicate detection info to news_data
             news_data['newsapi_duplicate_detection'] = {
                 'enabled': True,
+                'method': 'file_based',
                 'total_checked': duplicate_stats['total_checked'],
                 'duplicates_found': duplicate_stats['duplicates_found'],
                 'time_filtered': duplicate_stats['time_filtered'],
@@ -1564,7 +1601,7 @@ class NewsAPIFetcher:
         else:
             news_data['newsapi_duplicate_detection'] = {
                 'enabled': False,
-                'reason': 'NewsAPI History Manager not available'
+                'reason': 'No duplicate detection system available'
             }
         
         news_data['total_articles'] = len(all_articles)
@@ -1577,13 +1614,14 @@ class NewsAPIFetcher:
         
         # Add API usage tracking
         total_requests = sum(self.requests_made.values())
-        key_names = ['primary', 'secondary', 'tertiary']
+        key_names = ['primary', 'secondary', 'tertiary', 'quaternary']
         current_key_name = key_names[self.current_key_index] if self.current_key_index < len(key_names) else f'key_{self.current_key_index+1}'
         
         news_data['api_usage'] = {
             'primary_key_requests': self.requests_made['primary'],
             'secondary_key_requests': self.requests_made['secondary'],
             'tertiary_key_requests': self.requests_made['tertiary'],
+            'quaternary_key_requests': self.requests_made['quaternary'],
             'total_requests': total_requests,
             'available_keys': len(self.available_keys),
             'exhausted_keys': len(self.exhausted_keys),
@@ -1604,14 +1642,14 @@ class NewsAPIFetcher:
     
     def cleanup_old_newsapi_history(self, days_to_keep=7):
         """Clean up old NewsAPI history files"""
-        if self.history_manager:
+        if hasattr(self, 'history_manager') and self.history_manager:
             self.history_manager.cleanup_old_newsapi_history(days_to_keep)
         else:
             print("⚠️  NewsAPI History Manager not available for cleanup")
     
     def get_newsapi_history_summary(self):
         """Get summary of NewsAPI history"""
-        if not self.history_manager:
+        if not hasattr(self, 'history_manager') or not self.history_manager:
             return {"error": "NewsAPI History Manager not available"}
         
         return self.history_manager.get_newsapi_statistics()
@@ -1650,6 +1688,7 @@ def main():
     print(f"  🔑 Primary key requests: {api_usage.get('primary_key_requests', 0)}")
     print(f"  🔄 Secondary key requests: {api_usage.get('secondary_key_requests', 0)}")
     print(f"  🔄 Tertiary key requests: {api_usage.get('tertiary_key_requests', 0)}")
+    print(f"  🔄 Quaternary key requests: {api_usage.get('quaternary_key_requests', 0)}")
     print(f"  🎯 Current active key: {api_usage.get('current_key', 'primary')}")
     print(f"  📈 Available keys: {api_usage.get('available_keys', 1)}")
     print(f"  ⚠️  Exhausted keys: {api_usage.get('exhausted_keys', 0)}")

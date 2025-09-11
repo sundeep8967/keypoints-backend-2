@@ -90,7 +90,6 @@ class NewsAPIFetcher:
         self.primary_key = api_key or os.getenv('NEWSAPI_KEY_PRIMARY') or os.getenv('NEWSAPI_KEY')
         self.secondary_key = os.getenv('NEWSAPI_KEY_SECONDARY')
         self.tertiary_key = os.getenv('NEWSAPI_KEY_TERTIARY')
-        self.quaternary_key = os.getenv('NEWSAPI_KEY_QUATERNARY')
         
         if not self.primary_key:
             print("❌ Error: No NewsAPI key found!")
@@ -106,8 +105,6 @@ class NewsAPIFetcher:
             self.available_keys.append(self.secondary_key)
         if self.tertiary_key:
             self.available_keys.append(self.tertiary_key)
-        if self.quaternary_key:
-            self.available_keys.append(self.quaternary_key)
         
         self.current_key_index = 0
         self.current_key = self.available_keys[0]
@@ -116,7 +113,7 @@ class NewsAPIFetcher:
         self._update_session_headers()
         
         # Track API usage for better management
-        self.requests_made = {'primary': 0, 'secondary': 0, 'tertiary': 0, 'quaternary': 0}
+        self.requests_made = {'primary': 0, 'secondary': 0, 'tertiary': 0}
         self.exhausted_keys = set()
         
         key_count = len(self.available_keys)
@@ -232,7 +229,7 @@ class NewsAPIFetcher:
                 self.current_key = self.available_keys[i]
                 self._update_session_headers()
                 
-                key_names = ['primary', 'secondary', 'tertiary', 'quaternary']
+                key_names = ['primary', 'secondary', 'tertiary']
                 key_name = key_names[i] if i < len(key_names) else f'key_{i+1}'
                 print(f"🔄 Switching to {key_name} API key due to rate limit...")
                 return True
@@ -254,7 +251,7 @@ class NewsAPIFetcher:
     
     def _track_request(self):
         """Track API requests for monitoring"""
-        key_names = ['primary', 'secondary', 'tertiary', 'quaternary']
+        key_names = ['primary', 'secondary', 'tertiary']
         if self.current_key_index < len(key_names):
             key_name = key_names[self.current_key_index]
             self.requests_made[key_name] += 1
@@ -1614,14 +1611,13 @@ class NewsAPIFetcher:
         
         # Add API usage tracking
         total_requests = sum(self.requests_made.values())
-        key_names = ['primary', 'secondary', 'tertiary', 'quaternary']
+        key_names = ['primary', 'secondary', 'tertiary']
         current_key_name = key_names[self.current_key_index] if self.current_key_index < len(key_names) else f'key_{self.current_key_index+1}'
         
         news_data['api_usage'] = {
             'primary_key_requests': self.requests_made['primary'],
             'secondary_key_requests': self.requests_made['secondary'],
             'tertiary_key_requests': self.requests_made['tertiary'],
-            'quaternary_key_requests': self.requests_made['quaternary'],
             'total_requests': total_requests,
             'available_keys': len(self.available_keys),
             'exhausted_keys': len(self.exhausted_keys),
@@ -1688,7 +1684,6 @@ def main():
     print(f"  🔑 Primary key requests: {api_usage.get('primary_key_requests', 0)}")
     print(f"  🔄 Secondary key requests: {api_usage.get('secondary_key_requests', 0)}")
     print(f"  🔄 Tertiary key requests: {api_usage.get('tertiary_key_requests', 0)}")
-    print(f"  🔄 Quaternary key requests: {api_usage.get('quaternary_key_requests', 0)}")
     print(f"  🎯 Current active key: {api_usage.get('current_key', 'primary')}")
     print(f"  📈 Available keys: {api_usage.get('available_keys', 1)}")
     print(f"  ⚠️  Exhausted keys: {api_usage.get('exhausted_keys', 0)}")
